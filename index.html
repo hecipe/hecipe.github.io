@@ -1,11 +1,234 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>Pruh</p>
-</body>
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hecipe - Smart Cooking</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--Liên kết với file all.min.css chứa các icon Font Awesome-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!--Liên kiết với file style.css-->
+
+    <link rel="icon" href="ImageofWeb/Logo-Photoroom.png" type="image/png" />
+  </head>
+  <body>
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link">
+          <i class="far fa-user"></i>
+        </a>
+        <a href="#" class="icon-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="#" class="active">Trang Chủ</a></li>
+        <!--thêm class active để làm nổi bật trang hiện tại-->
+
+        <li class="dropdown">
+          <!--thêm class dropdown cho các mục có menu thả xuống-->
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <!--thêm ul với class dropdown-menu để chứa các mục con-->
+            <li><a href="#">Nguyên Liệu</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <!--thêm dòng chia cách mục con-->
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="#">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Khuyến Mãi</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <!--thêm div với class user-actions để chứa các biểu tượng và nút-->
+
+        <div class="cart-box">
+          <!--thêm div với class cart-box để chứa biểu tượng giỏ hàng và số lượng-->
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+          <!--thêm icon giỏ hàng-->
+        </div>
+
+        <div class="user-profile">
+          <!--thêm div với class user-profile để chứa ảnh đại diện và menu thả xuống-->
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+          />
+          <ul class="profile-dropdown">
+            <li><a href="#">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#">Đăng xuất</a></li>
+          </ul>
+        </div>
+
+        <a href="#" class="btn-primary">Đăng nhập</a>
+        <!--thêm nút với class btn-primary-->
+      </div>
+    </nav>
+
+    <div class="hero">
+      <!--thêm h với class hero cho phần giới thiệu chính-->
+      <div class="hero-content">
+          <div class="brand-identity">
+              <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo" class="hero-logo">
+              <h1 class="brand-name">Hecipe</h1>
+          </div>
+          
+          <p class="hero-subtitle">
+              Khám phá thực đơn dinh dưỡng và nguyên liệu sạch cho sức khỏe của bạn.
+          </p>
+          
+          <a href="#" class="btn-hero">
+              Khám Phá Ngay <i class="fa-solid fa-arrow-right"></i>
+          </a>
+      </div>
+      <div class="hero-image">
+        <!--Liên kết với hình ảnh minh họa-->
+        <div class="circle-bg"></div>
+        <img
+          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Healthy Food"
+        />
+      </div>
+    </div>
+    <footer class="footer">
+
+  <!-- KHỐI TRÊN -->
+  <div class="footer-container">
+
+    <!-- BÊN TRÁI: LOGO -->
+    <div class="footer-logo">
+      <!-- bạn thay ảnh logo sau -->
+      <div class="logo-box">LOGO</div>
+    </div>
+
+    <!-- BÊN PHẢI: NỘI DUNG -->
+    <div class="footer-links">
+
+      <div class="footer-col">
+        <h4>Về Hecipe</h4>
+        <a href="duan.html">Dự án</a>
+        <a href="blog.html">Blog</a>
+      </div>
+
+      <div class="footer-col">
+   <h4>Khám phá</h4>
+   <a href="congthuc.html">Công thức nổi bật</a>
+   <a href="thucdon.html">Thực đơn hôm nay</a>
+   <a href="chedo.html">Chế độ ăn khỏe</a>
+   <a href="goiy.html">Gợi ý cho bạn</a>
+</div>
+
+
+      <div class="footer-col">
+        <h4>Trợ giúp</h4>
+        <a href="hotro.html">Yêu cầu hỗ trợ</a>
+        <a href="lienhe.html">Liên hệ</a>
+      </div>
+
+<!-- Viết icon -->
+      <div class="footer-col">
+        <h4>Social</h4>
+  <a href="fb.html">
+    <i class="fa-brands fa-facebook-f"></i>
+    Facebook
+  </a>
+
+  <a href="pin.html">
+    <i class="fa-brands fa-pinterest-p"></i>
+    Pinterest
+  </a>
+
+  <a href="x.html">
+    <i class="fa-brands fa-twitter"></i>
+    Twitter
+  </a>
+
+  <a href="ig.html">
+    <i class="fa-brands fa-instagram"></i>
+    Instagram
+  </a>
+</div>
+      </div>
+
+      <div class="footer-app">
+   <h4>Download our app:</h4>
+
+   <a href="https://play.google.com" target="_blank">
+      <img src="/ImageofWeb/ggplay.webp" class="badge-google" >
+   </a>
+
+   <a href="https://www.apple.com/app-store/" target="_blank">
+      <img src="/ImageofWeb/appstore.png" class="badge-apple">
+   </a>
+</div>
+    </div>
+  </div>
+
+
+  <!-- KHỐI DƯỚI -->
+  <div class="footer-bottom">
+   <div class="copyright">
+      Copyright © 2026 Hecipe.
+   </div>
+
+   <div class="divider"></div>
+
+   <div class="policy-links">
+      <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+      <a href="chinhsach.html">Chính sách bảo mật</a>
+   </div>
+</div>
+
+
+</footer>
+
+  </body>
 </html>
