@@ -326,7 +326,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 4rem 8rem;
-    height: 80vh;
+    height: 150vh;
 }
 .hero-content h1 {
     font-family: 'Playfair Display', serif;
@@ -343,24 +343,26 @@ body {
 }
 /* Container chứa Logo và Tên */
 .brand-identity {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Khoảng cách giữa logo và chữ */
-    margin-bottom: 1.5rem;
+    display: block; /* Bỏ flex để logo tự do */
+    margin-bottom: 25px; /* Tạo khoảng cách thoáng với dòng chữ bên dưới */
 }
 
 /* Chỉnh logo ảnh nhỏ lại, tinh tế hơn */
 .hero-logo {
-    width: 80px; /* Kích thước vừa phải, không quá to như cũ (200px) */
+    width: 350px; /* Tăng kích thước từ 80px lên 220px cho hoành tráng */
     height: auto;
     object-fit: contain;
-    /* Thêm hiệu ứng bóng nhẹ cho logo nổi lên */
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-    transition: transform 0.3s ease;
+    
+    /* Đổ bóng đậm hơn chút để logo nổi bật trên nền sáng */
+    filter: drop-shadow(0 8px 15px rgba(74, 103, 65, 0.25)); 
+    
+    /* Hiệu ứng khi mới vào trang */
+    transition: all 0.5s ease;
 }
 
 .brand-identity:hover .hero-logo {
-    transform: rotate(-10deg) scale(1.1); /* Hiệu ứng lắc nhẹ khi hover */
+    transform: scale(1.05) rotate(-3deg); /* Phóng to và nghiêng nhẹ */
+    filter: drop-shadow(0 12px 20px rgba(74, 103, 65, 0.35));
 }
 
 /* Chữ Hecipe bên cạnh */
@@ -405,8 +407,8 @@ body {
     position: relative;
 }
 .hero-image img {
-    width: 400px;
-    height: 400px;
+    width: 580px;
+    height: 580px;
     border-radius: 50%;
     object-fit: cover;
     z-index: 2;
@@ -415,15 +417,47 @@ body {
 /* Vòng tròn trang trí phía sau */
 .circle-bg {
     position: absolute;
-    width: 420px;
-    height: 420px;
+    width: 600px;
+    height: 600px;
     background-color: var(--sage-light);
     border-radius: 50%;
     top: -10px;
     left: -10px;
     z-index: 1;
 }
+/* --- HIỆU ỨNG SÓNG CHO FOOTER --- */
+/* --- SỬA LẠI ĐOẠN NÀY TRONG STYLE.CSS --- */
 
+.custom-shape-divider-top {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    background-color: rgb(209, 230, 214); /* Màu nền phía trên */
+    z-index: 1; /* Đảm bảo sóng nằm trên */
+}
+
+.custom-shape-divider-top svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 50px; /* Tăng độ cao từ 60px -> 100px cho sóng cong đẹp hơn */
+}
+
+.custom-shape-divider-top .shape-fill {
+    fill: #FAF9F6; /* Màu này phải TRÙNG KHỚP với màu nền footer */
+}
+
+.footer {
+    /* Thêm margin âm để kéo footer lên dính chặt vào sóng, xóa lằn ranh */
+    margin-top: -2px;
+    padding-top: 10px;  /* Giữ khoảng cách nhỏ với sóng */
+    padding-bottom: 20px; /* Giảm mạnh khoảng trống dưới cùng (cũ là 60px) */
+    background: rgb(209, 230, 214);
+    position: relative;
+    z-index: 0;
+    max-height: fit-content;
+}
 /* các thẻ a sẽ có định dạng không gạch chân(do nó để dưới dạng link) và màu xanh */
 .footer a{
   text-decoration: none;   /* bỏ gạch chân */
@@ -458,11 +492,6 @@ margin-bottom:5px;
   gap:10px; /*khoảng cách giữa các dòng trong cột */
 }
 
-.footer{
-  background:rgb(209, 230, 214);
-  padding:60px 0;   /* khoảng cách trên dưới */
-}
-
 .footer-container{
   max-width:1200px;   /* giới hạn chiều rộng nội dung */
   margin:0 auto;      /* căn giữa */
@@ -493,14 +522,13 @@ margin-bottom:5px;
    font-weight:500;
 }
 
-.footer-bottom{
-   display:flex;
-   align-items:center;
-   gap:25px;
-
-   max-width:1200px;
-   margin:60px auto 0;   /*trên 60px - trái phải auto - dưới 0 */
-   padding:0 20px;
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin: 20px auto 0; /* Giảm margin-top từ 60px xuống 20px */
+    padding: 15px 20px 0; /* Thêm padding nhẹ */
+    border-top: 1px solid rgba(51, 67, 55, 0.15); 
 }
 
 /* tạo hình icon */
@@ -559,4 +587,117 @@ body{
    object-fit:cover;   /* lấp đầy khung */
 }
 
+/* --- BUTTONS CHUYÊN NGHIỆP --- */
+.btn-primary, .btn-hero {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px rgba(74, 103, 65, 0.2); /* Bóng đổ nhẹ */
+}
 
+/* Hiệu ứng nổi lên khi hover */
+.btn-primary:hover, .btn-hero:hover {
+    transform: translateY(-3px); /* Nút bay lên nhẹ */
+    box-shadow: 0 8px 25px rgba(74, 103, 65, 0.4); /* Bóng đổ đậm hơn */
+    background-color: #3b5234; /* Màu xanh đậm hơn chút */
+}
+
+/* --- NAV LINKS ANIMATION (Gạch chân chạy từ trái sang) --- */
+.nav-links a {
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-green);
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-links a:hover::after {
+    width: 100%; /* Gạch chân chạy full khi hover */
+}
+
+/* Icon mạng xã hội ở footer nhảy múa */
+.footer-col i {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.footer-col a:hover i {
+    transform: scale(1.2) rotate(10deg); /* Phóng to và xoay nhẹ */
+    background: var(--primary-green);
+    color: white;
+}
+
+/* --- ANIMATION CHO HERO SECTION --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content {
+    animation: fadeInUp 1s ease-out; /* Áp dụng hiệu ứng */
+}
+
+.hero-image img {
+    animation: fadeInUp 1.2s ease-out; /* Ảnh hiện chậm hơn chữ 1 chút */
+    transition: transform 0.5s ease;
+}
+
+/* Hover vào ảnh Hero thì ảnh zoom nhẹ */
+.hero-image:hover img {
+    transform: scale(1.05) rotate(2deg);
+}
+
+/* --- DROPDOWN GLASS STYLE --- */
+.dropdown-menu, .profile-dropdown {
+    background: rgba(255, 255, 255, 0.95); /* Màu trắng hơi trong suốt */
+    backdrop-filter: blur(10px); /* Làm mờ nền đằng sau */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px; /* Bo góc mềm hơn */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Bóng đổ mịn */
+    padding: 15px;
+}
+
+.dropdown-menu li a, .profile-dropdown li a {
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.footer-logo {
+    /* Đặt chiều rộng cố định cho khung chứa logo */
+    width: 150px; 
+    
+    /* Đảm bảo khung không bị co lại quá nhỏ trên màn hình bé */
+    min-width: 150px;
+    
+    /* Căn chỉnh vị trí */
+    display: flex;
+    align-items: flex-start; /* Căn logo lên trên cùng để thẳng hàng với tiêu đề các cột bên phải */
+    margin-top: -10px; /* Nhích lên một chút nếu muốn cân bằng với dòng chữ "Về Hecipe" */
+}
+
+.footer-logo img {
+    /* Quan trọng: Bắt buộc ảnh phải nằm gọn trong khung width 250px ở trên */
+    width: 100%; 
+    height: auto; /* Giữ nguyên tỉ lệ ảnh, không bị méo */
+    object-fit: contain;
+    
+    /* Nếu muốn ảnh tối đi một chút cho đỡ chói so với nền xanh */
+    /* filter: brightness(0.9) grayscale(20%); */ 
+}
+
+.footer-logo:hover img {
+    transform: scale(1.05) rotate(-3deg); /* Phóng to và nghiêng nhẹ */
+    filter: drop-shadow(0 12px 20px rgba(74, 103, 65, 0.35));
+}
