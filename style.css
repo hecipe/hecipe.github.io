@@ -493,7 +493,7 @@ margin-bottom:5px;
 }
 
 .footer-container{
-  max-width:1200px;   /* giới hạn chiều rộng nội dung */
+  max-width:1500px;   /* giới hạn chiều rộng nội dung */
   margin:0 auto;      /* căn giữa */
   padding:0 20px;     /* tạo khoảng cách 2 bên */
   /* logo + nội dung nằm ngang */
