@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - Hecipe</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link">
+          <i class="far fa-user"></i>
+        </a>
+        <a href="#" class="icon-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Nguyên Liệu</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>Đăng ký</h2>
+            <p>Điền đầy đủ thông tin bên dưới để tạo tài khoản.</p>
+        </div>
+
+        <form id="healthProfileForm">
+            <input type="hidden" id="userId" value="ND0001">
+            <div class="form-group">
+                <label for="regUser"><i class="fa-solid fa-user"></i> Tên đăng nhập</label>
+                <input type="text" id="regUser" required placeholder="VD: ND0001">
+            </div>
+            <div class="form-group">
+                <label for="regPass"><i class="fa-solid fa-lock"></i> Mật khẩu</label>
+                <input type="password" id="regPass" required placeholder="Mật khẩu">
+            </div>
+
+            <div class="form-group">
+                <label for="height"><i class="fa-solid fa-ruler-vertical"></i> Chiều cao (cm)</label>
+                <input type="number" id="height" required placeholder="Ví dụ: 170" min="100" max="250">
+            </div>
+
+            <div class="form-group">
+                <label for="weight"><i class="fa-solid fa-weight-scale"></i> Cân nặng (kg)</label>
+                <input type="number" id="weight" step="0.1" required placeholder="Ví dụ: 65.5" min="30" max="200">
+            </div>
+
+            <div class="form-group">
+                <label>Giới tính</label>
+                <div style="display:flex; gap:20px; align-items:center;">
+                    <input type="radio" id="gender-male" name="gender" value="male" required>
+                    <label for="gender-male" class="radio-wrapper">Nam</label>
+
+                    <input type="radio" id="gender-female" name="gender" value="female">
+                    <label for="gender-female" class="radio-wrapper">Nữ</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="birthYear"><i class="fa-solid fa-calendar"></i> Năm sinh</label>
+                <input type="number" id="birthYear" min="1900" max="2025" required placeholder="Ví dụ: 1990">
+            </div>
+
+            <div class="form-group">
+                <label for="avatar"><i class="fa-solid fa-image"></i> Ảnh đại diện (tùy chọn)</label>
+                <input type="file" id="avatar" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; font-size: 1.1rem; padding: 15px;">
+                Đăng ký &amp; Tạo tài khoản
+            </button>
+        </form>
+
+        <div id="resultsArea" class="result-card">
+            <h3>Kết Quả Của Bạn</h3>
+            
+            <p>Chỉ số BMI</p>
+            <div class="metric" id="bmiValue">--</div>
+            <div class="status-badge" id="bmiStatus">--</div>
+
+            <p>Năng lượng tiêu hao mỗi ngày (TDEE)</p>
+            <div class="metric" id="tdeeValue">-- <span style="font-size: 1rem; color: var(--text-dark);">kcal</span></div>
+            
+            <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
+                *Dữ liệu đã được lưu vào hồ sơ để gợi ý thực đơn.
+            </p>
+        </div>
+    </div>
+    </main>
+
+    <script>
+        // if already logged, go to profile
+        if (localStorage.getItem('loggedIn') === 'true') {
+            window.location.href = 'hosouser.html';
+        }
+        function toggleAuthUI() {
+            const logged = localStorage.getItem('loggedIn') === 'true';
+            const profile = document.getElementById('profileContainer');
+            const authBtns = document.getElementById('authButtons');
+            const message = document.querySelector('.profile-header p');
+            const display = document.getElementById('displayUsername');
+            if (profile) profile.classList.toggle('hidden', !logged);
+            if (authBtns) authBtns.classList.toggle('hidden', logged);
+            if (message) message.textContent = logged ? 'Bạn đã đăng nhập. Cập nhật hồ sơ nếu cần.' : 'Điền đầy đủ thông tin bên dưới để tạo tài khoản.';
+            if (logged) {
+                const storedAvatar = localStorage.getItem('avatar');
+                if (storedAvatar) {
+                    const img = document.getElementById('avatarImg');
+                    if (img) img.src = storedAvatar;
+                }
+                if (display) display.textContent = localStorage.getItem('userId') || '';
+            } else {
+                if (display) display.textContent = '';
+            }
+        }
+
+        document.getElementById('healthProfileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const genderEl = document.querySelector('input[name="gender"]:checked');
+            const payload = {
+                userId: document.getElementById('userId').value,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                activityLevel: document.getElementById('activityLevel').value,
+                gender: genderEl ? genderEl.value : null,
+                birthYear: document.getElementById('birthYear').value
+            };
+            try {
+                const btn = this.querySelector('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                btn.disabled = true;
+                const response = await fetch('http://localhost:3000/api/users/update-health', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error('Có lỗi xảy ra khi gọi API');
+                const result = await response.json();
+                document.getElementById('bmiValue').innerText = result.data.bmi;
+                document.getElementById('bmiStatus').innerText = result.data.status;
+                localStorage.setItem('loggedIn','true');
+                // save credentials
+                localStorage.setItem('userId', document.getElementById('regUser').value);
+                localStorage.setItem('password', document.getElementById('regPass').value);
+                const profileObj = {
+                    username: document.getElementById('regUser').value,
+                    height: document.getElementById('height').value,
+                    weight: document.getElementById('weight').value,
+                    birthYear: document.getElementById('birthYear').value,
+                    gender: (genderEl ? genderEl.value : null)
+                };
+                const fileInput = document.getElementById('avatar');
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        profileObj.avatar = evt.target.result;
+                        localStorage.setItem('avatar', evt.target.result);
+                        localStorage.setItem('userProfile', JSON.stringify(profileObj));
+                        toggleAuthUI();
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    const existing = localStorage.getItem('avatar');
+                    if (existing) profileObj.avatar = existing;
+                    localStorage.setItem('userProfile', JSON.stringify(profileObj));
+                    toggleAuthUI();
+                }
+                const badge = document.getElementById('bmiStatus');
+                if(result.data.status === 'Gầy') badge.style.backgroundColor = '#F59E0B';
+                else if(result.data.status === 'Thừa cân') badge.style.backgroundColor = '#EF4444';
+                else badge.style.backgroundColor = 'var(--primary-green)';
+                document.getElementById('tdeeValue').innerHTML = `${result.data.tdee} <span style="font-size: 1rem; color: var(--text-dark);">kcal</span>`;
+                document.getElementById('resultsArea').style.display = 'block';
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            } catch (error) {
+                console.error("Lỗi:", error);
+                alert("Lỗi kết nối máy chủ. Vui lòng kiểm tra Node.js đã chạy chưa.");
+                const btn = this.querySelector('button');
+                btn.innerHTML = '<i class="fa-solid fa-calculator"></i> Tính Toán & Cập Nhật';
+                btn.disabled = false;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('loggedIn');
+                    toggleAuthUI();
+                });
+            }
+            const stored = localStorage.getItem('userProfile');
+            if (stored) {
+                try {
+                    const obj = JSON.parse(stored);
+                    if (obj.height) document.getElementById('height').value = obj.height;
+                    if (obj.weight) document.getElementById('weight').value = obj.weight;
+                    if (obj.birthYear) document.getElementById('birthYear').value = obj.birthYear;
+                    if (obj.gender) {
+                        const g = obj.gender;
+                        const radio = document.querySelector(`input[name="gender"][value="${g}"]`);
+                        if (radio) radio.checked = true;
+                    }
+                    if (obj.avatar) {
+                        localStorage.setItem('avatar', obj.avatar);
+                    }
+                } catch {}
+            }
+            toggleAuthUI();
+        });
+    </script>
+
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <footer class="footer">
+  <!-- copy same footer as index -->
+  <div class="footer-container">
+    <div class="footer-logo">
+      <a href="/index.html" title="Về trang chủ">
+        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+      </a>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Về Hecipe</h4>
+        <a href="duan.html">Dự án</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+   <h4>Khám phá</h4>
+   <a href="congthuc.html">Công thức nổi bật</a>
+   <a href="thucdon.html">Thực đơn hôm nay</a>
+   <a href="chedo.html">Chế độ ăn khỏe</a>
+   <a href="goiy.html">Gợi ý cho bạn</a>
+</div>
+      <div class="footer-col">
+        <h4>Trợ giúp</h4>
+        <a href="hotro.html">Yêu cầu hỗ trợ</a>
+        <a href="lienhe.html">Liên hệ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Social</h4>
+  <a href="fb.html">
+    <i class="fa-brands fa-facebook-f"></i>
+    Facebook
+  </a>
+  <a href="pin.html">
+    <i class="fa-brands fa-pinterest-p"></i>
+    Pinterest
+  </a>
+  <a href="ig.html">
+    <i class="fa-brands fa-instagram"></i>
+    Instagram
+  </a>
+  <a href="tw.html">
+    <i class="fa-brands fa-tiktok"></i>
+    TikTok
+</div>
+      </div>
+      <div class="footer-app">
+   <h4>Download our app:</h4>
+   <a href="https://play.google.com" target="_blank">
+      <img src="ImageofWeb/ggplay.webp" class="badge-google" >
+   </a>
+   <a href="https://www.apple.com/app-store/" target="_blank">
+      <img src="ImageofWeb/appstore.png" class="badge-apple">
+   </a>
+</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+   <div class="copyright">
+      Copyright © 2026 Hecipe.
+   </div>
+   <div class="divider"></div>
+   <div class="policy-links">
+      <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+      <a href="chinhsach.html">Chính sách bảo mật</a>
+   </div>
+</div>
+</footer>
+
+</body>
+</html>

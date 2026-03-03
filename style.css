@@ -17,6 +17,9 @@
     box-sizing: border-box;
 }
 
+/* helper classes */
+.hidden { display: none !important; }
+
 body {
     font-family: 'Quicksand', sans-serif; /* Font hiện đại cho nội dung */
     background-color: var(--bg-cream);
@@ -385,7 +388,43 @@ body {
     line-height: 1.6;
 }
 
-/* Responsive cho điện thoại */
+/* Responsive cho điện thoại và tablet */
+@media (max-width: 992px) {
+    /* nav bar xếp dọc, đơn giản */
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 2rem;
+    }
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+    .nav-links li {
+        width: 100%;
+    }
+    .nav-links a {
+        padding: 0.5rem 0;
+    }
+    .user-actions {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .search-container {
+        display: none; /* hide search on smaller screens */
+    }
+    .hero {
+        flex-direction: column;
+        padding: 2rem 4rem;
+    }
+    .hero-image {
+        margin-top: 2rem;
+        display: none; /* hide large hero image on tablet/mobile */
+    }
+}
+
 @media (max-width: 768px) {
     .brand-identity {
         justify-content: center; /* Căn giữa trên mobile */
@@ -394,7 +433,27 @@ body {
     .brand-name {
         font-size: 3rem;
     }
+    .navbar {
+        padding: 1rem 1rem;
+    }
+    .user-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .cart-box, .auth-buttons, .user-profile {
+        width: 100%;
+    }
+    .auth-buttons a {
+        width: 100%;
+        text-align: center;
+    }
+    .profile-container {
+        margin: 40px 10px;
+        padding: 20px;
+    }
 }
+
 .btn-hero {
     background-color: var(--primary-green);
     color: white;
@@ -585,6 +644,138 @@ body{
    width:155px;
    height:75px;
    object-fit:cover;   /* lấp đầy khung */
+}
+
+/* --- STYLES FOR PROFILE PAGE (BMI FORM) --- */
+.profile-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-top: 5px solid var(--primary-green);
+    /* mobile-friendly */
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        max-width: 90%;
+        margin: 40px auto;
+        padding: 20px;
+    }
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.profile-header p {
+    color: var(--text-light);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* radio group inside form-group */
+.form-group input[type="radio"] {
+    display: none; /* hide default */
+}
+
+/* custom radio wrapper */
+.form-group .radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 20px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    position: relative;
+}
+
+.form-group .radio-wrapper::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--primary-green);
+    border-radius: 50%;
+    margin-right: 6px;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.form-group input[type="radio"]:checked + .radio-wrapper::before {
+    background: var(--primary-green);
+}
+
+.form-group input[type="file"] {
+    padding: 4px 0;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(74, 103, 65, 0.2);
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(74, 103, 65, 0.1);
+}
+
+.result-card {
+    display: none; /* Hidden by default */
+    margin-top: 30px;
+    padding: 25px;
+    background-color: var(--sage-light);
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+.result-card h3 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.metric {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 5px;
+}
+        
+.status-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
 }
 
 /* --- BUTTONS CHUYÊN NGHIỆP --- */

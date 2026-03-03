@@ -85,31 +85,35 @@
       </ul>
 
       <div class="user-actions">
-        <!--thêm div với class user-actions để chứa các biểu tượng và nút-->
-
+        <!-- cart always visible -->
         <div class="cart-box">
-          <!--thêm div với class cart-box để chứa biểu tượng giỏ hàng và số lượng-->
           <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
-          <!--thêm icon giỏ hàng-->
         </div>
 
-        <div class="user-profile">
-          <!--thêm div với class user-profile để chứa ảnh đại diện và menu thả xuống-->
+        <!-- buttons when not logged in -->
+        <div id="authButtons" class="auth-buttons">
+          <a href="hosouser.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="hosouser.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+
+        <!-- profile/avatar shown only when logged in -->
+        <div class="user-profile hidden" id="profileContainer">
           <img
             src="ImageofWeb/Nguyencaophi.jpg"
             alt="User Avatar"
             class="avatar"
+            id="avatarImg"
           />
           <ul class="profile-dropdown">
-            <li><a href="#">Hồ sơ sức khỏe (BMI)</a></li>
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
             <li><a href="#">Lịch sử đơn hàng</a></li>
             <li><a href="#">Ví Voucher</a></li>
-            <li class="logout"><a href="#">Đăng xuất</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
           </ul>
         </div>
-
-        <a href="#" class="btn-primary">Đăng nhập</a>
-        <!--thêm nút với class btn-primary-->
       </div>
     </nav>
 
@@ -208,11 +212,11 @@
    <h4>Download our app:</h4>
 
    <a href="https://play.google.com" target="_blank">
-      <img src="/ImageofWeb/ggplay.webp" class="badge-google" >
+      <img src="ImageofWeb/ggplay.webp" class="badge-google" >
    </a>
 
    <a href="https://www.apple.com/app-store/" target="_blank">
-      <img src="/ImageofWeb/appstore.png" class="badge-apple">
+      <img src="ImageofWeb/appstore.png" class="badge-apple">
    </a>
 </div>
     </div>
@@ -236,5 +240,38 @@
 
 </footer>
 
-  </body>
-</html>
+    <script>
+      // Authentication state management (simulated)
+      function updateAuthUI() {
+        const logged = localStorage.getItem('loggedIn') === 'true';
+        const profile = document.getElementById('profileContainer');
+        const authBtns = document.getElementById('authButtons');
+        const display = document.getElementById('displayUsername');
+        if (profile) profile.classList.toggle('hidden', !logged);
+        if (authBtns) authBtns.classList.toggle('hidden', logged);
+        if (logged) {
+          const storedAvatar = localStorage.getItem('avatar');
+          if (storedAvatar) {
+            const img = document.getElementById('avatarImg');
+            if (img) img.src = storedAvatar;
+          }
+          if (display) display.textContent = localStorage.getItem('userId') || '';
+        } else {
+          if (display) display.textContent = '';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // logout handler
+        const logoutLink = document.getElementById('logoutLink');
+        if (logoutLink) {
+          logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedIn');
+            updateAuthUI();
+          });
+        }
+        updateAuthUI();
+      });
+    </script>
+
