@@ -307,6 +307,21 @@ body {
 }
 
 /* Nút CTA: Đăng Bài */
+.btn-secondary {
+    /* nút phụ dùng cho các hành động nhỏ (ví dụ đổi ảnh) */
+    background-color: #e5e5e5;
+    color: var(--text-dark);
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-secondary:hover {
+    background-color: #d1d1d1;
+}
+
 .btn-primary {
     background-color: var(--primary-green);
     color: white;

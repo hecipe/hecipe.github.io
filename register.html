@@ -160,10 +160,14 @@
     </main>
 
     <script>
-        // if already logged, go to profile
+        // nếu đã đăng nhập thì đẩy người dùng về trang hồ sơ
         if (localStorage.getItem('loggedIn') === 'true') {
             window.location.href = 'hosouser.html';
         }
+        /*
+         * toggleAuthUI(): điều khiển hiển thị phần đăng nhập/đăng ký và profile
+         * sử dụng chung cho nhiều trang để đồng nhất hành vi.
+         */
         function toggleAuthUI() {
             const logged = localStorage.getItem('loggedIn') === 'true';
             const profile = document.getElementById('profileContainer');
@@ -185,6 +189,8 @@
             }
         }
 
+        // xử lý khi người dùng đăng ký và điền hồ sơ sức khỏe
+        // đồng thời nếu có chọn avatar thì sẽ upload lên server
         document.getElementById('healthProfileForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const genderEl = document.querySelector('input[name="gender"]:checked');
@@ -212,6 +218,7 @@
                 const result = await response.json();
                 document.getElementById('bmiValue').innerText = result.data.bmi;
                 document.getElementById('bmiStatus').innerText = result.data.status;
+                // đánh dấu người dùng là đã đăng nhập và lưu thông tin đăng nhập
                 localStorage.setItem('loggedIn','true');
                 // save credentials
                 localStorage.setItem('userId', document.getElementById('regUser').value);
@@ -225,14 +232,26 @@
                 };
                 const fileInput = document.getElementById('avatar');
                 if (fileInput && fileInput.files && fileInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        profileObj.avatar = evt.target.result;
-                        localStorage.setItem('avatar', evt.target.result);
-                        localStorage.setItem('userProfile', JSON.stringify(profileObj));
-                        toggleAuthUI();
-                    };
-                    reader.readAsDataURL(fileInput.files[0]);
+                    // nếu có file, gửi trước lên server giống với các trang khác
+                    const formData2 = new FormData();
+                    formData2.append('avatar', fileInput.files[0]);
+                    formData2.append('userId', payload.userId);
+                    try {
+                        const uploadResp = await fetch('http://localhost:3000/api/users/upload-avatar', {
+                            method: 'POST',
+                            body: formData2
+                        });
+                        const uploadResult = await uploadResp.json();
+                        if (uploadResult.success) {
+                            const newUrl = `http://localhost:3000/${uploadResult.avatarUrl}`;
+                            profileObj.avatar = newUrl;
+                            localStorage.setItem('avatar', newUrl);
+                        }
+                    } catch (err) {
+                        console.error('Không upload được avatar:', err);
+                    }
+                    localStorage.setItem('userProfile', JSON.stringify(profileObj));
+                    toggleAuthUI();
                 } else {
                     const existing = localStorage.getItem('avatar');
                     if (existing) profileObj.avatar = existing;

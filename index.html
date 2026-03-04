@@ -104,6 +104,9 @@
             class="avatar"
             id="avatarImg"
           />
+          <!-- file chooser for avatar -->
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
             <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
               <span id="displayUsername"></span>
@@ -241,8 +244,13 @@
 </footer>
 
     <script>
-      // Authentication state management (simulated)
-      function updateAuthUI() {
+      /*
+       * Quản lý trạng thái xác thực & ảnh đại diện cho tất cả trang.
+       * Dữ liệu lưu tạm trong localStorage phục vụ demo.
+       * - toggleAuthUI: hiển thị/ẩn nút Đăng nhập/Đăng ký và profile khi đã đăng nhập.
+       * - lắng nghe avatarInput để gọi API upload và cập nhật ngay giao diện.
+       */
+      function toggleAuthUI() {
         const logged = localStorage.getItem('loggedIn') === 'true';
         const profile = document.getElementById('profileContainer');
         const authBtns = document.getElementById('authButtons');
@@ -250,6 +258,7 @@
         if (profile) profile.classList.toggle('hidden', !logged);
         if (authBtns) authBtns.classList.toggle('hidden', logged);
         if (logged) {
+          // khi đã đăng nhập, kéo avatar từ localStorage
           const storedAvatar = localStorage.getItem('avatar');
           if (storedAvatar) {
             const img = document.getElementById('avatarImg');
@@ -262,16 +271,46 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-        // logout handler
+        // xử lý đăng xuất
         const logoutLink = document.getElementById('logoutLink');
         if (logoutLink) {
           logoutLink.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('loggedIn');
-            updateAuthUI();
+            toggleAuthUI();
           });
         }
-        updateAuthUI();
+
+        // nghe sự kiện đổi file avatar
+        const avatarInput = document.getElementById('avatarInput');
+        if (avatarInput) {
+          avatarInput.addEventListener('change', async function() {
+            const file = this.files[0];
+            if (!file) return;
+            const userId = localStorage.getItem('userId') || 'ND0001';
+            const formData = new FormData();
+            formData.append('avatar', file);
+            formData.append('userId', userId);
+            try {
+              const resp = await fetch('http://localhost:3000/api/users/upload-avatar', {
+                method: 'POST',
+                body: formData
+              });
+              const result = await resp.json();
+              if (result.success) {
+                const newUrl = `http://localhost:3000/${result.avatarUrl}`;
+                document.getElementById('avatarImg').src = newUrl;
+                localStorage.setItem('avatar', newUrl);
+                alert('Cập nhật ảnh đại diện thành công!');
+              }
+            } catch (err) {
+              console.error('Lỗi upload:', err);
+            }
+          });
+        }
+
+        // khởi động UI khi trang tải xong
+        toggleAuthUI();
       });
     </script>
 

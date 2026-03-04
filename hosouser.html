@@ -73,6 +73,10 @@
 
         <div class="user-profile hidden" id="profileContainer">
           <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <!-- hidden file input for avatar upload -->
+          <input type="file" id="avatarInput" style="display: none;" accept="image/*">
+          <!-- button to trigger file chooser -->
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
             <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
               <span id="displayUsername"></span>
@@ -123,10 +127,13 @@
                 <input type="number" id="birthYear" min="1900" max="2025" required placeholder="Ví dụ: 1990">
             </div>
 
+            <!-- avatar is now managed separately by navbar/profile dropdown -->
+            <!--
             <div class="form-group">
                 <label for="avatar"><i class="fa-solid fa-image"></i> Ảnh đại diện (tùy chọn)</label>
                 <input type="file" id="avatar" accept="image/*">
             </div>
+            -->
 
             <div class="form-group">
                 <label for="activityLevel"><i class="fa-solid fa-person-running"></i> Mức độ vận động</label>
@@ -162,10 +169,18 @@
     </main>
 
     <script>
-        // if user not logged redirect to login
+        /*
+         * Mã JS cho trang hồ sơ (hosouser.html):
+         * - Kiểm tra trạng thái đăng nhập, nếu chưa thì chuyển sang login.
+         * - Hàm toggleAuthUI quản lý hiển thị phần auth vs profile.
+         * - Lắng nghe thay đổi file avatar để gửi API upload.
+         * - Xử lý gửi form hồ sơ sức khỏe (cùng nút tính BMI/TDEE) và lưu thông tin.
+         */
+        // nếu chưa đăng nhập thì chuyển về trang login
         if (localStorage.getItem('loggedIn') !== 'true') {
             window.location.href = 'login.html';
         }
+        // hàm cập nhật giao diện liên quan đến đăng nhập/đăng xuất
         function toggleAuthUI() {
             const logged = localStorage.getItem('loggedIn') === 'true';
             const profile = document.getElementById('profileContainer');
@@ -184,6 +199,34 @@
                 }
             }
         }
+
+        // xử lý đổi ảnh avatar (gọi API đã xây ở backend)
+        document.getElementById('avatarInput').addEventListener('change', async function() {
+            const file = this.files[0];
+            if (!file) return;
+            const userId = document.getElementById('userId') ? document.getElementById('userId').value : 'ND0001';
+            const formData = new FormData();
+            formData.append('avatar', file);
+            formData.append('userId', userId);
+
+            try {
+                const response = await fetch('http://localhost:3000/api/users/upload-avatar', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    const newUrl = `http://localhost:3000/${result.avatarUrl}`;
+                    document.getElementById('avatarImg').src = newUrl;
+                    // lưu đường dẫn mới để các trang khác dùng lại
+                    localStorage.setItem('avatar', newUrl);
+                    alert('Cập nhật ảnh đại diện thành công!');
+                }
+            } catch (error) {
+                console.error('Lỗi upload:', error);
+                alert('Không thể tải ảnh lên.');
+            }
+        });
 
         document.getElementById('healthProfileForm').addEventListener('submit', async function(e) {
             e.preventDefault(); // Ngăn form reload lại trang

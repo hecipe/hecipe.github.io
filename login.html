@@ -94,7 +94,13 @@
     </main>
 
     <script>
-      // if already logged in go to profile
+      /*
+       * Script trang đăng nhập.
+       * Mô phỏng xác thực bằng localStorage cho demo:
+       * - nếu chưa có tài khoản, người dùng điền gì cũng được và sẽ được lưu.
+       * - nếu đã có user/pass lưu trước đó, phải nhập đúng mới tiếp tục.
+       */
+      // nếu đã đăng nhập từ trước thì chuyển thẳng sang hồ sơ sức khỏe
       if (localStorage.getItem('loggedIn') === 'true') {
           window.location.href = 'hosouser.html';
       }
@@ -105,6 +111,7 @@
           const storedUser = localStorage.getItem('userId');
           const storedPass = localStorage.getItem('password');
           if (storedUser && storedPass) {
+              // đã có tài khoản lưu, kiểm tra mật khẩu
               if (entered === storedUser && pass === storedPass) {
                   localStorage.setItem('loggedIn','true');
                   window.location.href = 'hosouser.html';
@@ -112,7 +119,7 @@
                   alert('Tên đăng nhập hoặc mật khẩu không đúng.');
               }
           } else {
-              // no account yet, just log in anyway
+              // nếu chưa có tài khoản, ghi vào localStorage luôn
               localStorage.setItem('loggedIn','true');
               localStorage.setItem('userId', entered);
               window.location.href = 'hosouser.html';
