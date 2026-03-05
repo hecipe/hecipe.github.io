@@ -82,6 +82,7 @@
         </li>
 
         <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
@@ -92,8 +93,8 @@
 
         <!-- buttons when not logged in -->
         <div id="authButtons" class="auth-buttons">
-          <a href="hosouser.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
-          <a href="hosouser.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
         </div>
 
         <!-- profile/avatar shown only when logged in -->
@@ -119,7 +120,38 @@
         </div>
       </div>
     </nav>
-
+    <script>
+        // index page doesn't have its own login/register forms, but we still
+        // want to toggle the auth buttons / profile visibility exactly like
+        // other pages. We'll copy the toggleAuthUI logic here.
+        function toggleAuthUI() {
+            const logged = localStorage.getItem('loggedIn') === 'true';
+            const profile = document.getElementById('profileContainer');
+            const authBtns = document.getElementById('authButtons');
+            if (profile) profile.classList.toggle('hidden', !logged);
+            if (authBtns) authBtns.classList.toggle('hidden', logged);
+            if (logged) {
+                const storedAvatar = localStorage.getItem('avatar');
+                if (storedAvatar) {
+                    const img = document.getElementById('avatarImg');
+                    if (img) img.src = storedAvatar;
+                }
+                const display = document.getElementById('displayUsername');
+                if (display) display.textContent = localStorage.getItem('username') || '';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('loggedIn');
+                    toggleAuthUI();
+                });
+            }
+            toggleAuthUI();
+        });
+    </script>
     <div class="hero">
       <!--thêm h với class hero cho phần giới thiệu chính-->
       <div class="hero-content">
@@ -146,6 +178,79 @@
         />
       </div>
     </div>
+  <section class="features-section">
+      <div class="feature-box">
+        <div class="feature-image">
+          <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" alt="Món ngon tại nhà">
+          <div class="feature-icon-float"><i class="fas fa-utensils"></i></div>
+        </div>
+        <div class="feature-content">
+            <h3 class="feature-title">Món ngon tại nhà</h3>
+            <p class="feature-desc">Ăn tại nhà với những món ăn ngon miệng và dễ làm, do các đầu bếp có kinh nghiệm thiết kế.</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-image">
+          <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80" alt="Bảo vệ sức khỏe">
+          <div class="feature-icon-float"><i class="fas fa-shield-heart"></i></div>
+        </div>
+        <div class="feature-content">
+            <h3 class="feature-title">Bảo vệ sức khỏe</h3>
+            <p class="feature-desc">Mỗi món ăn được đo lường lượng calo, các chất dinh dưỡng phù hợp cho tình trạng sức khỏe của bạn.</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-image">
+          <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="Nhanh chóng tiện lợi">
+          <div class="feature-icon-float"><i class="fas fa-clock"></i></div>
+        </div>
+        <div class="feature-content">
+            <h3 class="feature-title">Nhanh chóng tiện lợi</h3>
+            <p class="feature-desc">Bạn không cần phải suy nghĩ hôm nay ăn gì, chúng tôi sẽ giúp bạn lên thực đơn mỗi ngày một cách nhanh chóng.</p>
+        </div>
+      </div>
+      </div>
+    </section>
+    <section class="categories-section">
+      <h2 class="section-title">Khám Phá Theo Chế Độ</h2>
+      
+      <div class="categories-grid">
+        <a href="#" class="category-card" style="background-color: #eaf3e6;">
+            <div class="cat-content">
+                <div class="cat-icon">🥑</div>
+                <h3 class="cat-title">Ăn kiêng &<br>Giảm cân</h3>
+                <span class="cat-count">150+ Công thức</span>
+            </div>
+            <div class="cat-image">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=80" alt="Giảm cân">
+            </div>
+        </a>
+
+        <a href="#" class="category-card" style="background-color: #fef0db;">
+            <div class="cat-content">
+                <div class="cat-icon">🥦</div>
+                <h3 class="cat-title">Ăn chay<br>Healthy</h3>
+                <span class="cat-count">120+ Công thức</span>
+            </div>
+            <div class="cat-image">
+                <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80" alt="Ăn chay">
+            </div>
+        </a>
+
+        <a href="#" class="category-card" style="background-color: #e6f2f5;">
+            <div class="cat-content">
+                <div class="cat-icon">🏥</div>
+                <h3 class="cat-title">Dinh dưỡng<br>Người bệnh</h3>
+                <span class="cat-count">85+ Công thức</span>
+            </div>
+            <div class="cat-image">
+                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=400&q=80" alt="Người bệnh">
+            </div>
+        </a>
+      </div>
+    </section>
   <div class="custom-shape-divider-top">
     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
@@ -298,10 +403,13 @@
               });
               const result = await resp.json();
               if (result.success) {
-                const newUrl = `http://localhost:3000/${result.avatarUrl}`;
-                document.getElementById('avatarImg').src = newUrl;
-                localStorage.setItem('avatar', newUrl);
-                alert('Cập nhật ảnh đại diện thành công!');
+                const avatarPath = result.data?.avatarUrl || result.avatarUrl;
+                if (avatarPath) {
+                  const newUrl = `http://localhost:3000/${avatarPath}`;
+                  document.getElementById('avatarImg').src = newUrl;
+                  localStorage.setItem('avatar', newUrl);
+                  alert('Cập nhật ảnh đại diện thành công!');
+                }
               }
             } catch (err) {
               console.error('Lỗi upload:', err);

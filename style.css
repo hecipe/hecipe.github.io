@@ -907,3 +907,245 @@ body{
     transform: scale(1.05) rotate(-3deg); /* Phóng to và nghiêng nhẹ */
     filter: drop-shadow(0 12px 20px rgba(74, 103, 65, 0.35));
 }
+
+/* --- 7. FEATURES SECTION (CÓ HÌNH ẢNH LỚN) --- */
+.features-section {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 2rem 8rem 5rem 8rem;
+    background-color: var(--bg-cream);
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+/* Khung viền thẻ bài */
+.feature-box {
+    flex: 1;
+    min-width: 300px;
+    max-width: 380px;
+    background: white; /* Nền thẻ màu trắng để nổi bật trên nền kem */
+    border-radius: 20px;
+    overflow: hidden; /* Quan trọng: cắt phần ảnh bị dư ra ngoài góc bo tròn */
+    box-shadow: 0 10px 20px rgba(74, 103, 65, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hiệu ứng nổi lên khi hover */
+.feature-box:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(74, 103, 65, 0.15);
+}
+
+/* Khung chứa hình ảnh */
+.feature-image {
+    position: relative;
+    width: 100%;
+    height: 220px; /* Chiều cao cố định cho ảnh */
+    overflow: hidden;
+}
+
+.feature-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giúp ảnh không bị méo */
+    transition: transform 0.6s ease;
+}
+
+/* Hiệu ứng zoom ảnh mượt mà khi rê chuột vào khối */
+.feature-box:hover .feature-image img {
+    transform: scale(1.1);
+}
+
+/* Icon nổi lơ lửng giao giữa ảnh và phần chữ */
+.feature-icon-float {
+    position: absolute;
+    bottom: -25px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    border: 4px solid white; /* Viền trắng để cắt lớp ảnh */
+    transition: transform 0.4s ease, background 0.4s;
+    z-index: 2;
+}
+
+.feature-box:hover .feature-icon-float {
+    transform: rotateY(180deg) scale(1.1); /* Xoay 180 độ và to lên nhẹ */
+    background: #628a57;
+}
+
+/* Phần nội dung chữ */
+.feature-content {
+    padding: 35px 25px 25px 25px;
+    text-align: left; /* Căn trái cho thiết kế có ảnh trông sang hơn */
+    flex: 1;
+}
+
+.feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.feature-desc {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+/* --- Responsive cho điện thoại/máy tính bảng --- */
+@media (max-width: 992px) {
+    .features-section {
+        padding: 2rem 4rem 4rem 4rem;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-section {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 2rem 3rem 2rem;
+    }
+    .feature-box {
+        width: 100%;
+        max-width: 450px;
+    }
+}
+
+/* --- 8. CATEGORIES SECTION (DANH MỤC THỰC ĐƠN CHUẨN APP) --- */
+.categories-section {
+    padding: 3rem 8rem 5rem 8rem;
+    background-color: var(--white);
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--text-dark);
+    margin-bottom: 2.5rem;
+    text-align: left;
+    font-weight: 800;
+}
+
+.categories-grid {
+    display: grid;
+    /* Tự động chia cột: tối thiểu 320px 1 cột, nếu màn hình to thì xếp ngang */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.category-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 24px; /* Bo góc tròn mạnh như App */
+    padding: 30px 0 30px 30px; /* Đệm trái, phải bằng 0 để ảnh tràn lề */
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    overflow: hidden; /* Quan trọng: cắt nửa cái đĩa bị lòi ra ngoài */
+    position: relative;
+    height: 180px;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+.cat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+}
+
+.cat-icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+.cat-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.25;
+}
+
+.cat-count {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 700;
+    /* Nền làm mờ như kính */
+    background: rgba(255, 255, 255, 0.65);
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    width: fit-content;
+    backdrop-filter: blur(5px);
+}
+
+.cat-image {
+    width: 45%;
+    height: 100%;
+    position: relative;
+}
+
+/* Biến hình ảnh thành đĩa thức ăn 3D */
+.cat-image img {
+    position: absolute;
+    right: -30px; /* Đẩy ảnh lòi ra ngoài góc phải */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%; /* Bo tròn thành cái đĩa */
+    box-shadow: -10px 10px 25px rgba(0,0,0,0.15); /* Đổ bóng tạo hiệu ứng lơ lửng */
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hiệu ứng xoay đĩa thức ăn khi hover */
+.category-card:hover .cat-image img {
+    transform: translateY(-50%) scale(1.1) rotate(-15deg);
+}
+
+/* --- Responsive cho iPad & Điện thoại --- */
+@media (max-width: 992px) {
+    .categories-section {
+        padding: 3rem 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-section {
+        padding: 2rem 2rem;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr; /* Xếp thành 1 cột dọc trên đt */
+    }
+    .cat-image img {
+        width: 140px;
+        height: 140px;
+        right: -20px;
+    }
+}

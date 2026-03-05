@@ -58,6 +58,7 @@
           </ul>
         </li>
         <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
@@ -104,25 +105,66 @@
       if (localStorage.getItem('loggedIn') === 'true') {
           window.location.href = 'hosouser.html';
       }
-      document.getElementById('loginForm').addEventListener('submit', function(e){
+
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
           e.preventDefault();
-          const entered = document.getElementById('loginUser').value;
-          const pass = document.getElementById('loginPass').value;
-          const storedUser = localStorage.getItem('userId');
-          const storedPass = localStorage.getItem('password');
-          if (storedUser && storedPass) {
-              // đã có tài khoản lưu, kiểm tra mật khẩu
-              if (entered === storedUser && pass === storedPass) {
-                  localStorage.setItem('loggedIn','true');
+          
+          const username = document.getElementById('loginUser').value;
+          const password = document.getElementById('loginPass').value;
+          
+          const btn = this.querySelector('button');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+          btn.disabled = true;
+
+          try {
+              // Gọi API đăng nhập
+              const response = await fetch('http://localhost:3000/api/users/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      username: username,
+                      password: password
+                  })
+              });
+
+              const result = await response.json();
+
+              if (result.success) {
+                  // Lưu thông tin vào localStorage
+                  localStorage.setItem('userId', result.data.userId);
+                  localStorage.setItem('username', result.data.username);
+                  localStorage.setItem('password', password);
+                  localStorage.setItem('loggedIn', 'true');
+
+                  // lấy profile chi tiết từ server và cache
+                  try {
+                      const profResp = await fetch(`http://localhost:3000/api/users/profile?userId=${result.data.userId}`);
+                      const profJson = await profResp.json();
+                      if (profJson.success && profJson.data) {
+                          localStorage.setItem('userProfile', JSON.stringify(profJson.data));
+                          if (profJson.data.avatar) {
+                              localStorage.setItem('avatar', profJson.data.avatar);
+                          }
+                      }
+                  } catch (err) {
+                      console.warn('Không tải được profile:', err);
+                  }
+
+                  // Chuyển hướng sang hồ sơ
                   window.location.href = 'hosouser.html';
               } else {
-                  alert('Tên đăng nhập hoặc mật khẩu không đúng.');
+                  alert('❌ ' + result.message);
+                  btn.innerHTML = originalText;
+                  btn.disabled = false;
               }
-          } else {
-              // nếu chưa có tài khoản, ghi vào localStorage luôn
-              localStorage.setItem('loggedIn','true');
-              localStorage.setItem('userId', entered);
-              window.location.href = 'hosouser.html';
+          } catch (error) {
+              console.error('Lỗi đăng nhập:', error);
+              alert('❌ Lỗi kết nối! Vui lòng kiểm tra server Node.js đã chạy.');
+              btn.innerHTML = originalText;
+              btn.disabled = false;
           }
       });
     </script>

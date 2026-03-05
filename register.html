@@ -60,6 +60,7 @@
           </ul>
         </li>
         <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
@@ -92,70 +93,49 @@
     <div class="profile-container">
         <div class="profile-header">
             <h2>Đăng ký</h2>
-            <p>Điền đầy đủ thông tin bên dưới để tạo tài khoản.</p>
+            <p>Chỉ cần vài thông tin cơ bản, phần còn lại sẽ hoàn thiện ở bước tiếp theo.</p>
         </div>
 
-        <form id="healthProfileForm">
-            <input type="hidden" id="userId" value="ND0001">
+        <form id="registerForm">
             <div class="form-group">
                 <label for="regUser"><i class="fa-solid fa-user"></i> Tên đăng nhập</label>
-                <input type="text" id="regUser" required placeholder="VD: ND0001">
+                <input type="text" id="regUser" required placeholder="Ví dụ: nguyenvan123">
+            </div>
+            <div class="form-group">
+                <label for="fullName"><i class="fa-solid fa-id-card"></i> Họ và tên</label>
+                <input type="text" id="fullName" required placeholder="Ví dụ: Nguyễn Văn A">
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+                <input type="email" id="email" required placeholder="example@mail.com">
             </div>
             <div class="form-group">
                 <label for="regPass"><i class="fa-solid fa-lock"></i> Mật khẩu</label>
-                <input type="password" id="regPass" required placeholder="Mật khẩu">
+                <input type="password" id="regPass" required placeholder="Nhập mật khẩu của bạn">
             </div>
-
-            <div class="form-group">
-                <label for="height"><i class="fa-solid fa-ruler-vertical"></i> Chiều cao (cm)</label>
-                <input type="number" id="height" required placeholder="Ví dụ: 170" min="100" max="250">
-            </div>
-
-            <div class="form-group">
-                <label for="weight"><i class="fa-solid fa-weight-scale"></i> Cân nặng (kg)</label>
-                <input type="number" id="weight" step="0.1" required placeholder="Ví dụ: 65.5" min="30" max="200">
-            </div>
-
             <div class="form-group">
                 <label>Giới tính</label>
                 <div style="display:flex; gap:20px; align-items:center;">
-                    <input type="radio" id="gender-male" name="gender" value="male" required>
-                    <label for="gender-male" class="radio-wrapper">Nam</label>
+                    <input type="radio" id="gender-male-reg" name="gender" value="male" required>
+                    <label for="gender-male-reg" class="radio-wrapper">Nam</label>
 
-                    <input type="radio" id="gender-female" name="gender" value="female">
-                    <label for="gender-female" class="radio-wrapper">Nữ</label>
+                    <input type="radio" id="gender-female-reg" name="gender" value="female">
+                    <label for="gender-female-reg" class="radio-wrapper">Nữ</label>
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="birthYear"><i class="fa-solid fa-calendar"></i> Năm sinh</label>
-                <input type="number" id="birthYear" min="1900" max="2025" required placeholder="Ví dụ: 1990">
+                <label for="birthYearReg"><i class="fa-solid fa-calendar"></i> Năm sinh</label>
+                <input type="number" id="birthYearReg" min="1900" max="2025" required placeholder="Ví dụ: 1990">
             </div>
-
             <div class="form-group">
                 <label for="avatar"><i class="fa-solid fa-image"></i> Ảnh đại diện (tùy chọn)</label>
                 <input type="file" id="avatar" accept="image/*">
             </div>
 
             <button type="submit" class="btn-primary" style="width: 100%; font-size: 1.1rem; padding: 15px;">
-                Đăng ký &amp; Tạo tài khoản
+                Đăng ký &amp; Bắt Đầu Khảo Sát
             </button>
         </form>
-
-        <div id="resultsArea" class="result-card">
-            <h3>Kết Quả Của Bạn</h3>
-            
-            <p>Chỉ số BMI</p>
-            <div class="metric" id="bmiValue">--</div>
-            <div class="status-badge" id="bmiStatus">--</div>
-
-            <p>Năng lượng tiêu hao mỗi ngày (TDEE)</p>
-            <div class="metric" id="tdeeValue">-- <span style="font-size: 1rem; color: var(--text-dark);">kcal</span></div>
-            
-            <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
-                *Dữ liệu đã được lưu vào hồ sơ để gợi ý thực đơn.
-            </p>
-        </div>
     </div>
     </main>
 
@@ -189,88 +169,117 @@
             }
         }
 
-        // xử lý khi người dùng đăng ký và điền hồ sơ sức khỏe
-        // đồng thời nếu có chọn avatar thì sẽ upload lên server
-        document.getElementById('healthProfileForm').addEventListener('submit', async function(e) {
+        // xử lý khi người dùng đăng ký
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const genderEl = document.querySelector('input[name="gender"]:checked');
-            const payload = {
-                userId: document.getElementById('userId').value,
-                height: document.getElementById('height').value,
-                weight: document.getElementById('weight').value,
-                activityLevel: document.getElementById('activityLevel').value,
-                gender: genderEl ? genderEl.value : null,
-                birthYear: document.getElementById('birthYear').value
-            };
+            
+            const btn = this.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+            btn.disabled = true;
+
+            const username = document.getElementById('regUser').value;
+            const password = document.getElementById('regPass').value;
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            const birthYearVal = document.getElementById('birthYearReg').value;
+
             try {
-                const btn = this.querySelector('button');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
-                btn.disabled = true;
-                const response = await fetch('http://localhost:3000/api/users/update-health', {
+                // BƯỚC 1: Đăng ký tài khoản mới
+                const registerPayload = {
+                    username,
+                    password,
+                    fullName,
+                    email,
+                    gender,
+                    birthYear: birthYearVal
+                };
+
+                console.log("📝 Gửi yêu cầu đăng ký:", registerPayload);
+
+                const registerResponse = await fetch('http://localhost:3000/api/users/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(registerPayload)
                 });
-                if (!response.ok) throw new Error('Có lỗi xảy ra khi gọi API');
-                const result = await response.json();
-                document.getElementById('bmiValue').innerText = result.data.bmi;
-                document.getElementById('bmiStatus').innerText = result.data.status;
-                // đánh dấu người dùng là đã đăng nhập và lưu thông tin đăng nhập
-                localStorage.setItem('loggedIn','true');
-                // save credentials
-                localStorage.setItem('userId', document.getElementById('regUser').value);
-                localStorage.setItem('password', document.getElementById('regPass').value);
-                const profileObj = {
-                    username: document.getElementById('regUser').value,
-                    height: document.getElementById('height').value,
-                    weight: document.getElementById('weight').value,
-                    birthYear: document.getElementById('birthYear').value,
-                    gender: (genderEl ? genderEl.value : null)
-                };
+
+                const registerResult = await registerResponse.json();
+                console.log("📦 Kết quả từ server:", registerResult);
+
+                if (!registerResult.success) {
+                    throw new Error(registerResult.message || 'Lỗi đăng ký tài khoản');
+                }
+
+                // BƯỚC 2: Lấy userId từ kết quả đăng ký
+                const userId = registerResult.data.userId;
+                
+                // BƯỚC 3: Lưu thông tin vào localStorage
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                localStorage.setItem('loggedIn', 'true');
+                // cơ bản khác
+                const profileObj = { fullName, email };
+                if (gender) profileObj.gender = gender;
+                if (birthYearVal) profileObj.birthYear = birthYearVal;
+                // avatar sẽ được gắn thêm sau khi upload
+                localStorage.setItem('userProfile', JSON.stringify(profileObj));
+
+                // đồng bộ lại từ server in case DB has defaults
+                try {
+                    const profResp = await fetch(`http://localhost:3000/api/users/profile?userId=${userId}`);
+                    const profJson = await profResp.json();
+                    if (profJson.success && profJson.data) {
+                        localStorage.setItem('userProfile', JSON.stringify(profJson.data));
+                        if (profJson.data.avatar) localStorage.setItem('avatar', profJson.data.avatar);
+                    }
+                } catch (e) {
+                    console.warn('Không thể đồng bộ profile ngay sau đăng ký', e);
+                }
+
+                console.log("✅ Lưu localStorage thành công. userId:", userId);
+
+                // BƯỚC 4: Upload avatar nếu có
                 const fileInput = document.getElementById('avatar');
                 if (fileInput && fileInput.files && fileInput.files[0]) {
-                    // nếu có file, gửi trước lên server giống với các trang khác
-                    const formData2 = new FormData();
-                    formData2.append('avatar', fileInput.files[0]);
-                    formData2.append('userId', payload.userId);
                     try {
+                        const formData = new FormData();
+                        formData.append('avatar', fileInput.files[0]);
+                        formData.append('userId', userId);
+                        
                         const uploadResp = await fetch('http://localhost:3000/api/users/upload-avatar', {
                             method: 'POST',
-                            body: formData2
+                            body: formData
                         });
+                        
                         const uploadResult = await uploadResp.json();
                         if (uploadResult.success) {
-                            const newUrl = `http://localhost:3000/${uploadResult.avatarUrl}`;
-                            profileObj.avatar = newUrl;
-                            localStorage.setItem('avatar', newUrl);
+                            const avatarPath = uploadResult.data?.avatarUrl || uploadResult.avatarUrl;
+                            if (avatarPath) {
+                                const newUrl = `http://localhost:3000/${avatarPath}`;
+                                localStorage.setItem('avatar', newUrl);
+                                // cập nhật trong profileObj luôn
+                                profileObj.avatar = newUrl;
+                                localStorage.setItem('userProfile', JSON.stringify(profileObj));
+                                console.log("📸 Avatar upload thành công");
+                            }
                         }
                     } catch (err) {
                         console.error('Không upload được avatar:', err);
                     }
-                    localStorage.setItem('userProfile', JSON.stringify(profileObj));
-                    toggleAuthUI();
-                } else {
-                    const existing = localStorage.getItem('avatar');
-                    if (existing) profileObj.avatar = existing;
-                    localStorage.setItem('userProfile', JSON.stringify(profileObj));
-                    toggleAuthUI();
                 }
-                const badge = document.getElementById('bmiStatus');
-                if(result.data.status === 'Gầy') badge.style.backgroundColor = '#F59E0B';
-                else if(result.data.status === 'Thừa cân') badge.style.backgroundColor = '#EF4444';
-                else badge.style.backgroundColor = 'var(--primary-green)';
-                document.getElementById('tdeeValue').innerHTML = `${result.data.tdee} <span style="font-size: 1rem; color: var(--text-dark);">kcal</span>`;
-                document.getElementById('resultsArea').style.display = 'block';
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+
+                // BƯỚC 5: Sau khi đăng ký lưu thông tin cơ bản, chuyển người dùng đến khảo sát onboarding
+                alert('✅ Đăng ký thành công! Hãy tiếp tục với khảo sát để hoàn thiện hồ sơ sức khỏe.');
+                window.location.href = 'onboarding.html';
+
             } catch (error) {
-                console.error("Lỗi:", error);
-                alert("Lỗi kết nối máy chủ. Vui lòng kiểm tra Node.js đã chạy chưa.");
-                const btn = this.querySelector('button');
-                btn.innerHTML = '<i class="fa-solid fa-calculator"></i> Tính Toán & Cập Nhật';
+                console.error("❌ Lỗi đăng ký:", error);
+                alert('❌ ' + error.message + '\n\nVui lòng kiểm tra lại thông tin hoặc đảm bảo server Node.js đang chạy.');
+                btn.innerHTML = originalText;
                 btn.disabled = false;
             }
         });
@@ -288,9 +297,9 @@
             if (stored) {
                 try {
                     const obj = JSON.parse(stored);
-                    if (obj.height) document.getElementById('height').value = obj.height;
-                    if (obj.weight) document.getElementById('weight').value = obj.weight;
-                    if (obj.birthYear) document.getElementById('birthYear').value = obj.birthYear;
+                    if (obj.fullName) document.getElementById('fullName').value = obj.fullName;
+                    if (obj.email) document.getElementById('email').value = obj.email;
+                    if (obj.birthYear) document.getElementById('birthYearReg').value = obj.birthYear;
                     if (obj.gender) {
                         const g = obj.gender;
                         const radio = document.querySelector(`input[name="gender"][value="${g}"]`);

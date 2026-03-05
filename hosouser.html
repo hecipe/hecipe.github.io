@@ -82,6 +82,7 @@
               <span id="displayUsername"></span>
             </li>
             <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="onboarding.html">Khảo sát thêm</a></li>
             <li><a href="#">Lịch sử đơn hàng</a></li>
             <li><a href="#">Ví Voucher</a></li>
             <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
@@ -96,6 +97,8 @@
         <div class="profile-header">
             <h2>Hồ Sơ Của Bạn</h2>
             <p id="loginMessage">Cập nhật chỉ số cơ thể để Hecipe gợi ý thực đơn chuẩn xác nhất.</p>
+            <p id="userNameDisplay" style="font-size:1rem; color:var(--text-dark); margin-top:8px;"></p>
+            <p id="userEmailDisplay" style="font-size:0.9rem; color:var(--text-light);"></p>
         </div>
 
         <form id="healthProfileForm">
@@ -164,6 +167,10 @@
             <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
                 *Dữ liệu đã được lưu vào hồ sơ để gợi ý thực đơn.
             </p>
+            <!-- button to start mini-game survey -->
+            <button id="startSurveyBtn" class="btn-primary" style="margin-top:20px; width:100%;">
+                <i class="fas fa-gamepad"></i> Trò chơi khảo sát
+            </button>
         </div>
     </div>
     </main>
@@ -216,11 +223,14 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                    const newUrl = `http://localhost:3000/${result.avatarUrl}`;
-                    document.getElementById('avatarImg').src = newUrl;
-                    // lưu đường dẫn mới để các trang khác dùng lại
-                    localStorage.setItem('avatar', newUrl);
-                    alert('Cập nhật ảnh đại diện thành công!');
+                    const avatarPath = result.data?.avatarUrl || result.avatarUrl;
+                    if (avatarPath) {
+                        const newUrl = `http://localhost:3000/${avatarPath}`;
+                        document.getElementById('avatarImg').src = newUrl;
+                        // lưu đường dẫn mới để các trang khác dùng lại
+                        localStorage.setItem('avatar', newUrl);
+                        alert('Cập nhật ảnh đại diện thành công!');
+                    }
                 }
             } catch (error) {
                 console.error('Lỗi upload:', error);
@@ -271,13 +281,26 @@
                 // mark user as logged in and update UI
                 localStorage.setItem('loggedIn', 'true');
                 // save profile fields locally as well
-                const profileObj = {
+                // keep previously stored name/email if any
+                const storedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+                const profileObj = Object.assign({}, storedProfile, {
                     height: document.getElementById('height').value,
                     weight: document.getElementById('weight').value,
                     birthYear: document.getElementById('birthYear').value,
                     gender: (genderEl ? genderEl.value : null)
-                };
-                // avatar file -> base64
+                });
+
+                // update greeting fields if they exist
+                if (profileObj.fullName) {
+                    const nameEl = document.getElementById('userNameDisplay');
+                    if (nameEl) nameEl.textContent = profileObj.fullName;
+                }
+                if (profileObj.email) {
+                    const mailEl = document.getElementById('userEmailDisplay');
+                    if (mailEl) mailEl.textContent = profileObj.email;
+                }
+
+                // avatar file -> base64 (legacy, should not be used routinely)
                 const fileInput = document.getElementById('avatar');
                 if (fileInput && fileInput.files && fileInput.files[0]) {
                     const reader = new FileReader();
@@ -307,6 +330,17 @@
                 // Hiện thẻ kết quả
                 document.getElementById('resultsArea').style.display = 'block';
 
+                // Hiển thị nút khảo sát nếu có
+                const surveyBtn = document.getElementById('startSurveyBtn');
+                if (surveyBtn) {
+                    surveyBtn.style.display = 'block';
+                }
+
+                // hỏi người dùng có muốn tiếp tục làm khảo sát chi tiết ngay
+                if (confirm('Bạn có muốn trả lời thêm vài câu hỏi để Hecipe cá nhân hoá gợi ý không?')) {
+                    window.location.href = 'onboarding.html';
+                }
+
                 // Phục hồi nút bấm
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -323,7 +357,7 @@
         });
 
         // run on load as well
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const logoutLink = document.getElementById('logoutLink');
             if (logoutLink) {
                 logoutLink.addEventListener('click', (e) => {
@@ -332,11 +366,27 @@
                     toggleAuthUI();
                 });
             }
+            // nếu có userId thì thử lấy profile từ server
+            const uid = localStorage.getItem('userId');
+            if (uid) {
+                try {
+                    const resp = await fetch(`http://localhost:3000/api/users/profile?userId=${uid}`);
+                    const json = await resp.json();
+                    if (json.success && json.data) {
+                        localStorage.setItem('userProfile', JSON.stringify(json.data));
+                        if (json.data.avatar) localStorage.setItem('avatar', json.data.avatar);
+                    }
+                } catch (e) {
+                    console.warn('Không tải được profile:', e);
+                }
+            }
             // prefill form if data exists
             const stored = localStorage.getItem('userProfile');
             if (stored) {
                 try {
                     const obj = JSON.parse(stored);
+                    if (obj.fullName) document.getElementById('userNameDisplay').textContent = obj.fullName;
+                    if (obj.email) document.getElementById('userEmailDisplay').textContent = obj.email;
                     if (obj.height) document.getElementById('height').value = obj.height;
                     if (obj.weight) document.getElementById('weight').value = obj.weight;
                     if (obj.birthYear) document.getElementById('birthYear').value = obj.birthYear;
@@ -345,12 +395,25 @@
                         const radio = document.querySelector(`input[name="gender"][value="${g}"]`);
                         if (radio) radio.checked = true;
                     }
+                    if (obj.activityLevel) {
+                        const sel = document.getElementById('activityLevel');
+                        if (sel) sel.value = obj.activityLevel;
+                    }
                     if (obj.avatar) {
                         localStorage.setItem('avatar', obj.avatar);
                     }
                 } catch {}
             }
             toggleAuthUI();
+
+            // điều khiển nút khảo sát mini-game
+            const surveyBtn = document.getElementById('startSurveyBtn');
+            if (surveyBtn) {
+                surveyBtn.style.display = 'none';
+                surveyBtn.addEventListener('click', () => {
+                    window.location.href = 'onboarding.html';
+                });
+            }
         });
     </script>
 

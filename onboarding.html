@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khảo sát Sức khỏe - Hecipe</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .onboarding-bg {
+            min-height: 100vh;
+            background-color: var(--bg-cream);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .ob-header {
+            width: 100%; padding: 20px; text-align: center;
+        }
+        .ob-header .brand-logo { color: var(--primary-green); font-size: 32px; text-decoration: none; font-weight: 800; font-family: 'Playfair Display', serif; }
+        
+        .ob-card {
+            background: white; width: 100%; max-width: 600px;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 40px; margin-bottom: 40px;
+        }
+
+        /* Thanh Tiến Trình (Progress Bar) */
+        .ob-progress {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 40px; position: relative;
+        }
+        .ob-step {
+            display: flex; flex-direction: column; align-items: center; z-index: 2;
+        }
+        .ob-circle {
+            width: 35px; height: 35px; border-radius: 50%;
+            background: var(--sage-light); color: var(--text-dark);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; transition: 0.3s;
+        }
+        .ob-step.active .ob-circle, .ob-step.completed .ob-circle {
+            background: var(--primary-green); color: white;
+        }
+        .ob-step-label { font-size: 0.8rem; margin-top: 5px; font-weight: 600; color: var(--text-light); }
+        .ob-step.active .ob-step-label { color: var(--primary-green); }
+        
+        .ob-line {
+            position: absolute; top: 17px; left: 0; width: 100%; height: 3px;
+            background: var(--sage-light); z-index: 1;
+        }
+        .ob-line-fill {
+            height: 100%; background: var(--primary-green); width: 0%; transition: 0.4s;
+        }
+
+        /* Nội dung từng bước */
+        .step-content { display: none; animation: fadeIn 0.4s ease; }
+        .step-content.active { display: block; }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+        
+        .step-title { color: var(--primary-green); text-align: center; margin-bottom: 10px; font-size: 1.8rem; }
+        .step-desc { text-align: center; color: var(--text-light); margin-bottom: 30px; font-size: 0.95rem; }
+
+        /* Khung nhập liệu (Input) */
+        .input-group { margin-bottom: 20px; }
+        .input-group label.title-label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--text-dark); }
+        .input-control { 
+            width: 100%; padding: 15px; border: 2px solid var(--sage-light); 
+            border-radius: 12px; font-family: 'Quicksand', sans-serif; font-size: 1rem; transition: 0.3s;
+        }
+        .input-control:focus { outline: none; border-color: var(--primary-green); box-shadow: 0 0 8px rgba(74, 103, 65, 0.2); }
+
+        /* Các ô Trắc Nghiệm (Radio & Checkbox) */
+        .choice-grid { display: grid; gap: 15px; }
+        .choice-grid-2 { grid-template-columns: 1fr 1fr; } /* Chia 2 cột cho giới tính */
+        
+        .choice-box input { display: none; }
+        .choice-box label {
+            display: flex; align-items: center; padding: 15px 20px;
+            border: 2px solid var(--sage-light); border-radius: 12px;
+            cursor: pointer; transition: 0.2s; background: white;
+        }
+        .choice-box input:checked + label {
+            border-color: var(--primary-green); background: #eaf1e8;
+        }
+        .choice-box i { font-size: 1.5rem; color: var(--primary-green); margin-right: 15px; width: 30px; text-align: center; }
+        .choice-text strong { display: block; color: var(--text-dark); font-size: 1.1rem; }
+        .choice-text span { color: var(--text-light); font-size: 0.85rem; }
+
+        /* Nút điều hướng */
+        .ob-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
+        .btn-prev { padding: 12px 25px; border-radius: 10px; border: none; background: #e0e0e0; color: #555; cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; }
+        .btn-prev:hover { background: #d0d0d0; }
+        .btn-prev:disabled { opacity: 0; pointer-events: none; }
+        
+        .btn-next { padding: 12px 25px; border-radius: 10px; border: none; background: var(--primary-green); color: white; cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; box-shadow: 0 4px 10px rgba(74, 103, 65, 0.3); }
+        .btn-next:hover { background: #3b5234; transform: translateY(-2px); }
+    </style>
+</head>
+<body class="onboarding-bg">
+
+    <div class="ob-header">
+        <a href="index.html" class="brand-logo">hecipe</a>
+    </div>
+
+    <div class="ob-card">
+        <div class="ob-progress">
+            <div class="ob-line"><div class="ob-line-fill" id="progressFill"></div></div>
+            <div class="ob-step active" data-step="1">
+                <div class="ob-circle">1</div>
+                <div class="ob-step-label">Cá nhân</div>
+            </div>
+            <div class="ob-step" data-step="2">
+                <div class="ob-circle">2</div>
+                <div class="ob-step-label">Kích thước</div>
+            </div>
+            <div class="ob-step" data-step="3">
+                <div class="ob-circle">3</div>
+                <div class="ob-step-label">Vận động</div>
+            </div>
+            <div class="ob-step" data-step="4">
+                <div class="ob-circle">4</div>
+                <div class="ob-step-label">Bệnh lý</div>
+            </div>
+        </div>
+
+        <form id="onboardingForm">
+            <div class="step-content active" id="step-1">
+                <h2 class="step-title">Chào bạn mới! 👋</h2>
+                <p class="step-desc">Hãy cho Hecipe biết một chút thông tin cơ bản về bạn nhé.</p>
+                
+                <div class="input-group">
+                    <label class="title-label">Giới tính của bạn</label>
+                    <div class="choice-grid choice-grid-2">
+                        <div class="choice-box">
+                            <input type="radio" id="gender-male" name="gender" value="male">
+                            <label for="gender-male">
+                                <i class="fas fa-mars"></i>
+                                <div class="choice-text"><strong>Nam</strong></div>
+                            </label>
+                        </div>
+                        <div class="choice-box">
+                            <input type="radio" id="gender-female" name="gender" value="female">
+                            <label for="gender-female">
+                                <i class="fas fa-venus" style="color:#e85d75;"></i>
+                                <div class="choice-text"><strong>Nữ</strong></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 30px;">
+                    <label class="title-label" for="birthYear">Năm sinh</label>
+                    <input type="number" id="birthYear" class="input-control" placeholder="Ví dụ: 2002" min="1950" max="2020">
+                </div>
+            </div>
+
+            <div class="step-content" id="step-2">
+                <h2 class="step-title">Chỉ số cơ thể ⚖️</h2>
+                <p class="step-desc">Dùng để tính toán lượng Calo (TDEE) và BMI chuẩn xác nhất.</p>
+                
+                <div class="input-group">
+                    <label class="title-label" for="height">Chiều cao (cm)</label>
+                    <input type="number" id="height" class="input-control" placeholder="Ví dụ: 170">
+                </div>
+                <div class="input-group">
+                    <label class="title-label" for="weight">Cân nặng (kg)</label>
+                    <input type="number" id="weight" step="0.1" class="input-control" placeholder="Ví dụ: 65.5">
+                </div>
+            </div>
+
+            <div class="step-content" id="step-3">
+                <h2 class="step-title">Lối sống hàng ngày 🏃‍♂️</h2>
+                <p class="step-desc">Mức độ vận động ảnh hưởng rất lớn đến lượng thức ăn bạn cần nạp.</p>
+                
+                <div class="choice-grid">
+                    <div class="choice-box">
+                        <input type="radio" id="act-1" name="activityLevel" value="1.2">
+                        <label for="act-1">
+                            <i class="fas fa-chair"></i>
+                            <div class="choice-text">
+                                <strong>Ít vận động</strong>
+                                <span>Làm việc văn phòng, không tập thể thao</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="radio" id="act-2" name="activityLevel" value="1.375">
+                        <label for="act-2">
+                            <i class="fas fa-walking"></i>
+                            <div class="choice-text">
+                                <strong>Vận động nhẹ</strong>
+                                <span>Tập luyện nhẹ nhàng 1-3 ngày/tuần</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="radio" id="act-3" name="activityLevel" value="1.55">
+                        <label for="act-3">
+                            <i class="fas fa-person-running"></i>
+                            <div class="choice-text">
+                                <strong>Vận động vừa phải</strong>
+                                <span>Tập thể thao đều đặn 3-5 ngày/tuần</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="radio" id="act-4" name="activityLevel" value="1.725">
+                        <label for="act-4">
+                            <i class="fas fa-dumbbell"></i>
+                            <div class="choice-text">
+                                <strong>Vận động nặng</strong>
+                                <span>Tập luyện cường độ cao 6-7 ngày/tuần</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-content" id="step-4">
+                <h2 class="step-title">Bộ lọc Y Khoa 🩺</h2>
+                <p class="step-desc">Bạn đang cần tìm thực đơn an toàn cho tình trạng nào? (Có thể chọn nhiều)</p>
+                
+                <div class="choice-grid">
+                    <div class="choice-box">
+                        <input type="checkbox" id="dis-diabet" name="diseases" value="DIABET">
+                        <label for="dis-diabet">
+                            <i class="fas fa-cubes-stacked"></i>
+                            <div class="choice-text"><strong>Tiểu đường</strong><span>Kiểm soát đường huyết, hạn chế tinh bột xấu</span></div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="checkbox" id="dis-heart" name="diseases" value="HEART">
+                        <label for="dis-heart">
+                            <i class="fas fa-heartbeat"></i>
+                            <div class="choice-text"><strong>Tim mạch</strong><span>Hạn chế Cholesterol xấu và chất béo bão hòa</span></div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="checkbox" id="dis-hbp" name="diseases" value="HBP">
+                        <label for="dis-hbp">
+                            <i class="fas fa-temperature-arrow-down"></i>
+                            <div class="choice-text"><strong>Huyết áp cao</strong><span>Thực đơn nhạt, kiểm soát nghiêm ngặt lượng Natri</span></div>
+                        </label>
+                    </div>
+                    <div class="choice-box">
+                        <input type="checkbox" id="dis-gout" name="diseases" value="GOUT">
+                        <label for="dis-gout">
+                            <i class="fas fa-bone"></i>
+                            <div class="choice-text"><strong>Gout</strong><span>Hạn chế thực phẩm giàu purin</span></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ob-buttons">
+                <button type="button" class="btn-prev" id="btn-prev" disabled>Quay lại</button>
+                <button type="button" class="btn-next" id="btn-next">Tiếp theo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById('onboardingForm');
+const btnNext = document.getElementById('btn-next');
+const btnPrev = document.getElementById('btn-prev');
+let currentStep = 1;
+const totalSteps = 4;
+
+const userId = localStorage.getItem('userId');
+if (!userId) {
+    alert('Vui lòng đăng ký hoặc đăng nhập trước tiên!');
+    window.location.href = 'register.html';
+}
+
+// prefill form steps with temporary data if user returned or already provided in registration
+async function loadProfile() {
+    const uid = localStorage.getItem('userId');
+    if (!uid) return {};
+    try {
+        const resp = await fetch(`http://localhost:3000/api/users/profile?userId=${uid}`);
+        const json = await resp.json();
+        if (json.success && json.data) {
+            localStorage.setItem('userProfile', JSON.stringify(json.data));
+            if (json.data.avatar) localStorage.setItem('avatar', json.data.avatar);
+            return json.data;
+        }
+    } catch (e) {
+        console.warn('Không thể tải profile từ server:', e);
+    }
+    return JSON.parse(localStorage.getItem('userProfile') || '{}');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const stored = await loadProfile();
+    if (stored.gender) {
+        const radio = document.querySelector(`input[name="gender"][value="${stored.gender}"]`);
+        if (radio) radio.checked = true;
+    }
+    if (stored.birthYear) {
+        const el = document.getElementById('birthYear');
+        if (el) el.value = stored.birthYear;
+    }
+    if (stored.height) {
+        const el = document.getElementById('height');
+        if (el) el.value = stored.height;
+    }
+    if (stored.weight) {
+        const el = document.getElementById('weight');
+        if (el) el.value = stored.weight;
+    }
+    if (stored.activityLevel) {
+        const radio = document.querySelector(`input[name="activityLevel"][value="${stored.activityLevel}"]`);
+        if (radio) radio.checked = true;
+    }
+    if (Array.isArray(stored.diseases)) {
+        stored.diseases.forEach(v=>{
+            const chk = document.querySelector(`input[name="diseases"][value="${v}"]`);
+            if (chk) chk.checked = true;
+        });
+    }
+});
+
+function showStep(step) {
+    document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active'));
+    const el = document.getElementById('step-'+step);
+    if(el) el.classList.add('active');
+
+    document.querySelectorAll('.ob-step').forEach(s => {
+        const num = parseInt(s.getAttribute('data-step'));
+        s.classList.remove('active','completed');
+        if(num===step) s.classList.add('active');
+        else if(num<step) s.classList.add('completed');
+    });
+
+    const fill = document.getElementById('progressFill');
+    if(fill) fill.style.width = ((step-1)/(totalSteps-1))*100 + '%';
+
+    btnPrev.disabled = step===1;
+    if(step===totalSteps) btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';
+    else btnNext.innerHTML='Tiếp theo <i class="fas fa-arrow-right"></i>';
+}
+
+function validateStep(step){
+    switch(step){
+        case 1:
+            const g = document.querySelector('input[name="gender"]:checked');
+            if(!g){alert('Vui lòng chọn giới tính!');return false;}
+            const year = document.getElementById('birthYear').value;
+            if(!year){alert('Vui lòng nhập năm sinh!');return false;}
+            return true;
+        case 2:
+            const h=document.getElementById('height').value;
+            const w=document.getElementById('weight').value;
+            if(!h||!w){alert('Vui lòng nhập chiều cao và cân nặng!');return false;}
+            return true;
+        case 3:
+            const a=document.querySelector('input[name="activityLevel"]:checked');
+            if(!a){alert('Vui lòng chọn mức độ vận động!');return false;}
+            return true;
+        default:
+            return true;
+    }
+}
+
+btnNext.addEventListener('click',async function(e){
+    e.preventDefault();
+    if(!validateStep(currentStep)) return;
+    if(currentStep<totalSteps){currentStep++;showStep(currentStep);} 
+    else await submit();
+});
+
+btnPrev.addEventListener('click',function(e){
+    e.preventDefault();
+    if(currentStep>1){currentStep--;showStep(currentStep);}n
+});
+
+async function submit(){
+    const gender = document.querySelector('input[name="gender"]:checked')?.value;
+    const birthYear = document.getElementById('birthYear').value;
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const activity = document.querySelector('input[name="activityLevel"]:checked')?.value;
+    const diseases = Array.from(document.querySelectorAll('input[name="diseases"]:checked')).map(i=>i.value);
+
+    const payload = { userId, gender, birthYear, height, weight, activityLevel: activity?parseFloat(activity):null, diseases };
+
+    try{
+        btnNext.disabled=true; btnNext.textContent='Đang xử lý...';
+        const res = await fetch('http://localhost:3000/api/users/complete-onboarding',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const result = await res.json();
+        if(result.success){
+            // persist data locally so hosouser.html can reuse it
+            try {
+                const stored = JSON.parse(localStorage.getItem('userProfile') || '{}');
+                if (gender) stored.gender = gender;
+                if (birthYear) stored.birthYear = birthYear;
+                if (height) stored.height = height;
+                if (weight) stored.weight = weight;
+                if (activity) stored.activityLevel = parseFloat(activity);
+                if (diseases && diseases.length) stored.diseases = diseases;
+                localStorage.setItem('userProfile', JSON.stringify(stored));
+            } catch(e) {
+                console.warn('Could not update local profile', e);
+            }
+
+            alert('✅ Khảo sát hoàn tất! Bạn sẽ được chuyển tới hồ sơ.');
+            window.location.href='hosouser.html';
+        }
+        else{alert('❌ Lỗi: '+result.message); btnNext.disabled=false; btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';}    
+    }catch(err){console.error(err);alert('❌ Lỗi kết nối! Vùi lòng kiểm tra server.');btnNext.disabled=false;btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';}    
+}
+
+showStep(currentStep);
+</script>
+
+</body>
+</html>
