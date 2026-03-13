@@ -908,128 +908,169 @@ body{
     filter: drop-shadow(0 12px 20px rgba(74, 103, 65, 0.35));
 }
 
-/* --- 7. FEATURES SECTION (CÓ HÌNH ẢNH LỚN) --- */
+/* --- 7. FEATURES SECTION (Z-PATTERN EDITORIAL LAYOUT) --- */
 .features-section {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 2rem 8rem 5rem 8rem;
-    background-color: var(--bg-cream);
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
-}
-
-/* Khung viền thẻ bài */
-.feature-box {
-    flex: 1;
-    min-width: 300px;
-    max-width: 380px;
-    background: white; /* Nền thẻ màu trắng để nổi bật trên nền kem */
-    border-radius: 20px;
-    overflow: hidden; /* Quan trọng: cắt phần ảnh bị dư ra ngoài góc bo tròn */
-    box-shadow: 0 10px 20px rgba(74, 103, 65, 0.05);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    padding: 6rem 8rem;
+    background-color: var(--bg-cream); /* Giữ màu nền tệp với trang */
     display: flex;
     flex-direction: column;
-}
-
-/* Hiệu ứng nổi lên khi hover */
-.feature-box:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 20px 40px rgba(74, 103, 65, 0.15);
-}
-
-/* Khung chứa hình ảnh */
-.feature-image {
+    gap: 8rem; /* Khoảng cách siêu lớn giữa các tính năng tạo độ thoáng */
     position: relative;
-    width: 100%;
-    height: 220px; /* Chiều cao cố định cho ảnh */
-    overflow: hidden;
-}
-
-.feature-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Giúp ảnh không bị méo */
-    transition: transform 0.6s ease;
-}
-
-/* Hiệu ứng zoom ảnh mượt mà khi rê chuột vào khối */
-.feature-box:hover .feature-image img {
-    transform: scale(1.1);
-}
-
-/* Icon nổi lơ lửng giao giữa ảnh và phần chữ */
-.feature-icon-float {
-    position: absolute;
-    bottom: -25px;
-    right: 30px;
-    width: 55px;
-    height: 55px;
-    background: var(--primary-green);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    border: 4px solid white; /* Viền trắng để cắt lớp ảnh */
-    transition: transform 0.4s ease, background 0.4s;
     z-index: 2;
 }
 
-.feature-box:hover .feature-icon-float {
-    transform: rotateY(180deg) scale(1.1); /* Xoay 180 độ và to lên nhẹ */
-    background: #628a57;
+/* Khối hàng ngang chứa nội dung và ảnh */
+.feature-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6rem; /* Khoảng cách giữa chữ và ảnh */
 }
 
-/* Phần nội dung chữ */
-.feature-content {
-    padding: 35px 25px 25px 25px;
-    text-align: left; /* Căn trái cho thiết kế có ảnh trông sang hơn */
+/* Class để đảo ngược vị trí (Ảnh trái, chữ phải) */
+.feature-row.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Phần Text */
+.feature-text {
     flex: 1;
+    max-width: 450px;
 }
 
-.feature-title {
+/* Chữ số to tạo điểm nhấn */
+.feature-number {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--text-dark);
-    margin-bottom: 12px;
+    font-size: 6rem;
     font-weight: 700;
+    color:#2C3E2D; /* Màu xám nhạt để không lấn át tiêu đề */
+    line-height: 0.8;
+    margin-bottom: 1rem;
 }
 
-.feature-desc {
+/* Tiêu đề phụ (Subtitle) */
+.feature-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6B7C6B;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+/* Tiêu đề chính */
+.feature-text h2.feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+/* Đoạn mô tả */
+.feature-text p.feature-desc {
     font-family: 'Quicksand', sans-serif;
+    font-size: 1.15rem;
     color: var(--text-light);
-    line-height: 1.6;
-    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
 }
 
-/* --- Responsive cho điện thoại/máy tính bảng --- */
-@media (max-width: 992px) {
+/* Nút link có mũi tên */
+.feature-link {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: var(--primary-green); 
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.feature-link i {
+    transition: transform 0.3s ease;
+}
+
+.feature-link:hover {
+    color: #3b5234;
+}
+
+.feature-link:hover i {
+    transform: translateX(5px); /* Mũi tên trượt nhẹ sang phải khi hover */
+}
+
+/* Phần Ảnh */
+.feature-visual {
+    flex: 1.3; /* Cho ảnh chiếm diện tích nhỉnh hơn chữ một chút */
+    position: relative;
+    border-radius: 16px; /* Bo góc nhẹ nhàng như màn hình tablet */
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* Đổ bóng sâu tạo cảm giác như thiết bị thật */
+    transition: transform 0.5s ease;
+}
+
+.feature-visual:hover {
+    transform: translateY(-10px); /* Nổi nhẹ lên khi hover */
+}
+
+.feature-visual img {
+    width: 100%;
+    height: 400px; /* Chiều cao cố định để các ảnh đồng đều */
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Responsive cho điện thoại và tablet --- */
+@media (max-width: 1024px) {
     .features-section {
-        padding: 2rem 4rem 4rem 4rem;
-        gap: 30px;
+        padding: 4rem 4rem;
+        gap: 6rem;
+    }
+    .feature-row {
+        gap: 3rem;
+    }
+    .feature-text h2.feature-title {
+        font-size: 2.2rem;
     }
 }
 
 @media (max-width: 768px) {
     .features-section {
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem 2rem 3rem 2rem;
+        padding: 3rem 2rem;
+        gap: 5rem;
     }
-    .feature-box {
-        width: 100%;
-        max-width: 450px;
+    
+    /* Gộp chung lại thành cột dọc trên Mobile */
+    .feature-row, .feature-row.reverse {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .feature-text {
+        max-width: 100%;
+    }
+
+    .feature-number {
+        font-size: 5rem;
+    }
+
+    .feature-link {
+        justify-content: center;
+    }
+
+    .feature-visual img {
+        height: 250px; /* Giảm chiều cao ảnh trên mobile */
     }
 }
 
 /* --- 8. CATEGORIES SECTION (DANH MỤC THỰC ĐƠN CHUẨN APP) --- */
 .categories-section {
     padding: 3rem 8rem 5rem 8rem;
-    background-color: var(--white);
     position: relative;
     z-index: 2;
 }
