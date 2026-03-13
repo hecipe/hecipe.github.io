@@ -1190,3 +1190,7 @@ body{
         right: -20px;
     }
 }
+
+* {
+    font-family: 'Quicksand', sans-serif !important;
+}
