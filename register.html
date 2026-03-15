@@ -33,48 +33,70 @@
 
     <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="/Hecipe-Frontend/index.html">Trang Chủ</a></li>
+        <!--thêm class active để làm nổi bật trang hiện tại-->
+
         <li class="dropdown">
+          <!--thêm class dropdown cho các mục có menu thả xuống-->
           <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Nguyên Liệu</a></li>
+            <!--thêm ul với class dropdown-menu để chứa các mục con-->
+            <li><a href="/Hecipe-Frontend/shopNL.html">Nguyên Liệu</a></li>
             <li><a href="#">Gian Hàng Đối Tác</a></li>
             <li><a href="#">Combo Tiết Kiệm</a></li>
           </ul>
         </li>
+
         <li class="dropdown">
           <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
             <li><a href="#">Lộ Trình 7 Ngày</a></li>
             <li><a href="#">Eat Clean & Diet</a></li>
             <li class="divider"></li>
+            <!--thêm dòng chia cách mục con-->
             <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
           </ul>
         </li>
+
         <li class="dropdown">
           <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Công Thức Nấu Ăn</a></li>
+            <li><a href="/Hecipe-Frontend/recipes.html">Công Thức Nấu Ăn</a></li>
             <li><a href="#">Video Hướng Dẫn</a></li>
             <li><a href="#">Góc Y Khoa</a></li>
           </ul>
         </li>
+
         <li><a href="#">Khuyến Mãi</a></li>
         <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
+        <!-- cart always visible -->
         <div class="cart-box">
           <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
         </div>
 
+        <!-- buttons when not logged in -->
         <div id="authButtons" class="auth-buttons">
-          <a href="login.html" class="btn-primary">Đăng nhập</a>
-          <a href="register.html" class="btn-primary" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
         </div>
 
+        <!-- profile/avatar shown only when logged in -->
         <div class="user-profile hidden" id="profileContainer">
-          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+            id="avatarImg"
+          />
+          <!-- file chooser for avatar -->
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
             <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
               <span id="displayUsername"></span>
@@ -319,20 +341,34 @@
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
     </svg>
   </div>
+
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  
   <footer class="footer">
-  <!-- copy same footer as index -->
+
+  <!-- KHỐI TRÊN -->
   <div class="footer-container">
+
+    <!-- BÊN TRÁI: LOGO -->
     <div class="footer-logo">
       <a href="/index.html" title="Về trang chủ">
         <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
       </a>
     </div>
+
+    <!-- BÊN PHẢI: NỘI DUNG -->
     <div class="footer-links">
+
       <div class="footer-col">
         <h4>Về Hecipe</h4>
         <a href="duan.html">Dự án</a>
         <a href="blog.html">Blog</a>
       </div>
+
       <div class="footer-col">
    <h4>Khám phá</h4>
    <a href="congthuc.html">Công thức nổi bật</a>
@@ -340,52 +376,122 @@
    <a href="chedo.html">Chế độ ăn khỏe</a>
    <a href="goiy.html">Gợi ý cho bạn</a>
 </div>
+
+
       <div class="footer-col">
         <h4>Trợ giúp</h4>
         <a href="hotro.html">Yêu cầu hỗ trợ</a>
         <a href="lienhe.html">Liên hệ</a>
       </div>
+
+<!-- Viết icon -->
       <div class="footer-col">
         <h4>Social</h4>
   <a href="fb.html">
     <i class="fa-brands fa-facebook-f"></i>
     Facebook
   </a>
+
   <a href="pin.html">
     <i class="fa-brands fa-pinterest-p"></i>
     Pinterest
   </a>
+
   <a href="ig.html">
     <i class="fa-brands fa-instagram"></i>
     Instagram
   </a>
+
   <a href="tw.html">
     <i class="fa-brands fa-tiktok"></i>
     TikTok
 </div>
       </div>
+
       <div class="footer-app">
    <h4>Download our app:</h4>
+
    <a href="https://play.google.com" target="_blank">
       <img src="ImageofWeb/ggplay.webp" class="badge-google" >
    </a>
+
    <a href="https://www.apple.com/app-store/" target="_blank">
       <img src="ImageofWeb/appstore.png" class="badge-apple">
    </a>
 </div>
     </div>
   </div>
+
+
+  <!-- KHỐI DƯỚI -->
   <div class="footer-bottom">
    <div class="copyright">
       Copyright © 2026 Hecipe.
    </div>
+
    <div class="divider"></div>
+
    <div class="policy-links">
       <a href="dieukhoan.html">Điều khoản dịch vụ</a>
       <a href="chinhsach.html">Chính sách bảo mật</a>
    </div>
 </div>
-</footer>
 
+
+</footer>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lấy toàn bộ đường dẫn URL hiện tại
+    let currentPath = window.location.pathname;
+    let currentPage = currentPath.split('/').pop();
+    
+    // Xử lý trang chủ
+    if (currentPage === '' || currentPage === 'index.html') {
+      currentPage = 'index.html';
+    }
+
+    // --- BƯỚC MỚI: QUY ĐỔI TRANG CON VỀ TRANG CHA ---
+    // Nếu URL có chứa 'recipe-detail' (đang ở trang chi tiết công thức)
+    if (currentPath.includes('recipe-detail')) {
+      // Ép JS hiểu trang hiện tại là recipes.html để bôi sáng mục Góc Bếp
+      currentPage = 'recipes.html'; 
+    }
+    // Tương tự cho phần Đi Chợ: Nếu đang ở trang sản phẩm, giỏ hàng, thanh toán...
+    else if (currentPath.includes('product') || currentPath.includes('cart') || currentPath.includes('checkout')) {
+      // Ép JS hiểu là đang ở shopNL.html để bôi sáng mục Đi Chợ
+      currentPage = 'shopNL.html';
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    // 2. Tắt tất cả class 'active' gán cứng trong HTML trước đó
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // 3. Quét từng thẻ <a> để tìm thẻ khớp với trang đã được quy đổi
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      
+      // Bỏ qua các link trống hoặc đang dùng dấu #
+      if (!href || href === '#' || href.startsWith('#')) return;
+
+      const linkPage = href.split('/').pop();
+
+      // Nếu link khớp với trang đích
+      if (linkPage === currentPage) {
+        // Làm sáng mục con
+        link.classList.add('active'); 
+
+        // Tìm ngược lên dropdown cha
+        const parentDropdown = link.closest('.dropdown');
+        if (parentDropdown) {
+          const parentToggle = parentDropdown.querySelector('a'); 
+          if (parentToggle) {
+            parentToggle.classList.add('active'); 
+          }
+        }
+      }
+    });
+  });
+</script>
 </body>
 </html>

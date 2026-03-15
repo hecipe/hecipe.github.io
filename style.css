@@ -168,15 +168,24 @@ body {
     gap: 5px;
 }
 
-.nav-links a:hover, 
-.nav-links a.active {
+/* 1. Style cho thẻ active (Áp dụng cho cả link thường và link cha "Đi Chợ") */
+.nav-links a.active,
+.dropdown > a.active {
     color: var(--primary-green);
+    /* Dùng màu nền xanh lá nhưng độ trong suốt 10% (0.1) */
+    background-color: rgba(76, 102, 70, 0.1); /* Sửa lại mã RGB cho khớp với màu xanh của bạn */
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px; /* Bo góc mềm mại */
+    text-decoration: none;
 }
 
-/* Icon mũi tên nhỏ xuống */
-.nav-links i {
-    font-size: 0.7rem;
-    margin-top: 2px;
+/* 2. (Tùy chọn) Style cho mục con "Nguyên Liệu" khi được chọn */
+.dropdown-menu a.active {
+    color: var(--primary-green);
+    background-color: rgba(76, 102, 70, 0.05); /* Nền nhạt hơn mục cha một chút */
+    font-weight: 500;
+    border-radius: 6px;
 }
 
 /* --- 4. DROPDOWN MENU (Xổ xuống) --- */
@@ -1191,6 +1200,703 @@ body{
     }
 }
 
-* {
-    font-family: 'Quicksand', sans-serif !important;
+/* =========================================
+   COMPONENTS THEO CHUẨN BEM [cite: 75]
+   ========================================= */
+
+/* --- THẺ CÔNG THỨC / VIDEO --- */
+.recipes-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile-first: 1 cột [cite: 94] */
+    gap: 30px;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+}
+
+@media (min-width: 768px) { /* Breakpoint cho tablet [cite: 93, 94] */
+    .recipes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.recipe-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.recipe-card__info {
+    padding: 20px;
+}
+
+.recipe-card__title {
+    color: var(--primary-green);
+    margin-bottom: 10px;
+}
+
+.recipe-card__desc {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* --- TRANG SHOP (LAYOUT 2 CỘT) --- */
+.shop-container {
+    display: flex;
+    flex-direction: column; /* Mobile: xếp dọc [cite: 94] */
+    gap: 30px;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+@media (min-width: 1024px) { /* Breakpoint cho desktop [cite: 93, 94] */
+    .shop-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* --- BỘ LỌC (FILTER PANEL) [cite: 66, 67] --- */
+.filter-panel {
+    background: var(--white);
+    border: 1px solid var(--sage-light);
+    padding: 25px;
+    border-radius: var(--radius);
+    flex: 0 0 300px;
+}
+
+.filter-panel h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin: 10px 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.filter-group input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--sage-light);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* --- THẺ SẢN PHẨM (PRODUCT CARD) [cite: 60, 61, 62] --- */
+.products-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    border: 1px solid var(--sage-light);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.product-card__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card__details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-card__name {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.product-card__price {
+    color: var(--primary-green);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.product-card__btn {
+    margin-top: auto;
+    text-align: center;
+    display: block;
+}
+
+/* =========================================
+   COMPONENTS: CART & CHECKOUT (BEM STANDARD)
+   ========================================= */
+
+/* Layout chung cho cả 2 trang (Chia 2 cột trên Desktop) */
+.cart-container, .checkout-container {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.cart-layout, .checkout-layout {
+    display: flex;
+    flex-direction: column; /* Mobile-first: Xếp dọc */
+    gap: 40px;
+}
+
+@media (min-width: 992px) {
+    .cart-layout, .checkout-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .cart-items, .checkout-form-section {
+        flex: 1; /* Chiếm phần lớn diện tích */
+    }
+    .cart-summary {
+        flex: 0 0 350px; /* Cột tóm tắt cố định 350px */
+        position: sticky;
+        top: 100px; /* Trượt theo màn hình */
+    }
+}
+
+/* --- CART TABLE --- */
+.table-responsive {
+    overflow-x: auto; /* Cho phép cuộn ngang trên mobile nếu bảng quá rộng */
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.cart-table th, .cart-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--sage-light);
+}
+
+.cart-table th {
+    background-color: var(--sage-light);
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.cart-product {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-product img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.cart-product__name {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.cart-qty {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid var(--sage-light);
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.cart-price {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.cart-price--total {
+    color: var(--primary-green);
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #EF4444; /* Màu đỏ báo hiệu xóa */
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-remove:hover {
+    transform: scale(1.2);
+}
+
+/* --- CART SUMMARY --- */
+.cart-summary {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--sage-light);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+    font-size: 1.05rem;
+}
+
+.summary-row--total {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary-green);
+}
+
+.summary-btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+/* --- CHECKOUT FORM --- */
+.checkout-form-section {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.checkout-form-section h2 {
+    color: var(--primary-green);
+    margin-bottom: 25px;
+    font-family: 'Playfair Display', serif;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-option {
+    border: 1px solid var(--sage-light);
+    padding: 15px 20px;
+    border-radius: 12px;
+    background: var(--bg-cream);
+    transition: 0.3s;
+}
+
+.payment-option:hover {
+    border-color: var(--primary-green);
+}
+
+.payment-text i {
+    margin-right: 10px;
+    color: var(--primary-green);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: var(--text-light);
+}
+
+/* Ẩn text nhưng vẫn đọc được bằng screen reader (Accessibility) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.btn-secondary {
+    background-color:#4A6741
+}
+
+.product-card__btn {
+    text-decoration: none;
+    color: white;
+}
+
+/* =========================================
+   TRANG MẸ: DANH MỤC CÔNG THỨC (RECIPE CATALOG)
+   ========================================= */
+.recipe-catalog-container {
+    max-width: 1200px;
+    margin: 40px auto 60px;
+    padding: 0 20px;
+}
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-green);
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* Thanh Bộ Lọc */
+.recipe-filter-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-btn {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 1px solid var(--sage-light);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74, 103, 65, 0.2);
+}
+
+/* Lưới Thẻ Món Ăn */
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* Kiểu dáng Thẻ (Card) */
+.recipe-card__link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+}
+
+.recipe-card__img-box {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.recipe-card__img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.recipe-card:hover .recipe-card__img-box img {
+    transform: scale(1.1); /* Hover zoom ảnh */
+}
+
+.recipe-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: var(--primary-green);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.recipe-card__info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.recipe-card__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.recipe-card:hover .recipe-card__title {
+    color: var(--primary-green); /* Đổi màu chữ khi hover */
+}
+
+.recipe-card__desc {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex: 1; /* Đẩy phần meta xuống dưới cùng */
+}
+
+.recipe-card__meta {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--sage-light);
+    padding-top: 15px;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.recipe-card__meta i {
+    color: var(--primary-green);
+    margin-right: 5px;
+}
+
+
+/* =========================================
+   CHI TIẾT CÔNG THỨC (RECIPE DETAIL PAGE)
+   ========================================= */
+.recipe-detail-container {
+    max-width: 1200px;
+    margin: 40px auto 60px;
+    padding: 0 20px;
+}
+
+.recipe-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.recipe-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-green);
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+}
+
+.recipe-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.recipe-meta span i {
+    color: var(--primary-green);
+    margin-right: 6px;
+}
+
+/* Chia cột Layout */
+.recipe-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+@media (min-width: 992px) {
+    .recipe-content-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .recipe-main {
+        flex: 2; /* Chiếm 2/3 không gian */
+    }
+    .recipe-sidebar {
+        flex: 1; /* Chiếm 1/3 không gian */
+        position: sticky;
+        top: 100px; /* Trượt theo màn hình */
+    }
+}
+
+.recipe-hero-img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.recipe-description {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+}
+
+.recipe-section-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-dark);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid var(--sage-light);
+    padding-bottom: 10px;
+}
+
+.recipe-section-title i {
+    color: var(--primary-green);
+}
+
+/* Khối Nguyên Liệu */
+.recipe-ingredients {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--radius);
+    border: 1px solid var(--sage-light);
+    margin-bottom: 40px;
+}
+
+.recipe-ingredients ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.recipe-ingredients li {
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--sage-light);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+}
+
+.recipe-ingredients input[type="checkbox"] {
+    accent-color: var(--primary-green);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.recipe-ingredients label {
+    cursor: pointer;
+}
+
+/* Khối Các Bước Làm */
+.recipe-steps {
+    margin-bottom: 40px;
+}
+
+.recipe-step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    background: var(--white);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid var(--sage-light);
+}
+
+.step-number {
+    background: var(--primary-green);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    margin-bottom: 10px;
+    color: var(--primary-green);
+    font-size: 1.3rem;
+}
+
+.step-content p {
+    color: var(--text-dark);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* Sidebar Dinh Dưỡng */
+.nutrition-card {
+    background: var(--bg-cream);
+    border: 2px solid var(--primary-green);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.nutrition-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-green);
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.nutrition-list {
+    list-style: none;
+}
+
+.nutrition-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(74, 103, 65, 0.2);
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+.nutrition-list li:last-child {
+    border-bottom: none;
+}
+
+.nutrition-list li strong {
+    color: var(--primary-green);
 }

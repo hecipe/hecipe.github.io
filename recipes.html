@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Công thức & Video - Hecipe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link">
+          <i class="far fa-user"></i>
+        </a>
+        <a href="#" class="icon-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/Hecipe-Frontend/index.html" >Trang Chủ</a></li>
+        <!--thêm class active để làm nổi bật trang hiện tại-->
+
+        <li class="dropdown">
+          <!--thêm class dropdown cho các mục có menu thả xuống-->
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <!--thêm ul với class dropdown-menu để chứa các mục con-->
+            <li><a href="/Hecipe-Frontend/shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <!--thêm dòng chia cách mục con-->
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="/Hecipe-Frontend/recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <!-- cart always visible -->
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+
+        <!-- buttons when not logged in -->
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+
+        <!-- profile/avatar shown only when logged in -->
+        <div class="user-profile hidden" id="profileContainer">
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+            id="avatarImg"
+          />
+          <!-- file chooser for avatar -->
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> 
+    
+    <main class="recipe-catalog-container">
+        <div class="catalog-header">
+            <h1 class="page-title">Góc Bếp Hecipe</h1>
+            <p class="page-subtitle">Hơn 500+ công thức nấu ăn dinh dưỡng, dễ làm dành riêng cho bạn.</p>
+            
+            <div class="recipe-filter-bar">
+                <button class="filter-btn active">Tất cả</button>
+                <button class="filter-btn">Eat Clean</button>
+                <button class="filter-btn">Ăn Chay (Vegan)</button>
+                <button class="filter-btn">Tăng Cơ (High Protein)</button>
+                <button class="filter-btn">Dưới 30 phút</button>
+            </div>
+        </div>
+
+        <section class="recipes-grid">
+            <article class="recipe-card">
+                <a href="/Hecipe-Frontend/recipe-detail/recipe-detail1.html" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://file.hstatic.net/200000700229/article/salad-uc-ga-sot-me-rang-1_63c1e02a42c84c7b837c9643ec14d50e.jpg" alt="Salad Ức Gà" loading="lazy">
+                        <span class="recipe-badge">Eat Clean</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Salad Ức Gà Sốt Mè Rang</h3>
+                        <p class="recipe-card__desc">Bữa ăn Eat Clean cực chuẩn, giàu protein và chất xơ. Phù hợp cho người tập gym.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 15p</span>
+                            <span><i class="fas fa-fire"></i> 350 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://cookbeo.com/media/2020/10/salad-rau/salad-rau-16x9.jpg" alt="Salad Trộn" loading="lazy">
+                        <span class="recipe-badge">Ăn Chay</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Salad Rau Củ Trộn Mè</h3>
+                        <p class="recipe-card__desc">Thanh đạm, tươi mát và cung cấp lượng lớn vitamin C cho ngày hè oi bức.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 10p</span>
+                            <span><i class="fas fa-fire"></i> 180 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://tiki.vn/blog/wp-content/uploads/2023/04/cach-lam-mi-y.jpg" alt="Mỳ Ý Gạo Lứt" loading="lazy">
+                        <span class="recipe-badge">Low Carbs</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Mỳ Ý Gạo Lứt Sốt Bò Bằm</h3>
+                        <p class="recipe-card__desc">Thay thế mỳ trắng bằng mỳ gạo lứt giúp no lâu, kiểm soát đường huyết hiệu quả.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 25p</span>
+                            <span><i class="fas fa-fire"></i> 420 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://bepmina.vn/wp-content/uploads/2022/12/cach-lam-bo-luc-lac-khoai-tay-1024x819.jpeg" alt="Bò Lúc Lắc" loading="lazy">
+                        <span class="recipe-badge" style="background-color: #D97706;">Tăng Cơ</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Bò Lúc Lắc Khoai Tây Nướng</h3>
+                        <p class="recipe-card__desc">Thịt bò thăn mềm mọng nước kết hợp cùng khoai tây nướng không dầu, nạp nhanh protein sau tập.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 30p</span>
+                            <span><i class="fas fa-fire"></i> 450 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://cdn.tgdd.vn/2020/09/CookProduct/1-1200x676-31.jpg" alt="Sinh Tố Xanh" loading="lazy">
+                        <span class="recipe-badge">Eat Clean</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Smoothie Cải Bó Xôi Trái Cây</h3>
+                        <p class="recipe-card__desc">Thức uống detox buổi sáng hoàn hảo, cung cấp đầy đủ vitamin và chất xơ giúp da sáng, dáng xinh.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 5p</span>
+                            <span><i class="fas fa-fire"></i> 120 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://i.ytimg.com/vi/bK1Aoy4ondY/maxresdefault.jpg" alt="Nấm Kho" loading="lazy">
+                        <span class="recipe-badge" style="background-color: #059669;">Ăn Chay</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Nấm Đùi Gà Kho Tiêu Xanh</h3>
+                        <p class="recipe-card__desc">Món chay đậm đà đưa cơm, nấm đùi gà dai giòn sần sật thấm đẫm sốt tiêu xanh cay nồng.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 20p</span>
+                            <span><i class="fas fa-fire"></i> 200 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&q=80" alt="Poke Bowl" loading="lazy">
+                        <span class="recipe-badge" style="background-color: #2563EB;">Dưới 30 phút</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Poke Bowl Cá Hồi Hawaii</h3>
+                        <p class="recipe-card__desc">Bữa ăn tươi mát với cá hồi sống, bơ sáp, đậu Nhật và cơm gạo lứt chuẩn vị biển đảo.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 15p</span>
+                            <span><i class="fas fa-fire"></i> 380 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://i.ytimg.com/vi/SgOSiLvtfoI/maxresdefault.jpg" alt="Cháo Yến Mạch" loading="lazy">
+                        <span class="recipe-badge" style="background-color: #2563EB;">Dưới 30 phút</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Cháo Yến Mạch Tôm Tươi</h3>
+                        <p class="recipe-card__desc">Bữa sáng ấm bụng, cực kỳ dễ tiêu hóa nhưng vẫn đảm bảo nạp đủ lượng dinh dưỡng cho ngày dài.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 20p</span>
+                            <span><i class="fas fa-fire"></i> 250 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="recipe-card">
+                <a href="#" class="recipe-card__link">
+                    <div class="recipe-card__img-box">
+                        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80" alt="Cá Hồi Áp Chảo" loading="lazy">
+                        <span class="recipe-badge">Keto</span>
+                    </div>
+                    <div class="recipe-card__info">
+                        <h3 class="recipe-card__title">Cá Hồi Áp Chảo Sốt Chanh Dây</h3>
+                        <p class="recipe-card__desc">Nguồn cung cấp Omega-3 tuyệt vời. Sốt chanh dây chua ngọt kích thích vị giác.</p>
+                        <div class="recipe-card__meta">
+                            <span><i class="fas fa-clock"></i> 20p</span>
+                            <span><i class="fas fa-fire"></i> 310 kcal</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        </section>
+    </main>
+
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+
+  <footer class="footer">
+
+  <!-- KHỐI TRÊN -->
+  <div class="footer-container">
+
+    <!-- BÊN TRÁI: LOGO -->
+    <div class="footer-logo">
+      <a href="/index.html" title="Về trang chủ">
+        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+      </a>
+    </div>
+
+    <!-- BÊN PHẢI: NỘI DUNG -->
+    <div class="footer-links">
+
+      <div class="footer-col">
+        <h4>Về Hecipe</h4>
+        <a href="duan.html">Dự án</a>
+        <a href="blog.html">Blog</a>
+      </div>
+
+      <div class="footer-col">
+   <h4>Khám phá</h4>
+   <a href="congthuc.html">Công thức nổi bật</a>
+   <a href="thucdon.html">Thực đơn hôm nay</a>
+   <a href="chedo.html">Chế độ ăn khỏe</a>
+   <a href="goiy.html">Gợi ý cho bạn</a>
+</div>
+
+      <div class="footer-col">
+        <h4>Trợ giúp</h4>
+        <a href="hotro.html">Yêu cầu hỗ trợ</a>
+        <a href="lienhe.html">Liên hệ</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Social</h4>
+  <a href="fb.html">
+    <i class="fa-brands fa-facebook-f"></i>
+    Facebook
+  </a>
+  <a href="pin.html">
+    <i class="fa-brands fa-pinterest-p"></i>
+    Pinterest
+  </a>
+  <a href="ig.html">
+    <i class="fa-brands fa-instagram"></i>
+    Instagram
+  </a>
+  <a href="tw.html">
+    <i class="fa-brands fa-tiktok"></i>
+    TikTok
+</div>
+      </div>
+
+      <div class="footer-app">
+   <h4>Download our app:</h4>
+   <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+   <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+</div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+   <div class="copyright">Copyright © 2026 Hecipe.</div>
+   <div class="divider"></div>
+   <div class="policy-links"><a href="dieukhoan.html">Điều khoản dịch vụ</a><a href="chinhsach.html">Chính sách bảo mật</a></div>
+</div>
+</footer>
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lấy toàn bộ đường dẫn URL hiện tại
+    let currentPath = window.location.pathname;
+    let currentPage = currentPath.split('/').pop();
+    
+    // Xử lý trang chủ
+    if (currentPage === '' || currentPage === 'index.html') {
+      currentPage = 'index.html';
+    }
+
+    // --- BƯỚC MỚI: QUY ĐỔI TRANG CON VỀ TRANG CHA ---
+    // Nếu URL có chứa 'recipe-detail' (đang ở trang chi tiết công thức)
+    if (currentPath.includes('recipe-detail')) {
+      // Ép JS hiểu trang hiện tại là recipes.html để bôi sáng mục Góc Bếp
+      currentPage = 'recipes.html'; 
+    }
+    // Tương tự cho phần Đi Chợ: Nếu đang ở trang sản phẩm, giỏ hàng, thanh toán...
+    else if (currentPath.includes('product') || currentPath.includes('cart') || currentPath.includes('checkout')) {
+      // Ép JS hiểu là đang ở shopNL.html để bôi sáng mục Đi Chợ
+      currentPage = 'shopNL.html';
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    // 2. Tắt tất cả class 'active' gán cứng trong HTML trước đó
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // 3. Quét từng thẻ <a> để tìm thẻ khớp với trang đã được quy đổi
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      
+      // Bỏ qua các link trống hoặc đang dùng dấu #
+      if (!href || href === '#' || href.startsWith('#')) return;
+
+      const linkPage = href.split('/').pop();
+
+      // Nếu link khớp với trang đích
+      if (linkPage === currentPage) {
+        // Làm sáng mục con
+        link.classList.add('active'); 
+
+        // Tìm ngược lên dropdown cha
+        const parentDropdown = link.closest('.dropdown');
+        if (parentDropdown) {
+          const parentToggle = parentDropdown.querySelector('a'); 
+          if (parentToggle) {
+            parentToggle.classList.add('active'); 
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

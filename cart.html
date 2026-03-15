@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Hecipe</title>
+    <title>Giỏ Hàng - Hecipe</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -28,7 +28,6 @@
         </div>
       </div>
     </header>
-
     <nav class="navbar">
       <ul class="nav-links">
         <li><a href="#" class="active">Trang Chủ</a></li>
@@ -108,108 +107,74 @@
       </div>
     </nav>
 
-    <main>
-      <div class="profile-container">
-        <div class="profile-header">
-            <h2>Đăng nhập</h2>
-            <p>Vui lòng nhập tài khoản để tiếp tục.</p>
+    <main class="cart-container">
+        <h1 class="page-title" style="text-align: center; margin: 40px 0; color: var(--primary-green);">Giỏ Hàng Của Bạn</h1>
+        
+        <div class="cart-layout">
+            <section class="cart-items">
+                <div class="table-responsive">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Đơn giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Thành tiền</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="cart-product">
+                                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&q=80" alt="Mỳ Ý sốt bò bằm">
+                                        <span class="cart-product__name">Mỳ Ý sốt bò bằm (Gạo lứt)</span>
+                                    </div>
+                                </td>
+                                <td class="cart-price">120.000₫</td>
+                                <td>
+                                    <label for="qty-1" class="sr-only">Số lượng</label>
+                                    <input type="number" id="qty-1" class="cart-qty" value="1" min="1">
+                                </td>
+                                <td class="cart-price cart-price--total">120.000₫</td>
+                                <td>
+                                    <button class="btn-remove" aria-label="Xóa sản phẩm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="shop.html" class="btn-secondary" style="display: inline-block; margin-top: 20px;">
+                    <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                </a>
+            </section>
+
+            <aside class="cart-summary">
+                <h3>Tổng đơn hàng</h3>
+                <div class="summary-row">
+                    <span>Tạm tính:</span>
+                    <span>120.000₫</span>
+                </div>
+                <div class="summary-row">
+                    <span>Phí giao hàng:</span>
+                    <span>30.000₫</span>
+                </div>
+                <div class="divider" style="width: 100%; margin: 15px 0;"></div>
+                <div class="summary-row summary-row--total">
+                    <span>Tổng cộng:</span>
+                    <span>150.000₫</span>
+                </div>
+                <a href="checkout.html" class="btn-primary summary-btn">Tiến hành thanh toán</a>
+            </aside>
         </div>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="loginUser"><i class="fa-solid fa-user"></i> Tên đăng nhập</label>
-                <input type="text" id="loginUser" required placeholder="VD: ND0001">
-            </div>
-            <div class="form-group">
-                <label for="loginPass"><i class="fa-solid fa-lock"></i> Mật khẩu</label>
-                <input type="password" id="loginPass" required placeholder="Mật khẩu">
-            </div>
-            <button type="submit" class="btn-primary" style="width:100%; padding:15px; font-size:1.1rem;">
-                Đăng nhập
-            </button>
-        </form>
-      </div>
     </main>
 
-    <script>
-      /*
-       * Script trang đăng nhập.
-       * Mô phỏng xác thực bằng localStorage cho demo:
-       * - nếu chưa có tài khoản, người dùng điền gì cũng được và sẽ được lưu.
-       * - nếu đã có user/pass lưu trước đó, phải nhập đúng mới tiếp tục.
-       */
-      // nếu đã đăng nhập từ trước thì chuyển thẳng sang hồ sơ sức khỏe
-      if (localStorage.getItem('loggedIn') === 'true') {
-          window.location.href = 'hosouser.html';
-      }
-
-      document.getElementById('loginForm').addEventListener('submit', async function(e) {
-          e.preventDefault();
-          
-          const username = document.getElementById('loginUser').value;
-          const password = document.getElementById('loginPass').value;
-          
-          const btn = this.querySelector('button');
-          const originalText = btn.innerHTML;
-          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
-          btn.disabled = true;
-
-          try {
-              // Gọi API đăng nhập
-              const response = await fetch('http://localhost:3000/api/users/login', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                      username: username,
-                      password: password
-                  })
-              });
-
-              const result = await response.json();
-
-              if (result.success) {
-                  // Lưu thông tin vào localStorage
-                  localStorage.setItem('userId', result.data.userId);
-                  localStorage.setItem('username', result.data.username);
-                  localStorage.setItem('password', password);
-                  localStorage.setItem('loggedIn', 'true');
-
-                  // lấy profile chi tiết từ server và cache
-                  try {
-                      const profResp = await fetch(`http://localhost:3000/api/users/profile?userId=${result.data.userId}`);
-                      const profJson = await profResp.json();
-                      if (profJson.success && profJson.data) {
-                          localStorage.setItem('userProfile', JSON.stringify(profJson.data));
-                          if (profJson.data.avatar) {
-                              localStorage.setItem('avatar', profJson.data.avatar);
-                          }
-                      }
-                  } catch (err) {
-                      console.warn('Không tải được profile:', err);
-                  }
-
-                  // Chuyển hướng sang hồ sơ
-                  window.location.href = 'hosouser.html';
-              } else {
-                  alert('❌ ' + result.message);
-                  btn.innerHTML = originalText;
-                  btn.disabled = false;
-              }
-          } catch (error) {
-              console.error('Lỗi đăng nhập:', error);
-              alert('❌ Lỗi kết nối! Vui lòng kiểm tra server Node.js đã chạy.');
-              btn.innerHTML = originalText;
-              btn.disabled = false;
-          }
-      });
-    </script>
-  
-  <div class="custom-shape-divider-top">
+ <div class="custom-shape-divider-top">
     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
     </svg>
   </div>
+
   <footer class="footer">
 
   <!-- KHỐI TRÊN -->
@@ -299,9 +264,7 @@
    </div>
 </div>
 
-
-</footer>
-<script>
+   <script>
   document.addEventListener('DOMContentLoaded', () => {
     // 1. Lấy toàn bộ đường dẫn URL hiện tại
     let currentPath = window.location.pathname;
@@ -355,5 +318,7 @@
     });
   });
 </script>
-  </body>
+
+</footer>
+</body>
 </html>

@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đi Chợ Nguyên Liệu - Hecipe</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link">
+          <i class="far fa-user"></i>
+        </a>
+        <a href="#" class="icon-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/Hecipe-Frontend/index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="/Hecipe-Frontend/shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="/Hecipe-Frontend/recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+
+        <div class="user-profile hidden" id="profileContainer">
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+            id="avatarImg"
+          />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="shop-container">
+        <aside class="filter-panel">
+            <h3>Danh mục</h3>
+            <div class="filter-group">
+                <label for="filter-veg"> 
+                    <input type="checkbox" id="filter-veg" name="category" value="vegetable"> Rau củ quả
+                </label>
+                <label for="filter-meat">
+                    <input type="checkbox" id="filter-meat" name="category" value="meat"> Thịt, Cá, Trứng
+                </label>
+                <label for="filter-spice">
+                    <input type="checkbox" id="filter-spice" name="category" value="spice"> Gia vị & Sốt
+                </label>
+            </div>
+            <h3>Mức giá</h3>
+            <div class="filter-group">
+                <label>Giá từ</label>
+                <input type="number" min="0" step="10000" name="min-price" placeholder="Ví dụ: 10000">
+                <label>đến</label>
+                <input type="number" min="0" step="10000" name="max-price" placeholder="Ví dụ: 150000">
+            </div>
+            <button class="btn-primary" style="width:100%; margin-top:10px;">Áp dụng bộ lọc</button>
+        </aside>
+
+        <section class="products-grid">
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&q=80" alt="Cà chua Đà Lạt" class="product-card__img" loading="lazy"> 
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Cà chua Beef Đà Lạt (500g)</h4>
+                    <p class="product-card__price">28.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ hàng</a> 
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://quocthinhfoods.com/uploads/source/xduong-mkt/thit-bo-tuoi-uc/rib-eye-chilled-02.png" alt="Thịt bò Úc" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Thịt bò thăn ngoại Úc (300g)</h4>
+                    <p class="product-card__price">145.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ hàng</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80" alt="Cải thìa" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Cải thìa VietGAP (500g)</h4>
+                    <p class="product-card__price">18.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ hàng</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80" alt="Dầu Oliu Extra Virgin" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Dầu Oliu Extra Virgin (250ml)</h4>
+                    <p class="product-card__price">95.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ hàng</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&q=80" alt="Trứng gà ta" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Trứng gà ta (Hộp 10 quả)</h4>
+                    <p class="product-card__price">35.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://tse2.mm.bing.net/th/id/OIP.D5Tqcw-gdLoH5eNWX6JQXQHaEK?pid=Api&P=0&h=180" alt="Bắp cải tím" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Bắp cải tím hữu cơ (500g)</h4>
+                    <p class="product-card__price">25.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://cf.shopee.vn/file/80b9a9aaf453dc1c899ba273c6fd78a7" alt="Ức gà phi lê" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Ức gà phi lê tươi (500g)</h4>
+                    <p class="product-card__price">45.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://haisansaigon.com.vn/wp-content/uploads/2021/07/19.jpg" alt="Cá hồi Nauy" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Cá hồi Nauy Fillet (200g)</h4>
+                    <p class="product-card__price">135.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80" alt="Tỏi cô đơn" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Tỏi cô đơn Lý Sơn (200g)</h4>
+                    <p class="product-card__price">40.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://cdn.tgdd.vn/2020/08/CookProduct/Untitled-1-1200x676-20.jpg" alt="Bơ" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Bơ Đà Lạt (500g)</h4>
+                    <p class="product-card__price">30.000đ </p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://namxanh.vn/wp-content/uploads/2020/03/nam-huong-nam-dong-co-1.jpg" alt="Nấm hương" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Nấm hương tươi (200g)</h4>
+                    <p class="product-card__price">28.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://vinmec-prod.s3.amazonaws.com/images/20201228_031439_755031_hanhtay_wahf.max-1800x1800.jpg" alt="Hành tây" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Hành tây Đà Lạt (500g)</h4>
+                    <p class="product-card__price">15.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://windpro.vn/photos/images/gb/noom/100/tieu-den-1.jpg" alt="Tiêu đen hạt" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Tiêu đen hạt Đắk Lắk (100g)</h4>
+                    <p class="product-card__price">45.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://baf.vn/wp-content/uploads/2023/08/suon-non.png" alt="Sườn non heo" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Sườn non heo sạch (500g)</h4>
+                    <p class="product-card__price">110.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img src="https://media.cooky.vn/images/blog-2016/mang-tay-la-gi-ban-co-hieu-ro-mang-tay-trong-nau-an-hay-chua-1.jpg" alt="Măng tây" class="product-card__img" loading="lazy">
+                <div class="product-card__details">
+                    <h4 class="product-card__name">Măng tây (500g)</h4>
+                    <p class="product-card__price">79.000₫</p>
+                    <a href="product.html" class="btn-secondary product-card__btn">Thêm vào giỏ</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+    <footer class="footer">
+
+  <div class="footer-container">
+
+    <div class="footer-logo">
+      <a href="/index.html" title="Về trang chủ">
+        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+      </a>
+    </div>
+
+    <div class="footer-links">
+
+      <div class="footer-col">
+        <h4>Về Hecipe</h4>
+        <a href="duan.html">Dự án</a>
+        <a href="blog.html">Blog</a>
+      </div>
+
+      <div class="footer-col">
+   <h4>Khám phá</h4>
+   <a href="congthuc.html">Công thức nổi bật</a>
+   <a href="thucdon.html">Thực đơn hôm nay</a>
+   <a href="chedo.html">Chế độ ăn khỏe</a>
+   <a href="goiy.html">Gợi ý cho bạn</a>
+</div>
+
+
+      <div class="footer-col">
+        <h4>Trợ giúp</h4>
+        <a href="hotro.html">Yêu cầu hỗ trợ</a>
+        <a href="lienhe.html">Liên hệ</a>
+      </div>
+
+<div class="footer-col">
+        <h4>Social</h4>
+  <a href="fb.html">
+    <i class="fa-brands fa-facebook-f"></i>
+    Facebook
+  </a>
+
+  <a href="pin.html">
+    <i class="fa-brands fa-pinterest-p"></i>
+    Pinterest
+  </a>
+
+  <a href="ig.html">
+    <i class="fa-brands fa-instagram"></i>
+    Instagram
+  </a>
+
+  <a href="tw.html">
+    <i class="fa-brands fa-tiktok"></i>
+    TikTok
+</div>
+      </div>
+
+      <div class="footer-app">
+   <h4>Download our app:</h4>
+
+   <a href="https://play.google.com" target="_blank">
+      <img src="ImageofWeb/ggplay.webp" class="badge-google" >
+   </a>
+
+   <a href="https://www.apple.com/app-store/" target="_blank">
+      <img src="ImageofWeb/appstore.png" class="badge-apple">
+   </a>
+</div>
+    </div>
+  </div>
+
+
+  <div class="footer-bottom">
+   <div class="copyright">
+      Copyright © 2026 Hecipe.
+   </div>
+
+   <div class="divider"></div>
+
+   <div class="policy-links">
+      <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+      <a href="chinhsach.html">Chính sách bảo mật</a>
+   </div>
+</div>
+</footer>
+
+   <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lấy toàn bộ đường dẫn URL hiện tại
+    let currentPath = window.location.pathname;
+    let currentPage = currentPath.split('/').pop();
+    
+    // Xử lý trang chủ
+    if (currentPage === '' || currentPage === 'index.html') {
+      currentPage = 'index.html';
+    }
+
+    // --- BƯỚC MỚI: QUY ĐỔI TRANG CON VỀ TRANG CHA ---
+    // Nếu URL có chứa 'recipe-detail' (đang ở trang chi tiết công thức)
+    if (currentPath.includes('recipe-detail')) {
+      // Ép JS hiểu trang hiện tại là recipes.html để bôi sáng mục Góc Bếp
+      currentPage = 'recipes.html'; 
+    }
+    // Tương tự cho phần Đi Chợ: Nếu đang ở trang sản phẩm, giỏ hàng, thanh toán...
+    else if (currentPath.includes('product') || currentPath.includes('cart') || currentPath.includes('checkout')) {
+      // Ép JS hiểu là đang ở shopNL.html để bôi sáng mục Đi Chợ
+      currentPage = 'shopNL.html';
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    // 2. Tắt tất cả class 'active' gán cứng trong HTML trước đó
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // 3. Quét từng thẻ <a> để tìm thẻ khớp với trang đã được quy đổi
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      
+      // Bỏ qua các link trống hoặc đang dùng dấu #
+      if (!href || href === '#' || href.startsWith('#')) return;
+
+      const linkPage = href.split('/').pop();
+
+      // Nếu link khớp với trang đích
+      if (linkPage === currentPage) {
+        // Làm sáng mục con
+        link.classList.add('active'); 
+
+        // Tìm ngược lên dropdown cha
+        const parentDropdown = link.closest('.dropdown');
+        if (parentDropdown) {
+          const parentToggle = parentDropdown.querySelector('a'); 
+          if (parentToggle) {
+            parentToggle.classList.add('active'); 
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
