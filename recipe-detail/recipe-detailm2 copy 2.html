@@ -2,29 +2,18 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Toán - Hecipe</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <!--Liên kết với file all.min.css chứa các icon Font Awesome-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Công thức & Video - Hecipe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../ImageofWeb/Logo-Photoroom.png" type="image/png" />
 </head>
 <body>
     <header class="hero-header">
       <div class="top-icons">
         <a href="#" class="icon-link">
           <i class="far fa-user"></i>
-        </a>
+        </a>    
         <a href="#" class="icon-link">
           <i class="fas fa-shopping-cart"></i>
         </a>
@@ -41,7 +30,7 @@
     </header>
     <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="#" class="active">Trang Chủ</a></li>
+        <li><a href="../index.html" >Trang Chủ</a></li>
         <!--thêm class active để làm nổi bật trang hiện tại-->
 
         <li class="dropdown">
@@ -50,7 +39,7 @@
           <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
             <!--thêm ul với class dropdown-menu để chứa các mục con-->
-            <li><a href="#">Nguyên Liệu</a></li>
+            <li><a href="../shopNL.html">Nguyên Liệu</a></li>
             <li><a href="#">Gian Hàng Đối Tác</a></li>
             <li><a href="#">Combo Tiết Kiệm</a></li>
           </ul>
@@ -72,7 +61,7 @@
           <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
           <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Công Thức Nấu Ăn</a></li>
+            <li><a href="../recipes.html">Công Thức Nấu Ăn</a></li>
             <li><a href="#">Video Hướng Dẫn</a></li>
             <li><a href="#">Góc Y Khoa</a></li>
           </ul>
@@ -116,75 +105,16 @@
           </ul>
         </div>
       </div>
-    </nav>
-
-    <main class="checkout-container">
-        <h1 class="page-title" style="text-align: center; margin: 40px 0; color: var(--primary-green);">Thanh Toán Đơn Hàng</h1>
-        
-        <div class="checkout-layout">
-            <section class="checkout-form-section">
-                <h2>Thông tin giao hàng</h2>
-                <form action="profile.html" class="checkout-form">
-                    <div class="form-group">
-                        <label for="fullname">Họ và tên người nhận <span style="color:red">*</span></label>
-                        <input type="text" id="fullname" name="fullname" required placeholder="Ví dụ: Nguyễn Văn A">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại <span style="color:red">*</span></label>
-                        <input type="tel" id="phone" name="phone" required placeholder="Ví dụ: 0901234567">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Địa chỉ giao hàng chi tiết <span style="color:red">*</span></label>
-                        <input type="text" id="address" name="address" required placeholder="Số nhà, đường, phường/xã, quận/huyện...">
-                    </div>
-
-                    <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--text-dark);">Phương thức thanh toán</h3>
-                    <div class="payment-methods">
-                        <label class="radio-wrapper payment-option">
-                            <input type="radio" name="payment" value="cod" checked>
-                            <span class="payment-text"><i class="fas fa-money-bill-wave"></i> Thanh toán khi nhận hàng (COD)</span>
-                        </label>
-                        <label class="radio-wrapper payment-option">
-                            <input type="radio" name="payment" value="transfer">
-                            <span class="payment-text"><i class="fas fa-credit-card"></i> Chuyển khoản ngân hàng</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 30px; padding: 15px; font-size: 1.1rem;">Xác nhận đặt hàng</button>
-                </form>
-            </section>
-
-            <aside class="cart-summary order-summary">
-                <h3>Đơn hàng của bạn</h3>
-                <div class="summary-item">
-                    <span class="summary-item__name">1x Mỳ Ý sốt bò bằm</span>
-                    <span class="summary-item__price">120.000₫</span>
-                </div>
-                <div class="divider" style="width: 100%; margin: 15px 0;"></div>
-                <div class="summary-row">
-                    <span>Tạm tính:</span>
-                    <span>120.000₫</span>
-                </div>
-                <div class="summary-row">
-                    <span>Phí giao hàng:</span>
-                    <span>30.000₫</span>
-                </div>
-                <div class="divider" style="width: 100%; margin: 15px 0;"></div>
-                <div class="summary-row summary-row--total">
-                    <span>Tổng cộng:</span>
-                    <span>150.000₫</span>
-                </div>
-            </aside>
-        </div>
-    </main>
+    </nav> 
+    
+    
 
   <div class="custom-shape-divider-top">
     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
     </svg>
   </div>
+
   <footer class="footer">
 
   <!-- KHỐI TRÊN -->
@@ -192,8 +122,8 @@
 
     <!-- BÊN TRÁI: LOGO -->
     <div class="footer-logo">
-      <a href="index.html" title="Về trang chủ">
-        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+      <a href="../index.html" title="Về trang chủ">
+        <img src="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
       </a>
     </div>
 
@@ -242,8 +172,8 @@
 
       <div class="footer-app">
    <h4>Download our app:</h4>
-   <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
-   <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+   <a href="https://play.google.com" target="_blank"><img src="/Hecipe-Frontend/ImageofWeb/ggplay.webp" class="badge-google"></a>
+   <a href="https://www.apple.com/app-store/" target="_blank"><img src="/Hecipe-Frontend/ImageofWeb/appstore.png" class="badge-apple"></a>
 </div>
     </div>
   </div>
@@ -254,7 +184,8 @@
    <div class="policy-links"><a href="dieukhoan.html">Điều khoản dịch vụ</a><a href="chinhsach.html">Chính sách bảo mật</a></div>
 </div>
 </footer>
-<script>
+
+  <script>
   document.addEventListener('DOMContentLoaded', () => {
     // 1. Lấy toàn bộ đường dẫn URL hiện tại
     let currentPath = window.location.pathname;
@@ -307,6 +238,6 @@
       }
     });
   });
-</script>
+  </script>
 </body>
 </html>

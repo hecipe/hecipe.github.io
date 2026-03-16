@@ -446,6 +446,7 @@ body {
     .hero-image {
         margin-top: 2rem;
         display: none; /* hide large hero image on tablet/mobile */
+        
     }
 }
 
@@ -1899,4 +1900,51 @@ body{
 
 .nutrition-list li strong {
     color: var(--primary-green);
+}
+
+/*LÀM HERO-BANNER CHO TRANG CHỦ
+/* Đảm bảo link bao phủ toàn bộ vùng đĩa */
+.hero-banner-link {
+    display: block;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hiệu ứng phóng to và đổ bóng khi hover */
+.hero-banner-link:hover {
+    transform: scale(1.05);
+}
+
+.hero-banner-link:hover .hero-image img {
+    box-shadow: 0 15px 35px rgba(74, 103, 65, 0.3);
+}
+
+/* Hiệu ứng cho vòng tròn phía sau khi hover */
+.hero-banner-link:hover .circle-bg {
+    background-color: #c9dbc1; /* Đổi màu nhẹ khi hover */
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
+/* Nhãn 'Xem ngay' ẩn hiện khi hover (Nếu bạn dùng thẻ span ở trên) */
+.banner-label {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-green);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.hero-banner-link:hover .banner-label {
+    opacity: 1;
+    bottom: 40px; /* Nhảy nhẹ lên trên khi hiện */
 }

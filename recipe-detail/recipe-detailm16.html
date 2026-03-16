@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Công thức & Video - Hecipe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link">
+          <i class="far fa-user"></i>
+        </a>    
+        <a href="#" class="icon-link">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="../index.html" >Trang Chủ</a></li>
+        <!--thêm class active để làm nổi bật trang hiện tại-->
+
+        <li class="dropdown">
+          <!--thêm class dropdown cho các mục có menu thả xuống-->
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <!--thêm ul với class dropdown-menu để chứa các mục con-->
+            <li><a href="../shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <!--thêm dòng chia cách mục con-->
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
+          <ul class="dropdown-menu">
+            <li><a href="../recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <!-- cart always visible -->
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+
+        <!-- buttons when not logged in -->
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+
+        <!-- profile/avatar shown only when logged in -->
+        <div class="user-profile hidden" id="profileContainer">
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+            id="avatarImg"
+          />
+          <!-- file chooser for avatar -->
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> 
+
+    <main class="recipe-detail-container">
+        <div class="recipe-header">
+            <h1 class="recipe-title">Bát quinoa với tôm nướng cháy cạnh và sốt pesto</h1>
+            <div class="recipe-meta">
+                <span><i class="fas fa-clock"></i> 25 Phút</span>
+                <span><i class="fas fa-fire"></i> 429 kcal</span>
+                <span><i class="fas fa-signal"></i> Dễ làm</span>
+                <span><i class="fas fa-user"></i> 4 Người ăn</span>
+            </div>
+        </div>
+
+        <div class="recipe-content-wrapper">
+            <article class="recipe-main">
+                <img src="../ImageRecipes.html/m16.jpg"
+                    alt="Bát quinoa với tôm nướng" class="recipe-hero-img">
+                <p class="recipe-description">
+                    Bát quinoa giàu dinh dưỡng kết hợp tôm nướng cháy cạnh thơm lừng và sốt pesto béo nhẹ, mang đến
+                    hương vị tươi mới và cân bằng.
+                </p>
+
+                <div class="recipe-ingredients">
+                    <h2 class="recipe-section-title"><i class="fas fa-shopping-basket"></i> Nguyên liệu chuẩn bị</h2>
+                    <ul>
+                        <li><input type="checkbox" id="ing1"> <label for="ing1"><strong>3 muỗng cà phê</strong> dầu ô
+                                liu nguyên chất, chia làm 2 phần</label></li>
+                        <li><input type="checkbox" id="ing1"> <label for="ing1"><strong>1/3 cốc</strong> sốt pesto đã
+                                chuẩn bị sẵn</label></li>
+                        <li><input type="checkbox" id="ing2"> <label for="ing2"><strong>2 muỗng canh</strong> giấm
+                                balsamic</label></li>
+                        <li><input type="checkbox" id="ing3"> <label for="ing3"><strong>1 muỗng canh</strong> dầu ô liu
+                                nguyên chất (extra-virgin olive oil)</label></li>
+                        <li><input type="checkbox" id="ing4"> <label for="ing4"><strong>1/2 muỗng cà phê</strong>
+                                muối</label></li>
+                        <li><input type="checkbox" id="ing5"> <label for="ing5"><strong>1/4 muỗng cà phê</strong> tiêu
+                                xay</label></li>
+                        <li><input type="checkbox" id="ing6"> <label for="ing6"><strong>450g</strong> tôm lớn đã bóc vỏ
+                                và bỏ chỉ lưng (khoảng 16–20 con), thấm khô</label></li>
+                        <li><input type="checkbox" id="ing7"> <label for="ing7"><strong>4 cốc</strong> rau arugula (cải
+                                rocket)</label></li>
+                        <li><input type="checkbox" id="ing8"> <label for="ing8"><strong>2 cốc</strong> quinoa đã nấu
+                                chín</label></li>
+                        <li><input type="checkbox" id="ing9"> <label for="ing9"><strong>1 cốc</strong> cà chua bi, cắt
+                                đôi</label></li>
+                        <li><input type="checkbox" id="ing10"> <label for="ing10"><strong>1 quả</strong> bơ, cắt hạt
+                                lựu</label></li>
+                    </ul>
+                    <a href="shopNL.html" class="btn-primary" style="display:inline-block; margin-top: 10px;">
+                        <i class="fas fa-cart-plus"></i> Thêm tất cả vào giỏ hàng
+                    </a>
+                </div>
+
+                <div class="recipe-steps">
+                    <h2 class="recipe-section-title"><i class="fas fa-utensils"></i> Hướng dẫn chế biến</h2>
+
+                    <div class="recipe-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p>Trộn đều pesto, giấm, dầu ăn, muối và tiêu trong một bát lớn. Lấy 4 muỗng canh hỗn hợp ra
+                                một bát nhỏ; để riêng cả hai bát.</p>
+                        </div>
+                    </div>
+
+                    <div class="recipe-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+
+                            <p>Làm nóng chảo gang lớn trên lửa vừa. Cho tôm vào và xào, đảo đều, cho đến khi tôm chín
+                                tới và hơi cháy cạnh, khoảng 4 đến 5 phút. Vớt tôm ra đĩa.</p>
+                        </div>
+                    </div>
+
+                    <div class="recipe-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+
+                            <p>Cho rau arugula và quinoa vào bát lớn có nước sốt giấm và trộn đều. Chia hỗn hợp rau
+                                arugula vào 4 bát. Cho cà chua, bơ và tôm lên trên. Rưới mỗi bát với 1 muỗng canh hỗn
+                                hợp pesto đã để riêng.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="recipe-video" style="margin-top: 40px;">
+                    <h2 class="recipe-section-title"><i class="fab fa-youtube"></i> Video Hướng Dẫn Nhanh</h2>
+                    <iframe width="100%" height="400" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        style="border-radius: 12px; box-shadow: var(--shadow);" title="Video Hướng dẫn" frameborder="0"
+                        allowfullscreen></iframe>
+                </div>
+            </article>
+
+            <aside class="recipe-sidebar">
+                <div class="nutrition-card">
+                    <h3>Thông tin dinh dưỡng</h3>
+                    <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 15px;">Ước tính trên 1 khẩu
+                        phần ăn</p>
+                    <ul class="nutrition-list">
+                        <li><span>Calories</span> <strong>429 kcal</strong></li>
+                        <li><span>Protein</span> <strong>31g</strong></li>
+                        <li><span>Carbs</span> <strong>29g</strong></li>
+                        <li><span>Chất béo (Fat)</span> <strong>22g</strong></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div class="custom-shape-divider-top">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <footer class="footer">
+
+        <!-- KHỐI TRÊN -->
+        <div class="footer-container">
+
+            <!-- BÊN TRÁI: LOGO -->
+            <div class="footer-logo">
+                <a href="../index.html" title="Về trang chủ">
+                    <img src="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+                </a>
+            </div>
+
+            <!-- BÊN PHẢI: NỘI DUNG -->
+            <div class="footer-links">
+
+                <div class="footer-col">
+                    <h4>Về Hecipe</h4>
+                    <a href="duan.html">Dự án</a>
+                    <a href="blog.html">Blog</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Khám phá</h4>
+                    <a href="congthuc.html">Công thức nổi bật</a>
+                    <a href="thucdon.html">Thực đơn hôm nay</a>
+                    <a href="chedo.html">Chế độ ăn khỏe</a>
+                    <a href="goiy.html">Gợi ý cho bạn</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Trợ giúp</h4>
+                    <a href="hotro.html">Yêu cầu hỗ trợ</a>
+                    <a href="lienhe.html">Liên hệ</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <a href="fb.html">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        Facebook
+                    </a>
+                    <a href="pin.html">
+                        <i class="fa-brands fa-pinterest-p"></i>
+                        Pinterest
+                    </a>
+                    <a href="ig.html">
+                        <i class="fa-brands fa-instagram"></i>
+                        Instagram
+                    </a>
+                    <a href="tw.html">
+                        <i class="fa-brands fa-tiktok"></i>
+                        TikTok
+                </div>
+            </div>
+
+            <div class="footer-app">
+                <h4>Download our app:</h4>
+                <a href="https://play.google.com" target="_blank"><img src="/Hecipe-Frontend/ImageofWeb/ggplay.webp"
+                        class="badge-google"></a>
+                <a href="https://www.apple.com/app-store/" target="_blank"><img
+                        src="/Hecipe-Frontend/ImageofWeb/appstore.png" class="badge-apple"></a>
+            </div>
+        </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">Copyright © 2026 Hecipe.</div>
+            <div class="divider"></div>
+            <div class="policy-links"><a href="dieukhoan.html">Điều khoản dịch vụ</a><a href="chinhsach.html">Chính sách
+                    bảo mật</a></div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Lấy toàn bộ đường dẫn URL hiện tại
+            let currentPath = window.location.pathname;
+            let currentPage = currentPath.split('/').pop();
+
+            // Xử lý trang chủ
+            if (currentPage === '' || currentPage === 'index.html') {
+                currentPage = 'index.html';
+            }
+
+            // --- BƯỚC MỚI: QUY ĐỔI TRANG CON VỀ TRANG CHA ---
+            // Nếu URL có chứa 'recipe-detail' (đang ở trang chi tiết công thức)
+            if (currentPath.includes('recipe-detail')) {
+                // Ép JS hiểu trang hiện tại là recipes.html để bôi sáng mục Góc Bếp
+                currentPage = 'recipes.html';
+            }
+            // Tương tự cho phần Đi Chợ: Nếu đang ở trang sản phẩm, giỏ hàng, thanh toán...
+            else if (currentPath.includes('product') || currentPath.includes('cart') || currentPath.includes('checkout')) {
+                // Ép JS hiểu là đang ở shopNL.html để bôi sáng mục Đi Chợ
+                currentPage = 'shopNL.html';
+            }
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            // 2. Tắt tất cả class 'active' gán cứng trong HTML trước đó
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // 3. Quét từng thẻ <a> để tìm thẻ khớp với trang đã được quy đổi
+            navLinks.forEach((link) => {
+                const href = link.getAttribute('href');
+
+                // Bỏ qua các link trống hoặc đang dùng dấu #
+                if (!href || href === '#' || href.startsWith('#')) return;
+
+                const linkPage = href.split('/').pop();
+
+                // Nếu link khớp với trang đích
+                if (linkPage === currentPage) {
+                    // Làm sáng mục con
+                    link.classList.add('active');
+
+                    // Tìm ngược lên dropdown cha
+                    const parentDropdown = link.closest('.dropdown');
+                    if (parentDropdown) {
+                        const parentToggle = parentDropdown.querySelector('a');
+                        if (parentToggle) {
+                            parentToggle.classList.add('active');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
