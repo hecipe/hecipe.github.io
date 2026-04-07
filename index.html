@@ -42,76 +42,52 @@
         </div>
       </div>
     </header>
-    <nav class="navbar">
+        <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Trang Chủ</a></li>
-        <!--thêm class active để làm nổi bật trang hiện tại-->
-
+        <li><a href="index.html">Trang Chủ</a></li>
         <li class="dropdown">
-          <!--thêm class dropdown cho các mục có menu thả xuống-->
           <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <!--thêm ul với class dropdown-menu để chứa các mục con-->
             <li><a href="shopNL.html">Nguyên Liệu</a></li>
-            <li><a href="#">Gian Hàng Đối Tác</a></li>
-            <li><a href="#">Combo Tiết Kiệm</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
           </ul>
         </li>
-
         <li class="dropdown">
           <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Lộ Trình 7 Ngày</a></li>
-            <li><a href="#">Eat Clean & Diet</a></li>
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
             <li class="divider"></li>
-            <!--thêm dòng chia cách mục con-->
-            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
           </ul>
         </li>
-
         <li class="dropdown">
           <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
             <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
             <li><a href="#">Video Hướng Dẫn</a></li>
             <li><a href="#">Góc Y Khoa</a></li>
           </ul>
         </li>
-
         <li><a href="#">Khuyến Mãi</a></li>
         <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
-        <!-- cart always visible -->
         <div class="cart-box">
           <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
         </div>
-
-        <!-- buttons when not logged in -->
         <div id="authButtons" class="auth-buttons">
           <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
           <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
         </div>
-
-        <!-- profile/avatar shown only when logged in -->
         <div class="user-profile hidden" id="profileContainer">
-          <img
-            src="ImageofWeb/Nguyencaophi.jpg"
-            alt="User Avatar"
-            class="avatar"
-            id="avatarImg"
-          />
-          <!-- file chooser for avatar -->
-          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
           <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
-            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
-              <span id="displayUsername"></span>
-            </li>
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
             <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
             <li><a href="#">Lịch sử đơn hàng</a></li>
             <li><a href="#">Ví Voucher</a></li>
@@ -169,13 +145,56 @@
               Khám Phá Ngay <i class="fa-solid fa-arrow-right"></i>
           </a>
       </div>
-      <div class="hero-image">
-        <!--Liên kết với hình ảnh minh họa-->
-        <div class="circle-bg"></div>
-        <img
-          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-          alt="Healthy Food"
-        />
+      <!-- HERO BANNER — click để điều hướng, tự động chuyển slide -->
+      <div class="hero-banner-wrap">
+        <div class="hero-banner-slider" id="heroBannerSlider">
+
+          <a href="thucdon7d-detail1.html" class="hero-banner-slide active">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Thực đơn cân bằng"/>
+            <div class="hero-banner-overlay"></div>
+            <div class="hero-banner-info">
+              <span class="hero-banner-tag">🥗 Thực đơn tuần này</span>
+              <p class="hero-banner-title">Cân bằng dinh dưỡng 7 ngày</p>
+              <span class="hero-banner-cta">Xem ngay <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+
+          <a href="recipes.html" class="hero-banner-slide">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" alt="Eat Clean"/>
+            <div class="hero-banner-overlay"></div>
+            <div class="hero-banner-info">
+              <span class="hero-banner-tag">🌿 Eat Clean</span>
+              <p class="hero-banner-title">Các món ăn lành mạnh</p>
+              <span class="hero-banner-cta">Khám phá <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+
+          <a href="gianhangdt.html" class="hero-banner-slide">
+            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80" alt="Gian hàng đối tác"/>
+            <div class="hero-banner-overlay"></div>
+            <div class="hero-banner-info">
+              <span class="hero-banner-tag">🛒 Gian hàng đối tác</span>
+              <p class="hero-banner-title">Nguyên liệu tươi — giao trong 2 giờ</p>
+              <span class="hero-banner-cta">Mua ngay <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- Dots navigation -->
+        <div class="hero-banner-dots">
+          <button class="hb-dot active" onclick="goSlide(0)"></button>
+          <button class="hb-dot" onclick="goSlide(1)"></button>
+          <button class="hb-dot" onclick="goSlide(2)"></button>
+        </div>
+
+        <!-- Prev / Next arrows -->
+        <button class="hb-arrow hb-arrow--prev" onclick="shiftSlide(-1)" aria-label="Trước">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="hb-arrow hb-arrow--next" onclick="shiftSlide(1)" aria-label="Sau">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
       </div>
     </div>
   <section class="features-section">
@@ -483,3 +502,195 @@
   });
 </script>
 
+  <style>
+    /* ==============================
+       HERO BANNER (vòng tròn bên phải)
+       ============================== */
+    .hero-banner-wrap {
+      position: relative;
+      width: 580px;
+      height: 580px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 12px 40px rgba(74, 103, 65, 0.22);
+      /* thay thế .hero-image — giữ đúng kích thước gốc */
+    }
+    .hero-banner-slider {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .hero-banner-slide {
+      position: absolute;
+      inset: 0;
+      display: block;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    .hero-banner-slide.active { opacity: 1; }
+    .hero-banner-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 6s ease;
+    }
+    .hero-banner-slide.active img { transform: scale(1.06); }
+
+    /* gradient overlay từ dưới lên */
+    .hero-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(30, 50, 28, 0.72) 0%,
+        rgba(30, 50, 28, 0.10) 50%,
+        transparent 100%
+      );
+    }
+
+    /* text info ở đáy ảnh */
+    .hero-banner-info {
+      position: absolute;
+      bottom: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: 76%;
+      z-index: 1000;
+    }
+    .hero-banner-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.16);
+      color: #d4edcc;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(4px);
+    }
+    .hero-banner-title {
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.35;
+      margin: 0 0 10px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+    }
+    .hero-banner-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.92);
+      color: var(--primary-green);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 6px 16px;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-banner-slide:hover .hero-banner-cta {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* dots */
+    .hero-banner-dots {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 1000;
+    }
+    .hb-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.40);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .hb-dot.active {
+      background: #fff;
+      transform: scale(1.4);
+    }
+
+    /* arrows — ẩn, hiện khi hover */
+    .hb-arrow {
+      position: absolute;
+      top: 0;
+      transform: translateY(-50%);
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.88);
+      color: var(--primary-green);
+      font-size: 0.85rem;
+      cursor: pointer;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .hb-arrow--prev { left: 20px; }
+    .hb-arrow--next { right: 20px; }
+    .hero-banner-wrap:hover .hb-arrow { opacity: 1; }
+    .hb-arrow:hover {
+      background: #fff;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    /* responsive */
+    @media (max-width: 992px) {
+      .hero-banner-wrap { width: 380px; height: 380px; }
+    }
+    @media (max-width: 768px) {
+      .hero-banner-wrap { width: 300px; height: 300px; margin: 0 auto; }
+      .hero-banner-title { font-size: 0.88rem; }
+      .hero-banner-info { bottom: 48px; }
+    }
+    @media (max-width: 480px) {
+      .hero-banner-wrap { width: 260px; height: 260px; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      let cur = 0;
+      const total = 3;
+      let timer;
+
+      function goSlide(idx) {
+        const slides = document.querySelectorAll('.hero-banner-slide');
+        const dots   = document.querySelectorAll('.hb-dot');
+        if (!slides.length) return;
+        slides[cur].classList.remove('active');
+        dots[cur].classList.remove('active');
+        cur = ((idx % total) + total) % total;
+        slides[cur].classList.add('active');
+        dots[cur].classList.add('active');
+      }
+
+      window.goSlide   = goSlide;
+      window.shiftSlide = function (dir) {
+        clearInterval(timer);
+        goSlide(cur + dir);
+        startAuto();
+      };
+
+      function startAuto() {
+        timer = setInterval(function () { goSlide(cur + 1); }, 4200);
+      }
+
+      document.addEventListener('DOMContentLoaded', startAuto);
+    })();
+  </script>
+  <script src="search-unified.js" defer></script>

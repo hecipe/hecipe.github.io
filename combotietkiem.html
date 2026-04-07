@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Combo Tiết Kiệm - Hecipe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+  </head>
+  <body>
+
+    <header class="hero-header">
+      <div class="top-icons">
+        <a href="#" class="icon-link"><i class="far fa-user"></i></a>
+        <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+      </div>
+      <a href="index.html" class="brand-logo" style="color:#4A6741">hecipe</a>
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Tìm combo, công thức hoặc nguyên liệu..." />
+        </div>
+      </div>
+    </header>
+
+        <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="partner-hero">
+      <div class="partner-hero__content">
+        <span class="partner-hero__tag"><i class="fa-solid fa-boxes-stacked"></i> Mua Nhiều Giảm Sâu</span>
+        <h1 class="partner-hero__title">Giải pháp trọn gói,<br><span>tiết kiệm tối đa</span></h1>
+        <p class="partner-hero__subtitle">Gói gọn nhu cầu dinh dưỡng và chăm sóc sức khỏe của bạn. Mua theo Combo giúp tiết kiệm đến 30% chi phí và thời gian chọn lựa mỗi ngày.</p>
+        <div class="partner-hero__btns">
+          <a href="#san-pham" class="btn-primary">Săn Combo Ngay <i class="fa-solid fa-arrow-down"></i></a>
+          <a href="#san-pham" class="partner-hero__link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+      </div>
+      <div class="partner-hero__badges">
+        <div class="hero-badge">
+          <i class="fa-solid fa-piggy-bank"></i>
+          <span>Tiết kiệm<br><strong>lên đến 30%</strong></span>
+        </div>
+        <div class="hero-badge">
+          <i class="fa-solid fa-box-open"></i>
+          <span>Tiện lợi<br><strong>mua 1 được tất cả</strong></span>
+        </div>
+        <div class="hero-badge">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Thực đơn<br><strong>lên sẵn khoa học</strong></span>
+        </div>
+        <div class="hero-badge">
+          <i class="fa-solid fa-motorcycle"></i>
+          <span>Freeship<br><strong>mọi đơn Combo</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="flash-sale-banner" style="background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%); margin-top: 0;">
+      <div class="flash-sale-banner__inner">
+        <div class="flash-label">
+          <i class="fa-solid fa-bolt"></i> GIỜ VÀNG
+        </div>
+        <p>Giảm thêm <strong>15%</strong> cho tất cả Combo Dinh Dưỡng — Áp dụng mã: <strong>HECIPESAVE15</strong>. Kết thúc sau:</p>
+        <div class="countdown" id="countdown">
+          <div class="countdown-box"><span id="cnt-h">05</span><label>Giờ</label></div>
+          <div class="countdown-sep" style="color: white;">:</div>
+          <div class="countdown-box"><span id="cnt-m">42</span><label>Phút</label></div>
+          <div class="countdown-sep" style="color: white;">:</div>
+          <div class="countdown-box"><span id="cnt-s">18</span><label>Giây</label></div>
+        </div>
+        <a href="#san-pham" class="btn-flash">Mua ngay</a>
+      </div>
+    </section>
+
+    <section class="category-tabs-section" id="san-pham">
+      <div class="category-tabs-wrapper">
+        <button class="cat-tab active" data-category="all"><i class="fa-solid fa-border-all"></i> Tất cả Combo</button>
+        <button class="cat-tab" data-category="family"><i class="fa-solid fa-people-roof"></i> Combo Mâm Cơm Gia Đình</button>
+        <button class="cat-tab" data-category="diet"><i class="fa-solid fa-leaf"></i> Combo Chế Độ Ăn</button>
+        <button class="cat-tab" data-category="healthkit"><i class="fa-solid fa-kit-medical"></i> Bộ Chăm Sóc Sức Khoẻ</button>
+      </div>
+    </section>
+
+    <main class="shop-main">
+
+      <section class="product-section" id="section-family" data-section="family">
+        <div class="section-header">
+          <div class="section-header__left">
+            <span class="section-tag" style="background: #f1c40f; color: #333;"><i class="fa-solid fa-people-roof"></i></span>
+            <div>
+              <h2 class="section-title">Combo Mâm Cơm Gia Đình</h2>
+              <p class="section-subtitle">Đầy đủ nguyên liệu tươi ngon cho bữa cơm nhà 3-4 người. Tính sẵn Calories.</p>
+            </div>
+          </div>
+          <a href="#" class="see-all-link">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card" data-category="family">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=280&fit=crop" alt="Mâm Cơm Thanh Mát" loading="lazy"/>
+              <span class="product-badge product-badge--sale">-25%</span>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">🛒 Hecipe x Green Farm</span>
+              <h3 class="product-name">Combo Mâm Cơm Giải Nhiệt (4 người)</h3>
+              <p class="product-desc">Gồm: Cá lóc nấu canh chua, Thịt luộc cà pháo, Rau muống xào tỏi. Đã sơ chế sạch.</p>
+              <div class="product-meta">
+                <span class="product-meta__item"><i class="fa-solid fa-users"></i> 4 người</span>
+                <span class="product-meta__item"><i class="fa-solid fa-box-open"></i> 5 nguyên liệu</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">195.000₫</span>
+                  <span class="price-old">260.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card" data-category="family">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&h=280&fit=crop" alt="Lẩu Cuối Tuần" loading="lazy"/>
+              <span class="product-badge product-badge--hot">BÁN CHẠY</span>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">🛒 Hecipe x Organic+</span>
+              <h3 class="product-name">Combo Lẩu Nấm Hải Sản Cuối Tuần</h3>
+              <p class="product-desc">Trọn gói: Nước lẩu cô đặc, Tôm sú, Mực ống, 5 loại nấm tươi và rau ăn kèm.</p>
+              <div class="product-meta">
+                <span class="product-meta__item"><i class="fa-solid fa-users"></i> 4-5 người</span>
+                <span class="product-meta__item"><i class="fa-solid fa-box-open"></i> 8 nguyên liệu</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">389.000₫</span>
+                  <span class="price-old">450.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-section" id="section-diet" data-section="diet">
+        <div class="section-header">
+          <div class="section-header__left">
+            <span class="section-tag" style="background: #27ae60; color: white;"><i class="fa-solid fa-leaf"></i></span>
+            <div>
+              <h2 class="section-title">Combo Chế Độ Ăn Đặc Biệt</h2>
+              <p class="section-subtitle">Gói thực phẩm thiết kế riêng cho người giảm cân, Eat Clean hoặc tiểu đường.</p>
+            </div>
+          </div>
+          <a href="#" class="see-all-link">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card ready-card" data-category="diet">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=280&fit=crop" alt="Combo Eat Clean 7 Ngày" loading="lazy"/>
+              <span class="product-badge product-badge--sale">-30%</span>
+              <div class="ready-time-tag"><i class="fa-solid fa-calendar-days"></i> Kế hoạch 7 ngày</div>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">🥗 Chef's Kitchen</span>
+              <h3 class="product-name">Combo 14 Bữa Eat Clean Nấu Sẵn</h3>
+              <p class="product-desc">Giao tận nơi mỗi sáng. Thực đơn thay đổi mỗi ngày, cân bằng Macro, không đường tinh luyện.</p>
+              <div class="nutrition-chips">
+                <span class="n-chip"><i class="fa-solid fa-fire"></i> ~1200 kcal/ngày</span>
+                <span class="n-chip n-chip--clean">Eat Clean</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">980.000₫</span>
+                  <span class="price-old">1.400.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card ready-card" data-category="diet">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=280&fit=crop" alt="Combo Salad" loading="lazy"/>
+              <span class="product-badge product-badge--new">MỚI</span>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">🌿 Hecipe x Organic+</span>
+              <h3 class="product-name">Bộ Nguyên Liệu Trộn Salad 5 Ngày</h3>
+              <p class="product-desc">Rau xà lách mix, cà chua bi, dầu oliu, giấm táo và 3 loại sốt tự làm ít béo.</p>
+              <div class="nutrition-chips">
+                <span class="n-chip"><i class="fa-solid fa-carrot"></i> Thuần chay</span>
+                <span class="n-chip n-chip--healthy">High Fiber</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">320.000₫</span>
+                  <span class="price-old">380.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-section" id="section-healthkit" data-section="healthkit">
+        <div class="section-header">
+          <div class="section-header__left">
+            <span class="section-tag" style="background: #2980b9; color: white;"><i class="fa-solid fa-kit-medical"></i></span>
+            <div>
+              <h2 class="section-title">Bộ Chăm Sóc Sức Khoẻ Toàn Diện</h2>
+              <p class="section-subtitle">Mua combo thiết bị y tế gia đình với giá ưu đãi cực lớn từ đối tác chính hãng.</p>
+            </div>
+          </div>
+          <a href="#" class="see-all-link">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="products-grid products-grid--health">
+          <div class="product-card health-card" data-category="healthkit">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=280&fit=crop" alt="Combo Đo Chỉ Số" loading="lazy"/>
+              <span class="product-badge product-badge--cert"><i class="fa-solid fa-piggy-bank"></i> Tiết kiệm 450K</span>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">⚡ Hecipe x VitaGear</span>
+              <h3 class="product-name">Bộ Cân Thông Minh & Máy Đo Huyết Áp</h3>
+              <p class="product-desc">Gồm: 1 Cân đo 13 chỉ số cơ thể VG-Pro S1 + 1 Máy đo huyết áp bắp tay tự động. Bảo hành 2 năm.</p>
+              <div class="product-specs">
+                <span class="spec-chip"><i class="fa-solid fa-link"></i> Đồng bộ Hecipe App</span>
+                <span class="spec-chip"><i class="fa-solid fa-shield-halved"></i> Bảo hành 24T</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">1.390.000₫</span>
+                  <span class="price-old">1.840.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card health-card" data-category="healthkit">
+            <div class="product-card__img-wrap">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&h=280&fit=crop" alt="Combo Detox" loading="lazy"/>
+              <span class="product-badge product-badge--cert"><i class="fa-solid fa-gift"></i> Tặng Kèm Sách</span>
+              <button class="wishlist-btn" title="Yêu thích"><i class="far fa-heart"></i></button>
+            </div>
+            <div class="product-card__body">
+              <span class="product-partner">🥗 Hecipe x WellnessVN</span>
+              <h3 class="product-name">Bộ Khởi Đầu Detox Ép Chậm</h3>
+              <p class="product-desc">Gồm: 1 Máy ép chậm NutriPress Pro + Combo Cần Tây Táo (3 ngày) + Tặng Sách Công Thức Nước Ép Trị Liệu.</p>
+              <div class="product-specs">
+                <span class="spec-chip"><i class="fa-solid fa-book"></i> Quà tặng kèm</span>
+                <span class="spec-chip"><i class="fa-solid fa-truck-fast"></i> Giao 2H (Nguyên liệu)</span>
+              </div>
+              <div class="product-card__footer">
+                <div class="product-price">
+                  <span class="price-current">2.590.000₫</span>
+                  <span class="price-old">3.400.000₫</span>
+                </div>
+                <button class="add-cart-btn"><i class="fa-solid fa-cart-plus"></i> Thêm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <section class="why-us" style="background-color: #f9fbf9;">
+      <div class="why-us__inner">
+        <h2 class="why-us__title">Lợi Ích Khi Mua Combo Tại Hecipe</h2>
+        <div class="why-us__grid">
+          <div class="why-card">
+            <div class="why-card__icon"><i class="fa-solid fa-piggy-bank" style="color:#e74c3c;"></i></div>
+            <h3>Tiết Kiệm Tối Đa</h3>
+            <p>Cam kết rẻ hơn từ 15% đến 30% so với việc mua lẻ từng sản phẩm nguyên liệu hay thiết bị.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-card__icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <h3>Không Cần Nghĩ Ngợi</h3>
+            <p>Thực đơn, công thức và nguyên liệu đã được tính toán đồng bộ, bạn không tốn thời gian lên list đi chợ.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-card__icon"><i class="fa-solid fa-microscope"></i></div>
+            <h3>Dinh Dưỡng Chuẩn Xác</h3>
+            <p>Mỗi combo nguyên liệu hoặc món ăn nấu sẵn đều được chuyên gia kiểm duyệt gắt gao về lượng Kcal & Macro.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-card__icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <h3>Giao Hàng Đồng Bộ</h3>
+            <p>Giao toàn bộ combo đến tay bạn trong 1 lần duy nhất, đảm bảo nguyên liệu tươi mới, thiết bị an toàn.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="custom-shape-divider-top">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+      </svg>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <a href="index.html" title="Về trang chủ">
+            <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+          </a>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Về Hecipe</h4>
+            <a href="duan.html">Dự án</a>
+            <a href="blog.html">Blog</a>
+          </div>
+          <div class="footer-col">
+            <h4>Khám phá</h4>
+            <a href="congthuc.html">Công thức nổi bật</a>
+            <a href="thucdon.html">Thực đơn hôm nay</a>
+            <a href="chedo.html">Chế độ ăn khỏe</a>
+            <a href="goiy.html">Gợi ý cho bạn</a>
+          </div>
+          <div class="footer-col">
+            <h4>Trợ giúp</h4>
+            <a href="hotro.html">Yêu cầu hỗ trợ</a>
+            <a href="lienhe.html">Liên hệ</a>
+          </div>
+          <div class="footer-col">
+            <h4>Social</h4>
+            <a href="fb.html"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+            <a href="pin.html"><i class="fa-brands fa-pinterest-p"></i> Pinterest</a>
+            <a href="ig.html"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="tw.html"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+          </div>
+        </div>
+        <div class="footer-app">
+          <h4>Download our app:</h4>
+          <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+          <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright">Copyright © 2026 Hecipe.</div>
+        <div class="divider"></div>
+        <div class="policy-links">
+          <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+          <a href="chinhsach.html">Chính sách bảo mật</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      /* Auth UI */
+      function toggleAuthUI() {
+        const logged = localStorage.getItem('loggedIn') === 'true';
+        const profile = document.getElementById('profileContainer');
+        const authBtns = document.getElementById('authButtons');
+        const display = document.getElementById('displayUsername');
+        if (profile) profile.classList.toggle('hidden', !logged);
+        if (authBtns) authBtns.classList.toggle('hidden', logged);
+        if (logged) {
+          const storedAvatar = localStorage.getItem('avatar');
+          if (storedAvatar) { const img = document.getElementById('avatarImg'); if (img) img.src = storedAvatar; }
+          if (display) display.textContent = localStorage.getItem('userId') || '';
+        } else {
+          if (display) display.textContent = '';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        toggleAuthUI();
+
+        const logoutLink = document.getElementById('logoutLink');
+        if (logoutLink) {
+          logoutLink.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('loggedIn'); toggleAuthUI(); });
+        }
+
+        /* ===== COUNTDOWN TIMER ===== */
+        let totalSeconds = 5 * 3600 + 42 * 60 + 18;
+        const hEl = document.getElementById('cnt-h');
+        const mEl = document.getElementById('cnt-m');
+        const sEl = document.getElementById('cnt-s');
+        function tick() {
+          if (totalSeconds <= 0) return;
+          totalSeconds--;
+          const h = Math.floor(totalSeconds / 3600);
+          const m = Math.floor((totalSeconds % 3600) / 60);
+          const s = totalSeconds % 60;
+          hEl.textContent = String(h).padStart(2, '0');
+          mEl.textContent = String(m).padStart(2, '0');
+          sEl.textContent = String(s).padStart(2, '0');
+        }
+        setInterval(tick, 1000);
+
+        /* ===== CATEGORY TABS FILTER ===== */
+        const tabs = document.querySelectorAll('.cat-tab');
+        const sections = document.querySelectorAll('.product-section');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const cat = tab.dataset.category;
+            sections.forEach(sec => {
+              if (cat === 'all' || sec.dataset.section === cat) {
+                sec.style.display = '';
+              } else {
+                sec.style.display = 'none';
+              }
+            });
+          });
+        });
+
+        /* ===== WISHLIST TOGGLE ===== */
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('far');
+            icon.classList.toggle('fas');
+            icon.style.color = icon.classList.contains('fas') ? '#e74c3c' : '';
+          });
+        });
+
+        /* ===== ADD TO CART FEEDBACK ===== */
+        document.querySelectorAll('.add-cart-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã thêm';
+            btn.style.background = '#27ae60';
+            setTimeout(() => {
+              btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Thêm';
+              btn.style.background = '';
+            }, 1800);
+          });
+        });
+      });
+    </script>
+  <script src="search-unified.js" defer></script>
+</body>
+</html>

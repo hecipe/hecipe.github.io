@@ -1,19 +1,33 @@
 <!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Công thức & Video - Hecipe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="icon" href="../ImageofWeb/Logo-Photoroom.png" type="image/png" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hecipe - Smart Cooking</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--Liên kết với file all.min.css chứa các icon Font Awesome-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!--Liên kiết với file style.css-->
+
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+  </head>
+  <body>
     <header class="hero-header">
       <div class="top-icons">
         <a href="#" class="icon-link">
           <i class="far fa-user"></i>
-        </a>    
+        </a>
         <a href="#" class="icon-link">
           <i class="fas fa-shopping-cart"></i>
         </a>
@@ -28,52 +42,76 @@
         </div>
       </div>
     </header>
-        <nav class="navbar">
+    <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="index.html" class="active">Trang Chủ</a></li>
+        <!--thêm class active để làm nổi bật trang hiện tại-->
+
         <li class="dropdown">
+          <!--thêm class dropdown cho các mục có menu thả xuống-->
           <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
+            <!--thêm ul với class dropdown-menu để chứa các mục con-->
             <li><a href="shopNL.html">Nguyên Liệu</a></li>
-            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
-            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+            <li><a href="#">Gian Hàng Đối Tác</a></li>
+            <li><a href="#">Combo Tiết Kiệm</a></li>
           </ul>
         </li>
+
         <li class="dropdown">
           <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
-            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li><a href="#">Lộ Trình 7 Ngày</a></li>
+            <li><a href="#">Eat Clean & Diet</a></li>
             <li class="divider"></li>
-            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+            <!--thêm dòng chia cách mục con-->
+            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
           </ul>
         </li>
+
         <li class="dropdown">
           <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
             <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
             <li><a href="#">Video Hướng Dẫn</a></li>
             <li><a href="#">Góc Y Khoa</a></li>
           </ul>
         </li>
+
         <li><a href="#">Khuyến Mãi</a></li>
         <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
+        <!-- cart always visible -->
         <div class="cart-box">
           <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
         </div>
+
+        <!-- buttons when not logged in -->
         <div id="authButtons" class="auth-buttons">
           <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
           <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
         </div>
+
+        <!-- profile/avatar shown only when logged in -->
         <div class="user-profile hidden" id="profileContainer">
-          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
-          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <img
+            src="ImageofWeb/Nguyencaophi.jpg"
+            alt="User Avatar"
+            class="avatar"
+            id="avatarImg"
+          />
+          <!-- file chooser for avatar -->
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
           <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
-            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
+              <span id="displayUsername"></span>
+            </li>
             <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
             <li><a href="#">Lịch sử đơn hàng</a></li>
             <li><a href="#">Ví Voucher</a></li>
@@ -81,16 +119,12 @@
           </ul>
         </div>
       </div>
-    </nav> 
-    
-    
 
   <div class="custom-shape-divider-top">
     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
     </svg>
   </div>
-
   <footer class="footer">
 
   <!-- KHỐI TRÊN -->
@@ -98,8 +132,8 @@
 
     <!-- BÊN TRÁI: LOGO -->
     <div class="footer-logo">
-      <a href="../index.html" title="Về trang chủ">
-        <img src="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
+      <a href="index.html" title="Về trang chủ">
+        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
       </a>
     </div>
 
@@ -120,26 +154,31 @@
    <a href="goiy.html">Gợi ý cho bạn</a>
 </div>
 
+
       <div class="footer-col">
         <h4>Trợ giúp</h4>
         <a href="hotro.html">Yêu cầu hỗ trợ</a>
         <a href="lienhe.html">Liên hệ</a>
       </div>
 
+<!-- Viết icon -->
       <div class="footer-col">
         <h4>Social</h4>
   <a href="fb.html">
     <i class="fa-brands fa-facebook-f"></i>
     Facebook
   </a>
+
   <a href="pin.html">
     <i class="fa-brands fa-pinterest-p"></i>
     Pinterest
   </a>
+
   <a href="ig.html">
     <i class="fa-brands fa-instagram"></i>
     Instagram
   </a>
+
   <a href="tw.html">
     <i class="fa-brands fa-tiktok"></i>
     TikTok
@@ -148,20 +187,110 @@
 
       <div class="footer-app">
    <h4>Download our app:</h4>
-   <a href="https://play.google.com" target="_blank"><img src="/Hecipe-Frontend/ImageofWeb/ggplay.webp" class="badge-google"></a>
-   <a href="https://www.apple.com/app-store/" target="_blank"><img src="/Hecipe-Frontend/ImageofWeb/appstore.png" class="badge-apple"></a>
+
+   <a href="https://play.google.com" target="_blank">
+      <img src="ImageofWeb/ggplay.webp" class="badge-google" >
+   </a>
+
+   <a href="https://www.apple.com/app-store/" target="_blank">
+      <img src="ImageofWeb/appstore.png" class="badge-apple">
+   </a>
 </div>
     </div>
   </div>
 
+
+  <!-- KHỐI DƯỚI -->
   <div class="footer-bottom">
-   <div class="copyright">Copyright © 2026 Hecipe.</div>
+   <div class="copyright">
+      Copyright © 2026 Hecipe.
+   </div>
+
    <div class="divider"></div>
-   <div class="policy-links"><a href="dieukhoan.html">Điều khoản dịch vụ</a><a href="chinhsach.html">Chính sách bảo mật</a></div>
+
+   <div class="policy-links">
+      <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+      <a href="chinhsach.html">Chính sách bảo mật</a>
+   </div>
 </div>
+
+
 </footer>
 
-  <script>
+    <script>
+      /*
+       * Quản lý trạng thái xác thực & ảnh đại diện cho tất cả trang.
+       * Dữ liệu lưu tạm trong localStorage phục vụ demo.
+       * - toggleAuthUI: hiển thị/ẩn nút Đăng nhập/Đăng ký và profile khi đã đăng nhập.
+       * - lắng nghe avatarInput để gọi API upload và cập nhật ngay giao diện.
+       */
+      function toggleAuthUI() {
+        const logged = localStorage.getItem('loggedIn') === 'true';
+        const profile = document.getElementById('profileContainer');
+        const authBtns = document.getElementById('authButtons');
+        const display = document.getElementById('displayUsername');
+        if (profile) profile.classList.toggle('hidden', !logged);
+        if (authBtns) authBtns.classList.toggle('hidden', logged);
+        if (logged) {
+          // khi đã đăng nhập, kéo avatar từ localStorage
+          const storedAvatar = localStorage.getItem('avatar');
+          if (storedAvatar) {
+            const img = document.getElementById('avatarImg');
+            if (img) img.src = storedAvatar;
+          }
+          if (display) display.textContent = localStorage.getItem('userId') || '';
+        } else {
+          if (display) display.textContent = '';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // xử lý đăng xuất
+        const logoutLink = document.getElementById('logoutLink');
+        if (logoutLink) {
+          logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedIn');
+            toggleAuthUI();
+          });
+        }
+
+        // nghe sự kiện đổi file avatar
+        const avatarInput = document.getElementById('avatarInput');
+        if (avatarInput) {
+          avatarInput.addEventListener('change', async function() {
+            const file = this.files[0];
+            if (!file) return;
+            const userId = localStorage.getItem('userId') || 'ND0001';
+            const formData = new FormData();
+            formData.append('avatar', file);
+            formData.append('userId', userId);
+            try {
+              const resp = await fetch('http://localhost:3000/api/users/upload-avatar', {
+                method: 'POST',
+                body: formData
+              });
+              const result = await resp.json();
+              if (result.success) {
+                const avatarPath = result.data?.avatarUrl || result.avatarUrl;
+                if (avatarPath) {
+                  const newUrl = `http://localhost:3000/${avatarPath}`;
+                  document.getElementById('avatarImg').src = newUrl;
+                  localStorage.setItem('avatar', newUrl);
+                  alert('Cập nhật ảnh đại diện thành công!');
+                }
+              }
+            } catch (err) {
+              console.error('Lỗi upload:', err);
+            }
+          });
+        }
+
+        // khởi động UI khi trang tải xong
+        toggleAuthUI();
+      });
+    </script>
+    <script>
   document.addEventListener('DOMContentLoaded', () => {
     // 1. Lấy toàn bộ đường dẫn URL hiện tại
     let currentPath = window.location.pathname;
@@ -214,7 +343,7 @@
       }
     });
   });
-  </script>
-<script src="../search-unified.js" defer></script>
-</body>
-</html>
+</script>
+
+<script src="search-unified.js" defer></script>
+

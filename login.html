@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
 </head>
 <body>
     <header class="hero-header">
@@ -29,76 +30,52 @@
       </div>
     </header>
 
-    <nav class="navbar">
+        <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="#" class="active">Trang Chủ</a></li>
-        <!--thêm class active để làm nổi bật trang hiện tại-->
-
+        <li><a href="index.html">Trang Chủ</a></li>
         <li class="dropdown">
-          <!--thêm class dropdown cho các mục có menu thả xuống-->
           <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <!--thêm ul với class dropdown-menu để chứa các mục con-->
-            <li><a href="#">Nguyên Liệu</a></li>
-            <li><a href="#">Gian Hàng Đối Tác</a></li>
-            <li><a href="#">Combo Tiết Kiệm</a></li>
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
           </ul>
         </li>
-
         <li class="dropdown">
           <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Lộ Trình 7 Ngày</a></li>
-            <li><a href="#">Eat Clean & Diet</a></li>
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
             <li class="divider"></li>
-            <!--thêm dòng chia cách mục con-->
-            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
           </ul>
         </li>
-
         <li class="dropdown">
           <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
-          <!--thêm icon mũi tên xuống bên cạnh tiêu đề mục-->
           <ul class="dropdown-menu">
-            <li><a href="#">Công Thức Nấu Ăn</a></li>
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
             <li><a href="#">Video Hướng Dẫn</a></li>
             <li><a href="#">Góc Y Khoa</a></li>
           </ul>
         </li>
-
         <li><a href="#">Khuyến Mãi</a></li>
         <li><a href="onboarding.html">Khảo sát</a></li>
       </ul>
 
       <div class="user-actions">
-        <!-- cart always visible -->
         <div class="cart-box">
           <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
         </div>
-
-        <!-- buttons when not logged in -->
         <div id="authButtons" class="auth-buttons">
           <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
           <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
         </div>
-
-        <!-- profile/avatar shown only when logged in -->
         <div class="user-profile hidden" id="profileContainer">
-          <img
-            src="ImageofWeb/Nguyencaophi.jpg"
-            alt="User Avatar"
-            class="avatar"
-            id="avatarImg"
-          />
-          <!-- file chooser for avatar -->
-          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
           <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
           <ul class="profile-dropdown">
-            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;">
-              <span id="displayUsername"></span>
-            </li>
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
             <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
             <li><a href="#">Lịch sử đơn hàng</a></li>
             <li><a href="#">Ví Voucher</a></li>
@@ -355,5 +332,6 @@
     });
   });
 </script>
-  </body>
+  <script src="search-unified.js" defer></script>
+</body>
 </html>

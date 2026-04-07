@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lộ Trình 7 Ngày - Hecipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ================================================
+       LỘ TRÌNH 7 NGÀY — Inline styles (append to style.css if needed)
+       ================================================ */
+
+    /* ---------- PAGE HERO ---------- */
+    .plan-hero {
+      background: linear-gradient(135deg, #2C3E2D 0%, #4A6741 55%, #7aaa6a 100%);
+      padding: 52px 6rem 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-hero::before {
+      content:''; position:absolute; width:420px; height:420px;
+      background:rgba(255,255,255,0.04); border-radius:50%;
+      top: 0; right:-80px; pointer-events:none;
+    }
+    .plan-hero__left { max-width: 580px; }
+    .plan-hero__tag {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,0.14); color:#c8e6c0;
+      font-size:.82rem; font-weight:700; padding:5px 15px;
+      border-radius:50px; margin-bottom:18px; letter-spacing:.4px;
+      text-transform:uppercase;
+    }
+    .plan-hero__title {
+      font-family:'Playfair Display',serif; font-size:2.8rem;
+      color:#fff; line-height:1.2; margin-bottom:16px;
+    }
+    .plan-hero__title span { color:#a8d99c; }
+    .plan-hero__subtitle {
+      color:rgba(255,255,255,.8); font-size:1rem;
+      line-height:1.7; margin-bottom:28px; max-width:500px;
+    }
+    /* Filter diet chips */
+    .diet-filter {
+      display:flex; flex-wrap:wrap; gap:10px; margin-bottom:0;
+    }
+    .diet-chip {
+      padding:8px 18px; border:2px solid rgba(255,255,255,.25);
+      background:rgba(255,255,255,.1); color:rgba(255,255,255,.85);
+      border-radius:50px; font-family:'Quicksand',sans-serif;
+      font-weight:600; font-size:.88rem; cursor:pointer;
+      transition:.25s; backdrop-filter:blur(4px);
+    }
+    .diet-chip:hover { background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.5); }
+    .diet-chip.active {
+      background:#fff; color:var(--primary-green);
+      border-color:#fff; box-shadow:0 3px 10px rgba(0,0,0,.15);
+    }
+    /* Weekly stats right side */
+    .plan-hero__stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:14px;
+      flex-shrink:0;
+    }
+    .stat-box {
+      background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.15);
+      border-radius:16px; padding:18px 22px; text-align:center;
+      backdrop-filter:blur(8px); transition:.3s;
+    }
+    .stat-box:hover { background:rgba(255,255,255,.17); transform:translateY(-3px); }
+    .stat-box__val {
+      font-family:'Inter',sans-serif; font-size:1.7rem;
+      font-weight:800; color:#fff; line-height:1;
+    }
+    .stat-box__val span { font-size:.85rem; font-weight:500; }
+    .stat-box__label { color:rgba(255,255,255,.65); font-size:.78rem; margin-top:4px; }
+
+    /* ---------- DAY NAV BAR ---------- */
+    .day-nav {
+      background:#fff; border-bottom:1px solid var(--sage-light);
+      position:sticky; top: 0; z-index: 1000;
+      box-shadow:0 2px 8px rgba(0,0,0,.05);
+    }
+    .day-nav__inner {
+      display:flex; align-items:stretch; overflow-x:auto;
+      scrollbar-width:none; padding:0 6rem;
+    }
+    .day-nav__inner::-webkit-scrollbar { display:none; }
+    .day-btn {
+      display:flex; flex-direction:column; align-items:center;
+      padding:14px 26px; border:none; background:transparent;
+      font-family:'Quicksand',sans-serif; font-weight:600;
+      cursor:pointer; border-bottom:3px solid transparent;
+      white-space:nowrap; transition:.2s; position:relative;
+      gap:3px; flex-shrink:0;
+    }
+    .day-btn__label { font-size:.78rem; color:var(--text-light); text-transform:uppercase; letter-spacing:.5px; }
+    .day-btn__name  { font-size:1rem; color:var(--text-dark); }
+    .day-btn__kcal  { font-size:.75rem; color:var(--text-light); }
+    .day-btn.active {
+      border-bottom-color:var(--primary-green);
+    }
+    .day-btn.active .day-btn__name { color:var(--primary-green); }
+    .day-btn:hover:not(.active) { background:var(--sage-light); }
+
+    /* ---------- MAIN LAYOUT ---------- */
+    .plan-body {
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:32px;
+      max-width:1400px;
+      margin:0 auto;
+      padding:36px 6rem 64px;
+    }
+
+    /* ---------- DAILY NUTRITION SUMMARY BAR ---------- */
+    .day-summary {
+      background:#fff; border-radius:20px; padding:24px 28px;
+      box-shadow:var(--shadow); border:1px solid rgba(74,103,65,.08);
+      margin-bottom:28px; display:flex; align-items:center;
+      gap:0; flex-wrap:wrap;
+    }
+    .day-summary__heading {
+      font-family:'Playfair Display',serif; font-size:1.5rem;
+      color:var(--text-dark); flex:1; min-width:200px;
+    }
+    .day-summary__heading span { color:var(--primary-green); }
+    .macro-bars { display:flex; gap:24px; flex-wrap:wrap; }
+    .macro-item { text-align:center; }
+    .macro-item__name { font-size:.72rem; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px; }
+    .macro-ring {
+      width:62px; height:62px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; margin:0 auto 6px;
+    }
+    .macro-ring svg { position:absolute; top: 0; left:0; transform:rotate(-90deg); }
+    .macro-ring__val { font-size:.85rem; font-weight:700; color:var(--text-dark); position:relative; z-index: 1000; }
+    .macro-ring__unit { font-size:.6rem; color:var(--text-light); }
+    .macro-item__goal { font-size:.7rem; color:var(--text-light); }
+    .kcal-total {
+      display:flex; flex-direction:column; align-items:center;
+      padding:0 28px; border-right:1px solid var(--sage-light); margin-right:28px;
+    }
+    .kcal-total__val { font-family:'Inter',sans-serif; font-size:2rem; font-weight:800; color:var(--primary-green); line-height:1; }
+    .kcal-total__label { font-size:.75rem; color:var(--text-light); margin-top:3px; }
+    .kcal-total__goal { font-size:.75rem; color:var(--text-light); }
+
+    /* ---------- MEAL CARDS ---------- */
+    .meals-list { display:flex; flex-direction:column; gap:20px; }
+
+    .meal-section { background:#fff; border-radius:20px; overflow:hidden; box-shadow:var(--shadow); border:1px solid rgba(74,103,65,.08); }
+    .meal-section__header {
+      display:flex; align-items:center; gap:14px;
+      padding:18px 24px; border-bottom:1px solid var(--sage-light);
+      cursor:pointer; user-select:none;
+    }
+    .meal-section__icon {
+      width:40px; height:40px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0;
+    }
+    .meal-section__icon--breakfast { background:#fff3e0; color:#e67e22; }
+    .meal-section__icon--lunch     { background:#e8f5e9; color:var(--primary-green); }
+    .meal-section__icon--dinner    { background:#ede7f6; color:#6c3483; }
+    .meal-section__icon--snack     { background:#fce4ec; color:#c0392b; }
+    .meal-section__title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--text-dark); flex:1; }
+    .meal-section__kcal  { font-size:.85rem; font-weight:700; color:var(--primary-green); }
+    .meal-section__toggle { color:var(--text-light); font-size:.85rem; transition:.3s; }
+    .meal-section.collapsed .meal-section__toggle { transform:rotate(-90deg); }
+
+    .meal-section__body { padding:0 24px 20px; }
+    .meal-section.collapsed .meal-section__body { display:none; }
+
+    /* Individual dish row */
+    .dish-row {
+      display:flex; align-items:center; gap:16px;
+      padding:14px 0; border-bottom:1px dashed var(--sage-light);
+    }
+    .dish-row:last-child { border-bottom:none; }
+    .dish-img {
+      width:64px; height:64px; border-radius:12px;
+      object-fit:cover; flex-shrink:0;
+    }
+    .dish-info { flex:1; min-width:0; }
+    .dish-name { font-weight:700; font-size:.95rem; color:var(--text-dark); margin-bottom:3px; }
+    .dish-desc { font-size:.8rem; color:var(--text-light); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .dish-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:5px; }
+    .dish-tag {
+      font-size:.68rem; font-weight:600; padding:2px 8px;
+      border-radius:50px; background:var(--sage-light); color:var(--primary-green);
+    }
+    .dish-tag--time { background:#fff3e0; color:#d35400; }
+    .dish-macro {
+      display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;
+    }
+    .dish-kcal { font-size:1rem; font-weight:700; color:var(--primary-green); }
+    .dish-macros-mini { font-size:.72rem; color:var(--text-light); }
+    .dish-swap-btn {
+      background:none; border:1px solid var(--sage-light);
+      border-radius:50%; width:30px; height:30px; cursor:pointer;
+      color:var(--text-light); font-size:.78rem; display:flex;
+      align-items:center; justify-content:center; transition:.2s; flex-shrink:0;
+    }
+    .dish-swap-btn:hover { background:var(--sage-light); color:var(--primary-green); border-color:var(--primary-green); }
+
+    /* ---------- SIDEBAR ---------- */
+    .plan-sidebar { display:flex; flex-direction:column; gap:24px; }
+
+    /* Progress tracker */
+    .sidebar-card {
+      background:#fff; border-radius:20px; padding:24px;
+      box-shadow:var(--shadow); border:1px solid rgba(74,103,65,.08);
+    }
+    .sidebar-card__title {
+      font-family:'Playfair Display',serif; font-size:1.1rem;
+      color:var(--text-dark); margin-bottom:18px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .sidebar-card__title i { color:var(--primary-green); }
+
+    /* Weekly progress dots */
+    .week-progress { display:flex; justify-content:space-between; }
+    .prog-day { display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .prog-dot {
+      width:32px; height:32px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.7rem; font-weight:700; transition:.2s;
+      cursor:pointer;
+    }
+    .prog-dot--done  { background:var(--primary-green); color:#fff; }
+    .prog-dot--today { background:var(--primary-green); color:#fff; outline:3px solid #a8d99c; }
+    .prog-dot--future{ background:var(--sage-light); color:var(--text-light); }
+    .prog-day__lbl   { font-size:.68rem; color:var(--text-light); font-weight:600; }
+
+    /* Grocery list */
+    .grocery-category { margin-bottom:16px; }
+    .grocery-cat__title {
+      font-size:.75rem; font-weight:700; color:var(--text-light);
+      text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;
+      display:flex; align-items:center; gap:6px;
+    }
+    .grocery-item {
+      display:flex; align-items:center; gap:10px;
+      padding:7px 0; border-bottom:1px solid #f5f5f5; font-size:.88rem;
+    }
+    .grocery-item:last-child { border-bottom:none; }
+    .grocery-item input[type=checkbox] { accent-color:var(--primary-green); width:16px; height:16px; cursor:pointer; }
+    .grocery-item label { cursor:pointer; flex:1; color:var(--text-dark); }
+    .grocery-item span { font-size:.78rem; color:var(--text-light); }
+    .grocery-item input:checked + label { text-decoration:line-through; color:var(--text-light); }
+
+    /* Hydration tracker */
+    .hydration-track { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+    .water-cup {
+      width:34px; height:34px; border-radius:8px;
+      border:2px solid var(--sage-light); display:flex;
+      align-items:center; justify-content:center;
+      font-size:1rem; cursor:pointer; transition:.2s;
+      background:#f9fafb;
+    }
+    .water-cup.filled { background:#dbeafe; border-color:#93c5fd; }
+    .hydration-label { width:100%; font-size:.78rem; color:var(--text-light); margin-top:6px; }
+
+    /* Tip card */
+    .tip-card {
+      background:linear-gradient(135deg,#e8f5e9,#f1f8e9);
+      border:1px solid rgba(74,103,65,.15);
+      border-radius:16px; padding:18px 20px;
+    }
+    .tip-card__icon { font-size:1.4rem; margin-bottom:10px; }
+    .tip-card__title { font-weight:700; color:var(--primary-green); margin-bottom:6px; font-size:.9rem; }
+    .tip-card p { font-size:.83rem; color:var(--text-dark); line-height:1.6; }
+
+    /* CTA buttons */
+    .sidebar-cta { display:flex; flex-direction:column; gap:10px; }
+    .cta-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 20px; border-radius:50px; font-family:'Quicksand',sans-serif;
+      font-weight:700; font-size:.9rem; cursor:pointer; transition:.25s; text-decoration:none;
+      border:none;
+    }
+    .cta-btn--primary { background:var(--primary-green); color:#fff; }
+    .cta-btn--primary:hover { background:#3a5232; transform:translateY(-2px); box-shadow:0 6px 14px rgba(74,103,65,.3); }
+    .cta-btn--outline { background:#fff; color:var(--primary-green); border:2px solid var(--primary-green); }
+    .cta-btn--outline:hover { background:var(--sage-light); transform:translateY(-2px); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media(max-width:1100px){
+      .plan-body { grid-template-columns:1fr; padding:28px 3rem 56px; }
+      .plan-sidebar { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+      .plan-hero { padding:44px 3rem 36px; }
+      .day-nav__inner { padding:0 3rem; }
+    }
+    @media(max-width:768px){
+      .plan-hero { flex-direction:column; padding:36px 1.5rem 30px; }
+      .plan-hero__stats { grid-template-columns:1fr 1fr; width:100%; }
+      .plan-hero__title { font-size:2rem; }
+      .plan-body { padding:24px 1.2rem 48px; gap:20px; }
+      .plan-sidebar { grid-template-columns:1fr; }
+      .day-nav__inner { padding:0 1.2rem; }
+      .day-btn { padding:12px 16px; }
+      .day-summary { gap:16px; }
+      .kcal-total { padding:0 20px; margin-right:20px; }
+      .macro-bars { gap:14px; }
+    }
+    @media(max-width:480px){
+      .plan-hero__stats { grid-template-columns:1fr 1fr; }
+      .stat-box { padding:14px 16px; }
+      .stat-box__val { font-size:1.4rem; }
+      .dish-img { width:52px; height:52px; }
+    }
+  </style>
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="hero-header">
+    <div class="top-icons">
+      <a href="#" class="icon-link"><i class="far fa-user"></i></a>
+      <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+    <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..."/>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NAVBAR ===== -->
+      <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="plan-hero">
+    <div class="plan-hero__left">
+      <span class="plan-hero__tag"><i class="fa-solid fa-calendar-days"></i> Thực Đơn Lộ Trình</span>
+      <h1 class="plan-hero__title">Ăn đúng — Đủ chất<br><span>7 ngày liên tiếp</span></h1>
+      <p class="plan-hero__subtitle">Mỗi ngày gồm 3 bữa chính + 1 bữa phụ được tính toán đầy đủ calo, protein, carb và chất béo — phù hợp với mục tiêu sức khoẻ của bạn.</p>
+      <div class="diet-filter" id="dietFilter">
+        <button class="diet-chip active" data-diet="balanced">⚖️ Cân bằng</button>
+        <button class="diet-chip" data-diet="eatclean">🥗 Eat Clean</button>
+        <button class="diet-chip" data-diet="highprotein">💪 High Protein</button>
+        <button class="diet-chip" data-diet="vegetarian">🌱 Chay</button>
+        <button class="diet-chip" data-diet="lowcarb">🥩 Low Carb</button>
+      </div>
+    </div>
+    <div class="plan-hero__stats">
+      <div class="stat-box">
+        <div class="stat-box__val">1.800<span>kcal</span></div>
+        <div class="stat-box__label">Mục tiêu / ngày</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box__val">120<span>g</span></div>
+        <div class="stat-box__label">Protein / ngày</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box__val">7</div>
+        <div class="stat-box__label">Ngày lộ trình</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box__val">28</div>
+        <div class="stat-box__label">Bữa ăn tổng cộng</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DAY NAV ===== -->
+  <div class="day-nav">
+    <div class="day-nav__inner" id="dayNav">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ===== MAIN BODY ===== -->
+  <div class="plan-body">
+
+    <!-- LEFT: MEAL PLAN -->
+    <div class="plan-main">
+
+      <!-- Daily nutrition summary -->
+      <div class="day-summary" id="daySummary">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- Meals list -->
+      <div class="meals-list" id="mealsList">
+        <!-- rendered by JS -->
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SIDEBAR -->
+    <aside class="plan-sidebar">
+
+      <!-- Weekly progress -->
+      <div class="sidebar-card">
+        <div class="sidebar-card__title"><i class="fa-solid fa-chart-line"></i> Tiến trình tuần</div>
+        <div class="week-progress" id="weekProgress"><!-- JS --></div>
+      </div>
+
+      <!-- Hydration tracker -->
+      <div class="sidebar-card">
+        <div class="sidebar-card__title"><i class="fa-solid fa-droplet"></i> Uống nước hôm nay</div>
+        <div class="hydration-track" id="hydrationTrack"><!-- JS --></div>
+        <div class="hydration-label" id="hydrationLabel">0 / 8 ly (0 ml)</div>
+      </div>
+
+      <!-- Grocery list -->
+      <div class="sidebar-card">
+        <div class="sidebar-card__title"><i class="fa-solid fa-basket-shopping"></i> Danh sách mua sắm</div>
+        <div id="groceryList"><!-- JS --></div>
+        <a href="gianhangdoitac.html" class="cta-btn cta-btn--outline" style="margin-top:16px;">
+          <i class="fa-solid fa-store"></i> Mua ngay tại Hecipe
+        </a>
+      </div>
+
+      <!-- Daily tip -->
+      <div class="tip-card" id="dailyTip"><!-- JS --></div>
+
+      <!-- CTAs -->
+      <div class="sidebar-cta">
+        <button class="cta-btn cta-btn--primary" onclick="downloadPDF()">
+          <i class="fa-solid fa-file-pdf"></i> Tải PDF thực đơn tuần
+        </button>
+        <button class="cta-btn cta-btn--outline" onclick="shareMenu()">
+          <i class="fa-solid fa-share-nodes"></i> Chia sẻ lộ trình
+        </button>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ===== WAVE + FOOTER ===== -->
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo"></a>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Về Hecipe</h4>
+          <a href="duan.html">Dự án</a>
+          <a href="blog.html">Blog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Khám phá</h4>
+          <a href="congthuc.html">Công thức nổi bật</a>
+          <a href="thucdon.html">Thực đơn hôm nay</a>
+          <a href="chedo.html">Chế độ ăn khỏe</a>
+        </div>
+        <div class="footer-col">
+          <h4>Trợ giúp</h4>
+          <a href="hotro.html">Hỗ trợ</a>
+          <a href="lienhe.html">Liên hệ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Social</h4>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+          <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+        </div>
+      </div>
+      <div class="footer-app">
+        <h4>Download our app:</h4>
+        <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+        <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyright">Copyright © 2026 Hecipe.</div>
+      <div class="divider"></div>
+      <div class="policy-links">
+        <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+        <a href="chinhsach.html">Chính sách bảo mật</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* ============================================================
+     DATA — 7-day meal plan
+     ============================================================ */
+  const DAYS = ['T2','T3','T4','T5','T6','T7','CN'];
+  const DAY_NAMES = ['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật'];
+
+  const PLAN = [
+    // Ngày 1 — Thứ Hai
+    {
+      kcal: 1820, protein: 118, carb: 215, fat: 52,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 420, dishes:[
+          { name:'Cháo yến mạch chuối hạt chia', desc:'Yến mạch cán, sữa hạnh nhân, chuối, hạt chia, mật ong',
+            img:'https://images.unsplash.com/photo-1517093728432-a0440f8d45af?w=120&h=120&fit=crop',
+            kcal:320, protein:12, carb:52, fat:8, time:'10 phút', tags:['Eat Clean','Không gluten'] },
+          { name:'Trứng luộc', desc:'2 quả trứng gà ta luộc mềm',
+            img:'https://images.unsplash.com/photo-1510693206972-df098062cb71?w=120&h=120&fit=crop',
+            kcal:100, protein:13, carb:1, fat:7, time:'8 phút', tags:['High Protein'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 580, dishes:[
+          { name:'Cơm gà nướng rau củ', desc:'Gà ức, gạo lứt, bông cải, cà rốt, sốt miso nhẹ',
+            img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=120&h=120&fit=crop',
+            kcal:480, protein:42, carb:48, fat:12, time:'25 phút', tags:['High Protein','Cân bằng'] },
+          { name:'Sinh tố dưa hấu', desc:'Dưa hấu, đá, chanh tươi',
+            img:'https://images.unsplash.com/photo-1622621746668-59fb299bc4d7?w=120&h=120&fit=crop',
+            kcal:100, protein:1, carb:24, fat:0, time:'5 phút', tags:['Ít calo'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 200, dishes:[
+          { name:'Sữa chua Hy Lạp + berries', desc:'Sữa chua không đường, việt quất, dâu tây, granola',
+            img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=120&h=120&fit=crop',
+            kcal:200, protein:14, carb:22, fat:4, time:'3 phút', tags:['Probiotics','Ít đường'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 620, dishes:[
+          { name:'Cá hồi áp chảo măng tây', desc:'Phi lê cá hồi, măng tây, chanh, dầu ô liu, tỏi, tiêu đen',
+            img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=120&h=120&fit=crop',
+            kcal:420, protein:38, carb:6, fat:26, time:'20 phút', tags:['Omega-3','Low Carb'] },
+          { name:'Quinoa trộn rau', desc:'Quinoa, dưa chuột, cà chua bi, ô liu, feta, sốt chanh',
+            img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=120&h=120&fit=crop',
+            kcal:200, protein:8, carb:28, fat:7, time:'15 phút', tags:['Eat Clean'] },
+        ]},
+      ]
+    },
+    // Ngày 2 — Thứ Ba
+    {
+      kcal: 1790, protein: 122, carb: 198, fat: 55,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 380, dishes:[
+          { name:'Bánh mì nguyên cám bơ trứng', desc:'Bánh mì lúa mì nguyên hạt, bơ bơ, trứng ốp la, muối hồng',
+            img:'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&h=120&fit=crop',
+            kcal:380, protein:16, carb:36, fat:20, time:'10 phút', tags:['Chất xơ','Healthy Fat'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 560, dishes:[
+          { name:'Bún bò Huế ít béo', desc:'Bắp bò gầy, bún tươi, sả, mắm ruốc, ớt — ăn kèm rau sống',
+            img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=120&h=120&fit=crop',
+            kcal:480, protein:36, carb:52, fat:14, time:'45 phút', tags:['Truyền thống','Cân bằng'] },
+          { name:'Nước ép cần tây táo', desc:'Cần tây, táo xanh, gừng, chanh',
+            img:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=120&h=120&fit=crop',
+            kcal:80, protein:1, carb:19, fat:0, time:'5 phút', tags:['Detox'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 180, dishes:[
+          { name:'Hạt hỗn hợp + táo lát', desc:'Hạnh nhân, óc chó, hạt bí, táo Fuji',
+            img:'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=120&h=120&fit=crop',
+            kcal:180, protein:6, carb:18, fat:11, time:'2 phút', tags:['Snack lành mạnh'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 570, dishes:[
+          { name:'Gà hấp gừng hành', desc:'Gà ta hấp, hành lá, gừng, sốt xì dầu ít muối',
+            img:'https://images.unsplash.com/photo-1598103442097-8b74394b95c1?w=120&h=120&fit=crop',
+            kcal:380, protein:44, carb:8, fat:16, time:'30 phút', tags:['High Protein','Ít chất béo'] },
+          { name:'Canh rau muống tỏi', desc:'Rau muống tươi, tỏi phi, nước dùng xương nhẹ',
+            img:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=120&h=120&fit=crop',
+            kcal:90, protein:4, carb:10, fat:3, time:'10 phút', tags:['Vitamin C'] },
+          { name:'Cơm gạo lứt', desc:'Gạo lứt nứt hạt, 150g nấu chín',
+            img:'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=120&h=120&fit=crop',
+            kcal:100, protein:3, carb:22, fat:1, time:'30 phút', tags:['Chất xơ'] },
+        ]},
+      ]
+    },
+    // Ngày 3 — Thứ Tư
+    {
+      kcal: 1850, protein: 115, carb: 225, fat: 48,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 440, dishes:[
+          { name:'Smoothie bowl xanh', desc:'Cải kale, chuối đông lạnh, bơ, sữa dừa, granola, hạt gai dầu',
+            img:'https://images.unsplash.com/photo-1626790680787-de5e9a07bcf2?w=120&h=120&fit=crop',
+            kcal:440, protein:14, carb:58, fat:18, time:'10 phút', tags:['Eat Clean','Vegan'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 590, dishes:[
+          { name:'Cơm chiên gạo lứt hải sản', desc:'Gạo lứt, tôm, mực, trứng, hành, dầu mè',
+            img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=120&h=120&fit=crop',
+            kcal:520, protein:38, carb:55, fat:15, time:'20 phút', tags:['Hải sản','Cân bằng'] },
+          { name:'Súp bí đỏ', desc:'Bí đỏ, hành tây, kem tươi nhẹ, hạt bí',
+            img:'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=120&h=120&fit=crop',
+            kcal:70, protein:2, carb:12, fat:2, time:'15 phút', tags:['Beta-carotene'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 190, dishes:[
+          { name:'Bánh gạo lứt + hummus', desc:'2 bánh gạo lứt không muối, hummus đậu gà, ớt chuông',
+            img:'https://images.unsplash.com/photo-1541519227354-08fa5d50c820?w=120&h=120&fit=crop',
+            kcal:190, protein:7, carb:24, fat:8, time:'3 phút', tags:['Plant-based'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 630, dishes:[
+          { name:'Thịt bò sốt tiêu đen rau củ', desc:'Thăn bò, ớt chuông, hành tây, cần tây, sốt tiêu đen',
+            img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=120&h=120&fit=crop',
+            kcal:450, protein:42, carb:16, fat:24, time:'25 phút', tags:['Iron','High Protein'] },
+          { name:'Salad xà lách trộn sốt chanh dầu', desc:'Xà lách romano, cà chua, dưa leo, sốt olive-chanh',
+            img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=120&h=120&fit=crop',
+            kcal:120, protein:2, carb:8, fat:9, time:'5 phút', tags:['Low Carb'] },
+          { name:'Bánh mì nguyên cám', desc:'1 lát bánh mì lúa mì nguyên hạt',
+            img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=120&h=120&fit=crop',
+            kcal:60, protein:3, carb:12, fat:1, time:'0 phút', tags:[] },
+        ]},
+      ]
+    },
+    // Ngày 4 — Thứ Năm
+    {
+      kcal: 1760, protein: 128, carb: 192, fat: 50,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 390, dishes:[
+          { name:'Protein pancakes chuối', desc:'Bột yến mạch, trứng, chuối, whey protein, mật ong rừng',
+            img:'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=120&h=120&fit=crop',
+            kcal:390, protein:28, carb:44, fat:10, time:'15 phút', tags:['High Protein','Post-workout'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 540, dishes:[
+          { name:'Phở bò gầy nước trong', desc:'Bắp bò gầy, bánh phở, hành, gừng, quế, hồi — ăn kèm rau thơm',
+            img:'https://images.unsplash.com/photo-1555126634-323283e090fa?w=120&h=120&fit=crop',
+            kcal:480, protein:36, carb:56, fat:10, time:'90 phút', tags:['Collagen','Truyền thống'] },
+          { name:'Trà xanh không đường', desc:'Trà xanh pha lạnh, lát chanh',
+            img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=120&h=120&fit=crop',
+            kcal:5, protein:0, carb:1, fat:0, time:'5 phút', tags:['Antioxidant'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 220, dishes:[
+          { name:'Đậu edamame luộc muối', desc:'Đậu edamame tươi, muối biển nhẹ',
+            img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=120&h=120&fit=crop',
+            kcal:120, protein:11, carb:9, fat:5, time:'8 phút', tags:['Plant Protein'] },
+          { name:'Chuối', desc:'1 quả chuối chín vừa',
+            img:'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=120&h=120&fit=crop',
+            kcal:100, protein:1, carb:27, fat:0, time:'0 phút', tags:['Potassium'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 610, dishes:[
+          { name:'Cá basa hấp gừng sả', desc:'Phi lê cá basa, gừng, sả, ớt, nước mắm nhạt, cà chua bi',
+            img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=120&h=120&fit=crop',
+            kcal:310, protein:38, carb:6, fat:14, time:'20 phút', tags:['Ít béo','Omega-3'] },
+          { name:'Rau xào tỏi hỗn hợp', desc:'Cải thìa, bông cải xanh, cà rốt, tỏi, dầu hào chay',
+            img:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&h=120&fit=crop',
+            kcal:120, protein:5, carb:14, fat:5, time:'10 phút', tags:['Vitamin K'] },
+          { name:'Cơm trắng vừa', desc:'Gạo tẻ nấu chín, 130g',
+            img:'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=120&h=120&fit=crop',
+            kcal:180, protein:3, carb:40, fat:0, time:'25 phút', tags:[] },
+        ]},
+      ]
+    },
+    // Ngày 5 — Thứ Sáu
+    {
+      kcal: 1880, protein: 110, carb: 232, fat: 58,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 460, dishes:[
+          { name:'Bánh cuốn nhân thịt nạc', desc:'Bánh cuốn mỏng, thịt heo xay nạc, nấm mộc nhĩ, hành phi',
+            img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=120&h=120&fit=crop',
+            kcal:380, protein:22, carb:46, fat:10, time:'20 phút', tags:['Truyền thống'] },
+          { name:'Cam tươi', desc:'1 quả cam Valencia vừa',
+            img:'https://images.unsplash.com/photo-1547514701-42782101795e?w=120&h=120&fit=crop',
+            kcal:80, protein:1, carb:19, fat:0, time:'2 phút', tags:['Vitamin C'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 600, dishes:[
+          { name:'Cơm sườn nướng mật ong', desc:'Sườn heo non, mật ong, tỏi, hành, gạo tẻ trắng, dưa cải',
+            img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=120&h=120&fit=crop',
+            kcal:560, protein:34, carb:62, fat:18, time:'40 phút', tags:['Cân bằng','Cuối tuần'] },
+          { name:'Canh chua bắp cải', desc:'Bắp cải, cà chua, me chua, ít đường',
+            img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=120&h=120&fit=crop',
+            kcal:40, protein:2, carb:8, fat:0, time:'15 phút', tags:['Tiêu hoá'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 210, dishes:[
+          { name:'Sữa hạt óc chó tự làm', desc:'Hạt óc chó, nước lọc, chút mật ong, vani',
+            img:'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=120&h=120&fit=crop',
+            kcal:140, protein:4, carb:10, fat:10, time:'5 phút', tags:['Brain Food'] },
+          { name:'Thanh dark chocolate 85%', desc:'20g socola đen tối thiểu 85% cacao',
+            img:'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=120&h=120&fit=crop',
+            kcal:70, protein:1, carb:5, fat:5, time:'0 phút', tags:['Antioxidant','Enjoy!'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 610, dishes:[
+          { name:'Tôm hùm đất sốt bơ tỏi', desc:'Tôm càng xanh, bơ, tỏi, ngò tây, chanh vàng',
+            img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=120&h=120&fit=crop',
+            kcal:360, protein:36, carb:4, fat:22, time:'20 phút', tags:['Cuối tuần','Premium'] },
+          { name:'Mì soba lạnh rau củ', desc:'Mì soba kiều mạch, dưa leo, cà rốt bào, sốt mè',
+            img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=120&h=120&fit=crop',
+            kcal:250, protein:9, carb:46, fat:5, time:'10 phút', tags:['Kiều mạch'] },
+        ]},
+      ]
+    },
+    // Ngày 6 — Thứ Bảy
+    {
+      kcal: 2000, protein: 118, carb: 248, fat: 62,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 520, dishes:[
+          { name:'Full breakfast lành mạnh', desc:'Trứng ốp la, ức gà áp chảo, cà chua nướng, nấm, bánh mì nguyên cám',
+            img:'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=120&h=120&fit=crop',
+            kcal:520, protein:36, carb:36, fat:22, time:'20 phút', tags:['Cuối tuần','High Protein'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 680, dishes:[
+          { name:'Lẩu Thái hải sản ít dầu', desc:'Tôm, mực, nấm, sả, lá chanh, tom yum paste nhẹ',
+            img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=120&h=120&fit=crop',
+            kcal:520, protein:42, carb:38, fat:20, time:'30 phút', tags:['Cuối tuần','Hải sản'] },
+          { name:'Bánh tráng cuốn rau', desc:'Bánh tráng, rau sống, bún, thịt heo luộc',
+            img:'https://images.unsplash.com/photo-1562802378-063ec186a863?w=120&h=120&fit=crop',
+            kcal:160, protein:8, carb:28, fat:2, time:'10 phút', tags:['Ít calo'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 250, dishes:[
+          { name:'Sinh tố protein dâu tây', desc:'Dâu tây, chuối, sữa hạnh nhân, whey protein, đá',
+            img:'https://images.unsplash.com/photo-1553530666-6b0de13b3997?w=120&h=120&fit=crop',
+            kcal:250, protein:22, carb:28, fat:4, time:'5 phút', tags:['Post-workout','High Protein'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 550, dishes:[
+          { name:'Gà nướng thảo mộc Mediterranean', desc:'Đùi gà, rosemary, thyme, tỏi, dầu ô liu, chanh',
+            img:'https://images.unsplash.com/photo-1598103442097-8b74394b95c1?w=120&h=120&fit=crop',
+            kcal:380, protein:40, carb:4, fat:22, time:'45 phút', tags:['Mediterranean','Low Carb'] },
+          { name:'Cous cous rau nướng', desc:'Cous cous, ớt chuông, zucchini nướng, feta, sốt harissa',
+            img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=120&h=120&fit=crop',
+            kcal:170, protein:6, carb:30, fat:4, time:'15 phút', tags:['Mediterranean'] },
+        ]},
+      ]
+    },
+    // Ngày 7 — Chủ Nhật
+    {
+      kcal: 1750, protein: 108, carb: 204, fat: 54,
+      meals: [
+        { type:'breakfast', label:'Bữa Sáng', icon:'fa-sun', kcal: 400, dishes:[
+          { name:'Granola nhà làm + sữa chua', desc:'Yến mạch nướng, hạt, mật ong, dừa sấy, sữa chua Hy Lạp',
+            img:'https://images.unsplash.com/photo-1490567674784-2929bd94_0.jpg?w=120&h=120&fit=crop',
+            img:'https://images.unsplash.com/photo-1517093728432-a0440f8d45af?w=120&h=120&fit=crop',
+            kcal:400, protein:16, carb:54, fat:14, time:'5 phút', tags:['Meal Prep','Probiotics'] },
+        ]},
+        { type:'lunch', label:'Bữa Trưa', icon:'fa-bowl-food', kcal: 560, dishes:[
+          { name:'Cơm tấm sườn nạc', desc:'Cơm tấm, sườn non nướng, bì, chả trứng, dưa cải, đồ chua',
+            img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=120&h=120&fit=crop',
+            kcal:500, protein:32, carb:58, fat:16, time:'35 phút', tags:['Cân bằng','Nam Bộ'] },
+          { name:'Đá chanh muối', desc:'Chanh, muối biển, đường thốt nốt, đá',
+            img:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=120&h=120&fit=crop',
+            kcal:60, protein:0, carb:15, fat:0, time:'3 phút', tags:['Điện giải'] },
+        ]},
+        { type:'snack', label:'Bữa Phụ', icon:'fa-apple-whole', kcal: 170, dishes:[
+          { name:'Phô mai tươi + trái cây', desc:'Cottage cheese 150g, kiwi, dâu, hạt lanh',
+            img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=120&h=120&fit=crop',
+            kcal:170, protein:18, carb:14, fat:4, time:'3 phút', tags:['Calcium','Nhẹ nhàng'] },
+        ]},
+        { type:'dinner', label:'Bữa Tối', icon:'fa-moon', kcal: 620, dishes:[
+          { name:'Canh khổ qua hầm thịt', desc:'Khổ qua, thịt heo băm nhuyễn, nấm mộc nhĩ, miến',
+            img:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=120&h=120&fit=crop',
+            kcal:280, protein:24, carb:20, fat:10, time:'40 phút', tags:['Detox','Truyền thống'] },
+          { name:'Cá kho tộ gừng nghệ', desc:'Cá thu, gừng, nghệ, sả, nước dừa, caramel nhạt',
+            img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=120&h=120&fit=crop',
+            kcal:240, protein:28, carb:14, fat:8, time:'30 phút', tags:['Anti-inflammatory'] },
+          { name:'Cơm gạo lứt', desc:'Gạo lứt, 120g nấu chín',
+            img:'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=120&h=120&fit=crop',
+            kcal:100, protein:3, carb:22, fat:0, time:'30 phút', tags:['Chất xơ'] },
+        ]},
+      ]
+    },
+  ];
+
+  const GROCERY = {
+    '🥩 Thịt & Hải sản': [
+      {name:'Gà ức', qty:'1.2 kg'},{name:'Thịt bò thăn',qty:'400g'},{name:'Cá hồi phi lê',qty:'2 miếng 180g'},
+      {name:'Cá basa phi lê',qty:'400g'},{name:'Tôm càng xanh',qty:'500g'},{name:'Mực ống',qty:'300g'},
+    ],
+    '🥦 Rau củ': [
+      {name:'Bông cải xanh',qty:'2 đầu'},{name:'Cải thìa',qty:'1 bó'},{name:'Rau muống',qty:'500g'},
+      {name:'Ớt chuông hỗn hợp',qty:'4 quả'},{name:'Cà chua bi',qty:'500g'},{name:'Bí đỏ',qty:'500g'},
+    ],
+    '🌾 Ngũ cốc & Tinh bột': [
+      {name:'Gạo lứt',qty:'1 kg'},{name:'Yến mạch cán',qty:'500g'},{name:'Quinoa',qty:'300g'},
+      {name:'Bánh mì nguyên cám',qty:'1 ổ'},{name:'Mì soba',qty:'200g'},
+    ],
+    '🍳 Sữa & Trứng': [
+      {name:'Trứng gà ta',qty:'14 quả'},{name:'Sữa chua Hy Lạp',qty:'4 hũ'},{name:'Sữa hạnh nhân',qty:'1 lít'},
+    ],
+    '🥜 Hạt & Dầu ép': [
+      {name:'Hạt chia',qty:'100g'},{name:'Hạnh nhân sống',qty:'150g'},{name:'Dầu ô liu extra virgin',qty:'1 chai'},
+    ],
+  };
+
+  const TIPS = [
+    { icon:'💧', title:'Uống đủ nước', text:'Bắt đầu ngày với 1 ly nước ấm + chanh để kích hoạt hệ tiêu hoá và tăng trao đổi chất 30%.' },
+    { icon:'🕐', title:'Ăn đúng giờ', text:'Giữ khoảng cách 4–5 giờ giữa các bữa chính giúp insulin ổn định và giảm thèm ăn.' },
+    { icon:'🥗', title:'Ăn rau trước', text:'Ăn rau trước bữa chính giúp no nhanh hơn, giảm lượng calo nạp vào tới 20%.' },
+    { icon:'🌙', title:'Ăn tối nhẹ', text:'Bữa tối nên kết thúc trước 7–8 giờ tối để cơ thể đốt mỡ hiệu quả hơn khi ngủ.' },
+    { icon:'💪', title:'Protein sau tập', text:'Nạp 25–35g protein trong vòng 30 phút sau tập giúp phục hồi cơ tối ưu.' },
+    { icon:'🧠', title:'Mindful eating', text:'Ăn chậm, nhai kỹ — cần 20 phút để não nhận tín hiệu no. Không dùng điện thoại khi ăn.' },
+    { icon:'🎯', title:'Meal prep cuối tuần', text:'Chuẩn bị 2–3 nguyên liệu sẵn (gạo, gà, rau) mỗi Chủ Nhật giúp tiết kiệm 45 phút/ngày.' },
+  ];
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  let activeDay = 0; // 0-indexed
+
+  /* ============================================================
+     RENDER FUNCTIONS
+     ============================================================ */
+  function macroColor(type){
+    return type==='protein'?'#4A6741': type==='carb'?'#e67e22': '#6c3483';
+  }
+
+  function renderCircle(val, max, color, size=62){
+    const r = (size/2) - 5;
+    const circ = 2*Math.PI*r;
+    const pct = Math.min(val/max, 1);
+    const dash = pct*circ;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#f0f4ed" stroke-width="4"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="4"
+        stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/>
+    </svg>`;
+  }
+
+  function renderDayNav(){
+    const nav = document.getElementById('dayNav');
+    nav.innerHTML = PLAN.map((day, i) => `
+      <button class="day-btn${i===activeDay?' active':''}" onclick="switchDay(${i})">
+        <span class="day-btn__label">${DAYS[i]}</span>
+        <span class="day-btn__name">${DAY_NAMES[i]}</span>
+        <span class="day-btn__kcal">${day.kcal} kcal</span>
+      </button>
+    `).join('');
+  }
+
+  function renderSummary(){
+    const day = PLAN[activeDay];
+    const goals = {kcal:1800, protein:120, carb:220, fat:60};
+    document.getElementById('daySummary').innerHTML = `
+      <div class="kcal-total">
+        <div class="kcal-total__val">${day.kcal}</div>
+        <div class="kcal-total__label">kcal hôm nay</div>
+        <div class="kcal-total__goal">Mục tiêu: ${goals.kcal}</div>
+      </div>
+      <div class="macro-bars">
+        ${[['protein','Protein',day.protein,goals.protein,'g'],['carb','Carb',day.carb,goals.carb,'g'],['fat','Chất béo',day.fat,goals.fat,'g']].map(([key,label,val,goal,unit])=>`
+        <div class="macro-item">
+          <div class="macro-item__name">${label}</div>
+          <div class="macro-ring">
+            ${renderCircle(val,goal,macroColor(key))}
+            <div class="macro-ring__val">${val}<div class="macro-ring__unit">${unit}</div></div>
+          </div>
+          <div class="macro-item__goal">/ ${goal}${unit}</div>
+        </div>`).join('')}
+      </div>
+      <div style="flex:1"></div>
+      <div style="text-align:right">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text-dark)">${DAY_NAMES[activeDay]}</div>
+        <div style="font-size:.85rem;color:var(--text-light)">Ngày ${activeDay+1} / 7</div>
+      </div>
+    `;
+  }
+
+  function renderMeals(){
+    const day = PLAN[activeDay];
+    const mealIcons = {breakfast:'fa-sun',lunch:'fa-bowl-food',snack:'fa-apple-whole',dinner:'fa-moon'};
+    document.getElementById('mealsList').innerHTML = day.meals.map((meal,mi) => `
+      <div class="meal-section" id="meal-${mi}">
+        <div class="meal-section__header" onclick="toggleMeal(${mi})">
+          <div class="meal-section__icon meal-section__icon--${meal.type}">
+            <i class="fa-solid ${mealIcons[meal.type]||'fa-utensils'}"></i>
+          </div>
+          <div class="meal-section__title">${meal.label}</div>
+          <div class="meal-section__kcal">${meal.kcal} kcal</div>
+          <div class="meal-section__toggle"><i class="fa-solid fa-chevron-down"></i></div>
+        </div>
+        <div class="meal-section__body">
+          ${meal.dishes.map((dish,di) => `
+          <div class="dish-row">
+            <img class="dish-img" src="${dish.img}" alt="${dish.name}" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=120&h=120&fit=crop'"/>
+            <div class="dish-info">
+              <div class="dish-name">${dish.name}</div>
+              <div class="dish-desc">${dish.desc}</div>
+              <div class="dish-tags">
+                ${dish.time?`<span class="dish-tag dish-tag--time"><i class="fa-regular fa-clock"></i> ${dish.time}</span>`:''}
+                ${dish.tags.map(t=>`<span class="dish-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+            <div class="dish-macro">
+              <div class="dish-kcal">${dish.kcal} kcal</div>
+              <div class="dish-macros-mini">P ${dish.protein}g · C ${dish.carb}g · F ${dish.fat}g</div>
+            </div>
+            <button class="dish-swap-btn" title="Đổi món" onclick="swapDish(${mi},${di})"><i class="fa-solid fa-shuffle"></i></button>
+          </div>`).join('')}
+          <div style="padding:12px 0 0;display:flex;gap:12px">
+            <a href="recipes.html" style="font-size:.82rem;color:var(--primary-green);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px">
+              <i class="fa-solid fa-book-open"></i> Xem công thức chi tiết
+            </a>
+            <span style="color:var(--sage-light)">|</span>
+            <a href="gianhangdoitac.html" style="font-size:.82rem;color:#e67e22;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px">
+              <i class="fa-solid fa-basket-shopping"></i> Đặt nguyên liệu
+            </a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderWeekProgress(){
+    const labels = ['H','B','T','N','S','B','C'];
+    document.getElementById('weekProgress').innerHTML = PLAN.map((_,i) => {
+      const cls = i < activeDay ? 'prog-dot--done' : i === activeDay ? 'prog-dot--today' : 'prog-dot--future';
+      const icon = i < activeDay ? '<i class="fa-solid fa-check"></i>' : i === activeDay ? '<i class="fa-solid fa-utensils"></i>' : (i+1);
+      return `<div class="prog-day">
+        <div class="prog-dot ${cls}" onclick="switchDay(${i})">${icon}</div>
+        <div class="prog-day__lbl">${labels[i]}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderGrocery(){
+    document.getElementById('groceryList').innerHTML = Object.entries(GROCERY).map(([cat,items])=>`
+      <div class="grocery-category">
+        <div class="grocery-cat__title">${cat}</div>
+        ${items.map((item,i)=>`
+        <div class="grocery-item">
+          <input type="checkbox" id="g-${cat}-${i}">
+          <label for="g-${cat}-${i}">${item.name}</label>
+          <span>${item.qty}</span>
+        </div>`).join('')}
+      </div>
+    `).join('');
+  }
+
+  function renderTip(){
+    const tip = TIPS[activeDay];
+    document.getElementById('dailyTip').innerHTML = `
+      <div class="tip-card__icon">${tip.icon}</div>
+      <div class="tip-card__title">Mẹo hôm nay: ${tip.title}</div>
+      <p>${tip.text}</p>
+    `;
+  }
+
+  function renderHydration(){
+    const cups = 8;
+    const stored = parseInt(localStorage.getItem(`hydration-day${activeDay}`)||'0');
+    let html = '';
+    for(let i=0;i<cups;i++){
+      html += `<div class="water-cup${i<stored?' filled':''}" onclick="toggleWater(${i})" title="Ly ${i+1}">💧</div>`;
+    }
+    document.getElementById('hydrationTrack').innerHTML = html;
+    document.getElementById('hydrationLabel').textContent = `${stored} / ${cups} ly (${stored*250} ml)`;
+  }
+
+  /* ============================================================
+     INTERACTIONS
+     ============================================================ */
+  function switchDay(idx){
+    activeDay = idx;
+    renderDayNav();
+    renderSummary();
+    renderMeals();
+    renderWeekProgress();
+    renderTip();
+    renderHydration();
+    window.scrollTo({top: 0;
+  }
+
+  function toggleMeal(idx){
+    document.getElementById(`meal-${idx}`).classList.toggle('collapsed');
+  }
+
+  function toggleWater(idx){
+    const stored = parseInt(localStorage.getItem(`hydration-day${activeDay}`)||'0');
+    const newVal = idx < stored ? idx : idx + 1;
+    localStorage.setItem(`hydration-day${activeDay}`, newVal);
+    renderHydration();
+  }
+
+  function swapDish(mealIdx, dishIdx){
+    const btn = document.querySelector(`.meal-section:nth-child(${mealIdx+1}) .dish-swap-btn:nth-of-type(${dishIdx+1})`);
+    const names = ['Hủ tiếu Nam Vang','Bowl rau hạt','Cơm lá cẩm','Salad quinoa','Soup thập cẩm','Gà kho gừng'];
+    const rand = names[Math.floor(Math.random()*names.length)];
+    const row = document.querySelectorAll(`#meal-${mealIdx} .dish-row`)[dishIdx];
+    if(row){
+      const nameEl = row.querySelector('.dish-name');
+      nameEl.style.transition = 'opacity .3s';
+      nameEl.style.opacity = '0';
+      setTimeout(()=>{
+        nameEl.textContent = rand + ' ✨';
+        nameEl.style.opacity = '1';
+      }, 300);
+    }
+  }
+
+  function downloadPDF(){
+    alert('📄 Tính năng tải PDF sẽ sẵn sàng sớm!\nBạn có thể dùng Ctrl+P để in trang này ngay.');
+  }
+
+  function shareMenu(){
+    if(navigator.share){
+      navigator.share({title:'Lộ trình 7 ngày Hecipe', url:window.location.href});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('✅ Đã sao chép link! Hãy chia sẻ với bạn bè.');
+    }
+  }
+
+  /* Diet filter (cosmetic — triggers a visual re-style) */
+  document.getElementById('dietFilter').addEventListener('click', e => {
+    const chip = e.target.closest('.diet-chip');
+    if(!chip) return;
+    document.querySelectorAll('.diet-chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+
+  /* Auth UI */
+  function toggleAuthUI(){
+    const logged = localStorage.getItem('loggedIn')==='true';
+    const profile = document.getElementById('profileContainer');
+    const authBtns = document.getElementById('authButtons');
+    const display = document.getElementById('displayUsername');
+    if(profile) profile.classList.toggle('hidden',!logged);
+    if(authBtns) authBtns.classList.toggle('hidden',logged);
+    if(logged){
+      const av = localStorage.getItem('avatar');
+      if(av){ const img=document.getElementById('avatarImg'); if(img) img.src=av; }
+      if(display) display.textContent = localStorage.getItem('userId')||'';
+    }
+  }
+
+  /* Init */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    toggleAuthUI();
+    const logoutLink = document.getElementById('logoutLink');
+    if(logoutLink) logoutLink.addEventListener('click',e=>{e.preventDefault();localStorage.removeItem('loggedIn');toggleAuthUI();});
+    renderDayNav();
+    renderSummary();
+    renderMeals();
+    renderWeekProgress();
+    renderGrocery();
+    renderTip();
+    renderHydration();
+  });
+  </script>
+<script src="search-unified.js" defer></script>
+</body>
+</html>

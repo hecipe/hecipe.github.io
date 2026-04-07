@@ -1,615 +1,1648 @@
 <!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khảo sát Sức khỏe - Hecipe</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    
-    <style>
-        .onboarding-bg {
-            min-height: 100vh;
-            background-color: var(--bg-cream);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .ob-header {
-            width: 100%; padding: 20px; text-align: center;
-        }
-        .ob-header .brand-logo { color: var(--primary-green); font-size: 32px; text-decoration: none; font-weight: 800; font-family: 'Playfair Display', serif; }
-        
-        .ob-card {
-            background: white; width: 100%; max-width: 600px;
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 40px; margin-bottom: 40px;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Khảo Sát Sức Khoẻ - Hecipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ═══════════════════════════════════════════
+       HECIPE HEALTH QUEST — Gamified Survey
+       ═══════════════════════════════════════════ */
+    :root {
+      --primary-green: #4A6741;
+      --sage-light: #DCE8D6;
+      --bg-cream: #FAF9F6;
+      --text-dark: #2C3E2D;
+      --text-light: #6B7C6B;
+      --white: #fff;
+      --accent-yellow: #E07B39;
+      --accent-orange: #E07B39;
+      --accent-blue: #3B82C4;
+      --accent-pink: #D9648A;
+      --accent-teal: #2CA58D;
+      --shadow-card: 0 8px 32px rgba(74,103,65,0.14);
+    }
 
-        /* Thanh Tiến Trình (Progress Bar) */
-        .ob-progress {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 40px; position: relative;
-        }
-        .ob-step {
-            display: flex; flex-direction: column; align-items: center; z-index: 2;
-        }
-        .ob-circle {
-            width: 35px; height: 35px; border-radius: 50%;
-            background: var(--sage-light); color: var(--text-dark);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; transition: 0.3s;
-        }
-        .ob-step.active .ob-circle, .ob-step.completed .ob-circle {
-            background: var(--primary-green); color: white;
-        }
-        .ob-step-label { font-size: 0.8rem; margin-top: 5px; font-weight: 600; color: var(--text-light); }
-        .ob-step.active .ob-step-label { color: var(--primary-green); }
-        
-        .ob-line {
-            position: absolute; top: 17px; left: 0; width: 100%; height: 3px;
-            background: var(--sage-light); z-index: 1;
-        }
-        .ob-line-fill {
-            height: 100%; background: var(--primary-green); width: 0%; transition: 0.4s;
-        }
+    /* ── OVERLAY toàn trang khảo sát ── */
+    .survey-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg-cream);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
 
-        /* Nội dung từng bước */
-        .step-content { display: none; animation: fadeIn 0.4s ease; }
-        .step-content.active { display: block; }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-        
-        .step-title { color: var(--primary-green); text-align: center; margin-bottom: 10px; font-size: 1.8rem; }
-        .step-desc { text-align: center; color: var(--text-light); margin-bottom: 30px; font-size: 0.95rem; }
+    /* ── TOPBAR ── */
+    .sq-topbar {
+      display: flex; align-items: center;
+      padding: 14px 28px; background: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      gap: 16px; flex-shrink: 0;
+    }
+    .sq-logo {
+      display: inline-block;
+      width: 80px;
+      height: 32px;
+      background-image: url('ImageofWeb/Logo-Photoroom.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      text-indent: -9999px;
+      overflow: hidden;
+      text-decoration: none;
+    }
+    .sq-logo span { display: none; }
 
-        /* Khung nhập liệu (Input) */
-        .input-group { margin-bottom: 20px; }
-        .input-group label.title-label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--text-dark); }
-        .input-control { 
-            width: 100%; padding: 15px; border: 2px solid var(--sage-light); 
-            border-radius: 12px; font-family: 'Quicksand', sans-serif; font-size: 1rem; transition: 0.3s;
-        }
-        .input-control:focus { outline: none; border-color: var(--primary-green); box-shadow: 0 0 8px rgba(74, 103, 65, 0.2); }
+    /* PROGRESS BAR */
+    .sq-progress-wrap { flex: 1; }
+    .sq-progress-label {
+      display: flex; justify-content: space-between;
+      font-size: .75rem; color: var(--text-light);
+      font-weight: 600; margin-bottom: 5px;
+    }
+    .sq-progress-track {
+      height: 8px; background: var(--sage-light);
+      border-radius: 50px; overflow: hidden;
+    }
+    .sq-progress-fill {
+      height: 100%; border-radius: 50px;
+      background: linear-gradient(90deg, var(--primary-green), #7FC26E);
+      transition: width .5s cubic-bezier(.4,0,.2,1);
+    }
 
-        /* Các ô Trắc Nghiệm (Radio & Checkbox) */
-        .choice-grid { display: grid; gap: 15px; }
-        .choice-grid-2 { grid-template-columns: 1fr 1fr; } /* Chia 2 cột cho giới tính */
-        
-        .choice-box input { display: none; }
-        .choice-box label {
-            display: flex; align-items: center; padding: 15px 20px;
-            border: 2px solid var(--sage-light); border-radius: 12px;
-            cursor: pointer; transition: 0.2s; background: white;
-        }
-        .choice-box input:checked + label {
-            border-color: var(--primary-green); background: #eaf1e8;
-        }
-        .choice-box i { font-size: 1.5rem; color: var(--primary-green); margin-right: 15px; width: 30px; text-align: center; }
-        .choice-text strong { display: block; color: var(--text-dark); font-size: 1.1rem; }
-        .choice-text span { color: var(--text-light); font-size: 0.85rem; }
+    /* POINTS BADGE */
+    .sq-points {
+      display: flex; align-items: center; gap:6px;
+      background: #FFF5E6; border: 2px solid var(--accent-yellow);
+      border-radius: 50px; padding: 6px 14px;
+      font-weight: 700; font-size: .9rem; color: #B84D0C;
+      flex-shrink: 0;
+    }
+    .sq-points i { color: var(--accent-yellow); }
 
-        /* Nút điều hướng */
-        .ob-buttons { display: flex; justify-content: space-between; margin-top: 40px; }
-        .btn-prev { padding: 12px 25px; border-radius: 10px; border: none; background: #e0e0e0; color: #555; cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; }
-        .btn-prev:hover { background: #d0d0d0; }
-        .btn-prev:disabled { opacity: 0; pointer-events: none; }
-        
-        .btn-next { padding: 12px 25px; border-radius: 10px; border: none; background: var(--primary-green); color: white; cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif; transition: 0.2s; box-shadow: 0 4px 10px rgba(74, 103, 65, 0.3); }
-        .btn-next:hover { background: #3b5234; transform: translateY(-2px); }
-    </style>
+    /* CLOSE */
+    .sq-close {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: none; background: #f3f4f6;
+      cursor: pointer; color: var(--text-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; transition: .2s; flex-shrink: 0;
+    }
+    .sq-close:hover { background: #fee2e2; color: #dc2626; }
+
+    /* ── MAIN AREA ── */
+    .sq-main {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 32px 20px 100px;
+    }
+
+    /* ── SECTION INTRO (Màn chào) ── */
+    .sq-intro {
+      max-width: 560px; text-align: center;
+      animation: sqFadeUp .5s ease both;
+    }
+    .sq-intro__emoji { font-size: 5rem; margin-bottom: 16px; display: block;
+      animation: sqBounce 1.2s ease infinite; }
+    .sq-intro__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; color: var(--text-dark); margin-bottom: 12px;
+    }
+    .sq-intro__title em { color: var(--primary-green); font-style: normal; }
+    .sq-intro__sub {
+      color: var(--text-light); font-size: 1.05rem;
+      line-height: 1.7; margin-bottom: 28px;
+    }
+    .sq-intro__chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 32px; }
+    .sq-intro__chip {
+      background: var(--white); border: 1.5px solid var(--sage-light);
+      border-radius: 50px; padding: 8px 18px;
+      font-size: .85rem; font-weight: 600; color: var(--text-dark);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .sq-start-btn {
+      background: linear-gradient(135deg, var(--primary-green), #7FC26E);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 16px 48px; font-family: 'Quicksand', sans-serif;
+      font-weight: 800; font-size: 1.15rem; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(74,103,65,.35);
+      transition: .25s; display: flex; align-items: center; gap: 10px;
+      margin: 0 auto;
+    }
+    .sq-start-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 28px rgba(74,103,65,.4); }
+
+    /* ── QUESTION CONTAINER ── */
+    .sq-question {
+      width: 100%; max-width: 720px;
+      animation: sqFadeUp .4s ease both;
+    }
+
+    /* SECTION BANNER (tiêu đề nhóm câu hỏi) */
+    .sq-section-banner {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--white); border-radius: 18px;
+      padding: 18px 24px; margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      border-left: 5px solid var(--primary-green);
+    }
+    .sq-section-banner__icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--sage-light); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .sq-section-banner__text { flex: 1; }
+    .sq-section-banner__label {
+      font-size: .72rem; font-weight: 700; color: var(--primary-green);
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .sq-section-banner__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--text-dark);
+    }
+
+    /* QUESTION CARD */
+    .sq-card {
+      background: var(--white); border-radius: 22px;
+      padding: 32px 36px; box-shadow: var(--shadow-card);
+      margin-bottom: 16px;
+    }
+    .sq-qnum {
+      font-size: .75rem; font-weight: 700; color: var(--text-light);
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .sq-qnum-badge {
+      background: var(--primary-green); color: #fff;
+      border-radius: 50%; width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 800;
+    }
+    .sq-qtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem; color: var(--text-dark);
+      margin-bottom: 6px; line-height: 1.35;
+    }
+    .sq-qsub { font-size: .88rem; color: var(--text-light); margin-bottom: 24px; }
+
+    /* ════════ GAME TYPE 1: CARD GRID (SINGLE/MULTI SELECT) ════════ */
+    .sq-grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .sq-grid--2col { grid-template-columns: 1fr 1fr; }
+    .sq-grid--3col { grid-template-columns: 1fr 1fr 1fr; }
+
+    .sq-option {
+      border: 2.5px solid var(--sage-light);
+      border-radius: 16px; padding: 16px 18px;
+      cursor: pointer; transition: all .22s;
+      background: var(--white); text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px; user-select: none;
+    }
+    .sq-option__emoji { font-size: 2rem; line-height: 1; }
+    .sq-option__label { font-weight: 700; font-size: .9rem; color: var(--text-dark); }
+    .sq-option__sub { font-size: .75rem; color: var(--text-light); }
+    .sq-option:hover {
+      border-color: var(--primary-green);
+      background: #f0f7ee;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(74,103,65,.15);
+    }
+    .sq-option.selected {
+      border-color: var(--primary-green);
+      background: linear-gradient(135deg, #e8f5e9, #f0f7ee);
+      box-shadow: 0 4px 14px rgba(74,103,65,.2);
+    }
+    .sq-option.selected::after {
+      content: '✓'; position: absolute; top: 0; right: 10px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--primary-green); color: #fff;
+      font-size: .75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sq-option { position: relative; }
+
+    /* ════════ GAME TYPE 2: SLIDER / SCALE ════════ */
+    .sq-slider-wrap { padding: 8px 0; }
+    .sq-slider-labels {
+      display: flex; justify-content: space-between;
+      font-size: .78rem; color: var(--text-light);
+      font-weight: 600; margin-bottom: 8px;
+    }
+    .sq-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 8px; border-radius: 50px;
+      background: var(--sage-light); outline: none; cursor: pointer;
+    }
+    .sq-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary-green); cursor: pointer;
+      box-shadow: 0 2px 10px rgba(74,103,65,.4);
+      border: 3px solid #fff; transition: transform .2s;
+    }
+    .sq-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    .sq-slider-value {
+      text-align: center; margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: var(--primary-green);
+    }
+    .sq-slider-value span { font-size: 1rem; font-weight: 500; color: var(--text-light); }
+
+    /* ════════ GAME TYPE 3: INPUT FIELDS (TEXT / NUMBER) ════════ */
+    .sq-input-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .sq-input-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+    .sq-input-group label { font-size: .82rem; font-weight: 700; color: var(--text-dark); }
+    .sq-input {
+      border: 2px solid var(--sage-light); border-radius: 12px;
+      padding: 12px 16px; font-family: 'Quicksand', sans-serif;
+      font-size: 1rem; color: var(--text-dark); outline: none;
+      background: #fafafa; transition: .2s;
+    }
+    .sq-input:focus {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(74,103,65,.1);
+      background: #fff;
+    }
+    .sq-input-unit {
+      display: flex; align-items: center;
+      border: 2px solid var(--sage-light); border-radius: 12px;
+      overflow: hidden; background: #fafafa;
+      transition: .2s;
+    }
+    .sq-input-unit:focus-within {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(74,103,65,.1);
+    }
+    .sq-input-unit input {
+      flex: 1; border: none; background: transparent;
+      padding: 12px 16px; font-family: 'Quicksand', sans-serif;
+      font-size: 1rem; outline: none; color: var(--text-dark);
+    }
+    .sq-input-unit__label {
+      padding: 0 14px; background: var(--sage-light);
+      font-weight: 700; font-size: .85rem; color: var(--primary-green);
+      white-space: nowrap; border-left: 2px solid var(--sage-light);
+    }
+
+    /* ════════ GAME TYPE 4: SWIPE CARDS (Tinder style - Thích/Không thích) ════════ */
+    .sq-swipe-arena {
+      position: relative; height: 260px; margin: 8px 0;
+    }
+    .sq-swipe-card {
+      position: absolute; inset: 0;
+      background: var(--white); border-radius: 20px;
+      border: 2px solid var(--sage-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px;
+      box-shadow: var(--shadow-card); cursor: grab;
+      transition: transform .15s; user-select: none;
+      font-size: 1.1rem; font-weight: 700; color: var(--text-dark);
+    }
+    .sq-swipe-card .sq-option__emoji { font-size: 3.5rem; }
+    .sq-swipe-btns {
+      display: flex; justify-content: center; gap: 24px; margin-top: 16px;
+    }
+    .sq-swipe-btn {
+      width: 60px; height: 60px; border-radius: 50%; border: none;
+      cursor: pointer; font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: .2s; box-shadow: 0 4px 12px rgba(0,0,0,.12);
+    }
+    .sq-swipe-btn--no  { background: #fee2e2; color: #dc2626; }
+    .sq-swipe-btn--yes { background: #dcfce7; color: #16a34a; }
+    .sq-swipe-btn:hover { transform: scale(1.15); }
+    .sq-swipe-out-right { animation: swipeRight .4s ease forwards; }
+    .sq-swipe-out-left  { animation: swipeLeft  .4s ease forwards; }
+
+    /* ════════ GAME TYPE 5: EMOJI SCALE (Rate with emoji) ════════ */
+    .sq-emoji-scale {
+      display: flex; justify-content: space-around;
+      gap: 8px; flex-wrap: wrap;
+    }
+    .sq-emoji-option {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; cursor: pointer; padding: 12px 8px;
+      border-radius: 14px; border: 2px solid transparent;
+      transition: all .22s; min-width: 60px; flex: 1;
+    }
+    .sq-emoji-option:hover { background: var(--sage-light); transform: translateY(-3px); }
+    .sq-emoji-option.selected {
+      background: linear-gradient(135deg, #e8f5e9, #d4edcc);
+      border-color: var(--primary-green);
+      transform: scale(1.08) translateY(-3px);
+      box-shadow: 0 6px 16px rgba(74,103,65,.2);
+    }
+    .sq-emoji-option__icon { font-size: 2.2rem; line-height: 1; }
+    .sq-emoji-option__label { font-size: .72rem; font-weight: 700; color: var(--text-light); text-align: center; }
+
+    /* ════════ GAME TYPE 6: TAG CLOUD (Multi-select tags) ════════ */
+    .sq-tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+    .sq-tag {
+      padding: 9px 18px; border: 2px solid var(--sage-light);
+      border-radius: 50px; cursor: pointer;
+      font-weight: 600; font-size: .88rem; color: var(--text-dark);
+      background: var(--white); transition: all .2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .sq-tag:hover { border-color: var(--primary-green); color: var(--primary-green); background: #f0f7ee; }
+    .sq-tag.selected {
+      background: var(--primary-green); color: #fff;
+      border-color: var(--primary-green);
+      box-shadow: 0 3px 10px rgba(74,103,65,.3);
+    }
+
+    /* ════════ GAME TYPE 7: TIMELINE PICKER (Frequency picker) ════════ */
+    .sq-timeline { display: flex; gap: 10px; }
+    .sq-timeline-btn {
+      flex: 1; padding: 14px 8px; border: 2px solid var(--sage-light);
+      border-radius: 14px; cursor: pointer; text-align: center;
+      background: var(--white); transition: all .2s;
+    }
+    .sq-timeline-btn__num {
+      font-family: 'Inter', sans-serif; font-size: 1.6rem; font-weight: 800;
+      color: var(--primary-green); line-height: 1;
+    }
+    .sq-timeline-btn__label { font-size: .72rem; font-weight: 600; color: var(--text-light); margin-top: 3px; }
+    .sq-timeline-btn:hover { border-color: var(--primary-green); transform: translateY(-2px); }
+    .sq-timeline-btn.selected {
+      background: var(--primary-green); border-color: var(--primary-green);
+      box-shadow: 0 4px 12px rgba(74,103,65,.3);
+    }
+    .sq-timeline-btn.selected .sq-timeline-btn__num,
+    .sq-timeline-btn.selected .sq-timeline-btn__label { color: #fff; }
+
+    /* ── NAVIGATION BUTTONS ── */
+    .sq-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--white); border-top: 1px solid var(--sage-light);
+      padding: 16px 28px; display: flex; justify-content: space-between;
+      align-items: center; z-index: 1000;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+    }
+    .sq-btn {
+      padding: 13px 32px; border-radius: 50px; border: none;
+      font-family: 'Quicksand', sans-serif; font-weight: 700;
+      font-size: .95rem; cursor: pointer; transition: .25s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sq-btn--back {
+      background: var(--sage-light); color: var(--primary-green);
+    }
+    .sq-btn--back:hover { background: #c8ddc0; transform: translateX(-2px); }
+    .sq-btn--next {
+      background: linear-gradient(135deg, var(--primary-green), #7FC26E);
+      color: #fff; box-shadow: 0 4px 16px rgba(74,103,65,.3);
+    }
+    .sq-btn--next:hover { transform: translateY(-2px) translateX(2px); box-shadow: 0 7px 22px rgba(74,103,65,.4); }
+    .sq-btn--next:disabled { background: #b0c8a6; cursor: not-allowed; transform: none; box-shadow: none; }
+    .sq-skip { background: none; border: none; color: var(--text-light);
+      font-size: .85rem; cursor: pointer; text-decoration: underline; }
+    .sq-nav__center { display: flex; flex-direction: column; align-items: center; }
+    .sq-nav__step { font-size: .75rem; color: var(--text-light); font-weight: 600; }
+    .sq-nav__dots { display: flex; gap: 5px; margin-top: 4px; }
+    .sq-nav__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--sage-light); transition: all .3s;
+    }
+    .sq-nav__dot.active { background: var(--primary-green); width: 18px; border-radius: 50px; }
+
+    /* ── REWARD ANIMATION ── */
+    .sq-reward {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.4); backdrop-filter: blur(4px);
+      animation: sqFadeIn .2s ease;
+    }
+    .sq-reward__card {
+      background: var(--white); border-radius: 28px;
+      padding: 40px 48px; text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      animation: sqPopIn .4s cubic-bezier(.175,.885,.32,1.275);
+      max-width: 400px;
+    }
+    .sq-reward__emoji { font-size: 4rem; display: block; margin-bottom: 12px;
+      animation: sqBounce .8s ease; }
+    .sq-reward__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: var(--text-dark); margin-bottom: 8px;
+    }
+    .sq-reward__points {
+      font-family: 'Inter', sans-serif; font-size: 1.2rem;
+      font-weight: 800; color: #B84D0C;
+      background: #FFF5E6; padding: 8px 20px; border-radius: 50px;
+      display: inline-block; margin-bottom: 16px;
+    }
+    .sq-reward__sub { color: var(--text-light); font-size: .9rem; margin-bottom: 24px; }
+    .sq-reward__btn {
+      background: linear-gradient(135deg, var(--primary-green), #7FC26E);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 13px 36px; font-family: 'Quicksand', sans-serif;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(74,103,65,.35); transition: .2s;
+    }
+    .sq-reward__btn:hover { transform: translateY(-2px); }
+
+    /* ── CONFETTI PARTICLES ── */
+    .confetti-piece {
+      position: fixed; width: 10px; height: 10px;
+      border-radius: 2px; pointer-events: none; z-index: 1000;
+      animation: confettiFall linear forwards;
+    }
+
+    /* ── RESULT SCREEN ── */
+    .sq-result {
+      max-width: 620px; text-align: center;
+      animation: sqFadeUp .5s ease both;
+    }
+    .sq-result__hero {
+      font-size: 5rem; display: block;
+      animation: sqBounce 1s ease infinite; margin-bottom: 16px;
+    }
+    .sq-result__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: var(--text-dark); margin-bottom: 8px;
+    }
+    .sq-result__sub { color: var(--text-light); font-size: 1rem; margin-bottom: 28px; }
+    .sq-result__summary {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-bottom: 28px; text-align: left;
+    }
+    .sq-result__item {
+      background: var(--white); border-radius: 16px;
+      padding: 16px 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      border-left: 4px solid var(--primary-green);
+    }
+    .sq-result__item-label {
+      font-size: .75rem; font-weight: 700; color: var(--text-light);
+      text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px;
+    }
+    .sq-result__item-val {
+      font-family: 'Inter', sans-serif; font-size: 1.2rem;
+      font-weight: 800; color: var(--primary-green);
+    }
+    .sq-result__item-sub { font-size: .8rem; color: var(--text-light); margin-top: 2px; }
+    .sq-result__cta {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .sq-result__btn-primary {
+      background: linear-gradient(135deg, var(--primary-green), #7FC26E);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 14px 32px; font-family: 'Quicksand', sans-serif;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(74,103,65,.35);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .sq-result__btn-secondary {
+      background: var(--white); color: var(--primary-green);
+      border: 2px solid var(--primary-green); border-radius: 50px;
+      padding: 14px 32px; font-family: 'Quicksand', sans-serif;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes sqFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sqFadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes sqPopIn {
+      from { transform: scale(.7); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    @keyframes sqBounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+    @keyframes swipeRight {
+      to { transform: translateX(140%) rotate(20deg); opacity: 0; }
+    }
+    @keyframes swipeLeft {
+      to { transform: translateX(-140%) rotate(-20deg); opacity: 0; }
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .sq-card { padding: 22px 18px; }
+      .sq-grid { grid-template-columns: 1fr 1fr; }
+      .sq-grid--3col { grid-template-columns: 1fr 1fr; }
+      .sq-qtitle { font-size: 1.2rem; }
+      .sq-result__summary { grid-template-columns: 1fr; }
+      .sq-topbar { padding: 10px 14px; gap: 10px; }
+      .sq-btn { padding: 11px 22px; font-size: .88rem; }
+      .sq-timeline { flex-wrap: wrap; }
+      .sq-timeline-btn { min-width: calc(33% - 8px); }
+    }
+  </style>
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
 </head>
-<body class="onboarding-bg">
-    <header class="hero-header">
-      <div class="top-icons">
-        <a href="#" class="icon-link">
-          <i class="far fa-user"></i>
-        </a>
-        <a href="#" class="icon-link">
-          <i class="fas fa-shopping-cart"></i>
-        </a>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SURVEY OVERLAY
+══════════════════════════════════════════ -->
+<div class="survey-overlay" id="surveyOverlay">
+
+  <!-- TOP BAR -->
+  <div class="sq-topbar">
+    <a href="index.html" class="sq-logo" title="Hecipe">hecipe</a>
+    <div class="sq-progress-wrap">
+      <div class="sq-progress-label">
+        <span id="progressLabel">Bắt đầu</span>
+        <span id="progressPct">0%</span>
       </div>
-
-      <a href="#" class="brand-logo" style="color:#4A6741">hecipe</a>
-
-      <div class="search-container">
-        <div class="search-bar">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..." />
-        </div>
+      <div class="sq-progress-track">
+        <div class="sq-progress-fill" id="progressFill" style="width:0%"></div>
       </div>
-    </header>
-    <nav class="navbar">
-      <ul class="nav-links">
-        <li><a href="#" class="active">Trang Chủ</a></li>
-        <li class="dropdown">
-          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Nguyên Liệu</a></li>
-            <li><a href="#">Gian Hàng Đối Tác</a></li>
-            <li><a href="#">Combo Tiết Kiệm</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Lộ Trình 7 Ngày</a></li>
-            <li><a href="#">Eat Clean & Diet</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Dinh Dưỡng Bệnh Lý</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Công Thức Nấu Ăn</a></li>
-            <li><a href="#">Video Hướng Dẫn</a></li>
-            <li><a href="#">Góc Y Khoa</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Khuyến Mãi</a></li>
-        <li><a href="onboarding.html">Khảo sát</a></li>
-      </ul>
-
-      <div class="user-actions">
-        <div class="cart-box">
-          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
-        </div>
-
-        <div id="authButtons" class="auth-buttons">
-          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
-          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
-        </div>
-
-        <div class="user-profile hidden" id="profileContainer">
-          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
-          <input type="file" id="avatarInput" style="display:none;" accept="image/*">
-          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
-          <ul class="profile-dropdown">
-            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
-            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
-            <li><a href="#">Lịch sử đơn hàng</a></li>
-            <li><a href="#">Ví Voucher</a></li>
-            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="ob-card">
-        <div class="ob-progress">
-            <div class="ob-line"><div class="ob-line-fill" id="progressFill"></div></div>
-            <div class="ob-step active" data-step="1">
-                <div class="ob-circle">1</div>
-                <div class="ob-step-label">Cá nhân</div>
-            </div>
-            <div class="ob-step" data-step="2">
-                <div class="ob-circle">2</div>
-                <div class="ob-step-label">Kích thước</div>
-            </div>
-            <div class="ob-step" data-step="3">
-                <div class="ob-circle">3</div>
-                <div class="ob-step-label">Vận động</div>
-            </div>
-            <div class="ob-step" data-step="4">
-                <div class="ob-circle">4</div>
-                <div class="ob-step-label">Bệnh lý</div>
-            </div>
-        </div>
-
-        <form id="onboardingForm">
-            <div class="step-content active" id="step-1">
-                <h2 class="step-title">Chào bạn mới! 👋</h2>
-                <p class="step-desc">Hãy cho Hecipe biết một chút thông tin cơ bản về bạn nhé.</p>
-                
-                <div class="input-group">
-                    <label class="title-label">Giới tính của bạn</label>
-                    <div class="choice-grid choice-grid-2">
-                        <div class="choice-box">
-                            <input type="radio" id="gender-male" name="gender" value="male">
-                            <label for="gender-male">
-                                <i class="fas fa-mars"></i>
-                                <div class="choice-text"><strong>Nam</strong></div>
-                            </label>
-                        </div>
-                        <div class="choice-box">
-                            <input type="radio" id="gender-female" name="gender" value="female">
-                            <label for="gender-female">
-                                <i class="fas fa-venus" style="color:#e85d75;"></i>
-                                <div class="choice-text"><strong>Nữ</strong></div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-group" style="margin-top: 30px;">
-                    <label class="title-label" for="birthYear">Năm sinh</label>
-                    <input type="number" id="birthYear" class="input-control" placeholder="Ví dụ: 2002" min="1950" max="2020">
-                </div>
-            </div>
-
-            <div class="step-content" id="step-2">
-                <h2 class="step-title">Chỉ số cơ thể ⚖️</h2>
-                <p class="step-desc">Dùng để tính toán lượng Calo (TDEE) và BMI chuẩn xác nhất.</p>
-                
-                <div class="input-group">
-                    <label class="title-label" for="height">Chiều cao (cm)</label>
-                    <input type="number" id="height" class="input-control" placeholder="Ví dụ: 170">
-                </div>
-                <div class="input-group">
-                    <label class="title-label" for="weight">Cân nặng (kg)</label>
-                    <input type="number" id="weight" step="0.1" class="input-control" placeholder="Ví dụ: 65.5">
-                </div>
-            </div>
-
-            <div class="step-content" id="step-3">
-                <h2 class="step-title">Lối sống hàng ngày 🏃‍♂️</h2>
-                <p class="step-desc">Mức độ vận động ảnh hưởng rất lớn đến lượng thức ăn bạn cần nạp.</p>
-                
-                <div class="choice-grid">
-                    <div class="choice-box">
-                        <input type="radio" id="act-1" name="activityLevel" value="1.2">
-                        <label for="act-1">
-                            <i class="fas fa-chair"></i>
-                            <div class="choice-text">
-                                <strong>Ít vận động</strong>
-                                <span>Làm việc văn phòng, không tập thể thao</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="radio" id="act-2" name="activityLevel" value="1.375">
-                        <label for="act-2">
-                            <i class="fas fa-walking"></i>
-                            <div class="choice-text">
-                                <strong>Vận động nhẹ</strong>
-                                <span>Tập luyện nhẹ nhàng 1-3 ngày/tuần</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="radio" id="act-3" name="activityLevel" value="1.55">
-                        <label for="act-3">
-                            <i class="fas fa-person-running"></i>
-                            <div class="choice-text">
-                                <strong>Vận động vừa phải</strong>
-                                <span>Tập thể thao đều đặn 3-5 ngày/tuần</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="radio" id="act-4" name="activityLevel" value="1.725">
-                        <label for="act-4">
-                            <i class="fas fa-dumbbell"></i>
-                            <div class="choice-text">
-                                <strong>Vận động nặng</strong>
-                                <span>Tập luyện cường độ cao 6-7 ngày/tuần</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="step-content" id="step-4">
-                <h2 class="step-title">Bộ lọc Y Khoa 🩺</h2>
-                <p class="step-desc">Bạn đang cần tìm thực đơn an toàn cho tình trạng nào? (Có thể chọn nhiều)</p>
-                
-                <div class="choice-grid">
-                    <div class="choice-box">
-                        <input type="checkbox" id="dis-diabet" name="diseases" value="DIABET">
-                        <label for="dis-diabet">
-                            <i class="fas fa-cubes-stacked"></i>
-                            <div class="choice-text"><strong>Tiểu đường</strong><span>Kiểm soát đường huyết, hạn chế tinh bột xấu</span></div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="checkbox" id="dis-heart" name="diseases" value="HEART">
-                        <label for="dis-heart">
-                            <i class="fas fa-heartbeat"></i>
-                            <div class="choice-text"><strong>Tim mạch</strong><span>Hạn chế Cholesterol xấu và chất béo bão hòa</span></div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="checkbox" id="dis-hbp" name="diseases" value="HBP">
-                        <label for="dis-hbp">
-                            <i class="fas fa-temperature-arrow-down"></i>
-                            <div class="choice-text"><strong>Huyết áp cao</strong><span>Thực đơn nhạt, kiểm soát nghiêm ngặt lượng Natri</span></div>
-                        </label>
-                    </div>
-                    <div class="choice-box">
-                        <input type="checkbox" id="dis-gout" name="diseases" value="GOUT">
-                        <label for="dis-gout">
-                            <i class="fas fa-bone"></i>
-                            <div class="choice-text"><strong>Gout</strong><span>Hạn chế thực phẩm giàu purin</span></div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ob-buttons">
-                <button type="button" class="btn-prev" id="btn-prev" disabled>Quay lại</button>
-                <button type="button" class="btn-next" id="btn-next">Tiếp theo</button>
-            </div>
-        </form>
     </div>
-</div>
-
-<script>
-const form = document.getElementById('onboardingForm');
-const btnNext = document.getElementById('btn-next');
-const btnPrev = document.getElementById('btn-prev');
-let currentStep = 1;
-const totalSteps = 4;
-
-const userId = localStorage.getItem('userId');
-if (!userId) {
-    alert('Vui lòng đăng ký hoặc đăng nhập trước tiên!');
-    window.location.href = 'register.html';
-}
-
-// prefill form steps with temporary data if user returned or already provided in registration
-async function loadProfile() {
-    const uid = localStorage.getItem('userId');
-    if (!uid) return {};
-    try {
-        const resp = await fetch(`http://localhost:3000/api/users/profile?userId=${uid}`);
-        const json = await resp.json();
-        if (json.success && json.data) {
-            localStorage.setItem('userProfile', JSON.stringify(json.data));
-            if (json.data.avatar) localStorage.setItem('avatar', json.data.avatar);
-            return json.data;
-        }
-    } catch (e) {
-        console.warn('Không thể tải profile từ server:', e);
-    }
-    return JSON.parse(localStorage.getItem('userProfile') || '{}');
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const stored = await loadProfile();
-    if (stored.gender) {
-        const radio = document.querySelector(`input[name="gender"][value="${stored.gender}"]`);
-        if (radio) radio.checked = true;
-    }
-    if (stored.birthYear) {
-        const el = document.getElementById('birthYear');
-        if (el) el.value = stored.birthYear;
-    }
-    if (stored.height) {
-        const el = document.getElementById('height');
-        if (el) el.value = stored.height;
-    }
-    if (stored.weight) {
-        const el = document.getElementById('weight');
-        if (el) el.value = stored.weight;
-    }
-    if (stored.activityLevel) {
-        const radio = document.querySelector(`input[name="activityLevel"][value="${stored.activityLevel}"]`);
-        if (radio) radio.checked = true;
-    }
-    if (Array.isArray(stored.diseases)) {
-        stored.diseases.forEach(v=>{
-            const chk = document.querySelector(`input[name="diseases"][value="${v}"]`);
-            if (chk) chk.checked = true;
-        });
-    }
-});
-
-function showStep(step) {
-    document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active'));
-    const el = document.getElementById('step-'+step);
-    if(el) el.classList.add('active');
-
-    document.querySelectorAll('.ob-step').forEach(s => {
-        const num = parseInt(s.getAttribute('data-step'));
-        s.classList.remove('active','completed');
-        if(num===step) s.classList.add('active');
-        else if(num<step) s.classList.add('completed');
-    });
-
-    const fill = document.getElementById('progressFill');
-    if(fill) fill.style.width = ((step-1)/(totalSteps-1))*100 + '%';
-
-    btnPrev.disabled = step===1;
-    if(step===totalSteps) btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';
-    else btnNext.innerHTML='Tiếp theo <i class="fas fa-arrow-right"></i>';
-}
-
-function validateStep(step){
-    switch(step){
-        case 1:
-            const g = document.querySelector('input[name="gender"]:checked');
-            if(!g){alert('Vui lòng chọn giới tính!');return false;}
-            const year = document.getElementById('birthYear').value;
-            if(!year){alert('Vui lòng nhập năm sinh!');return false;}
-            return true;
-        case 2:
-            const h=document.getElementById('height').value;
-            const w=document.getElementById('weight').value;
-            if(!h||!w){alert('Vui lòng nhập chiều cao và cân nặng!');return false;}
-            return true;
-        case 3:
-            const a=document.querySelector('input[name="activityLevel"]:checked');
-            if(!a){alert('Vui lòng chọn mức độ vận động!');return false;}
-            return true;
-        default:
-            return true;
-    }
-}
-
-btnNext.addEventListener('click',async function(e){
-    e.preventDefault();
-    if(!validateStep(currentStep)) return;
-    if(currentStep<totalSteps){currentStep++;showStep(currentStep);} 
-    else await submit();
-});
-
-btnPrev.addEventListener('click',function(e){
-    e.preventDefault();
-    if(currentStep>1){currentStep--;showStep(currentStep);}n
-});
-
-async function submit(){
-    const gender = document.querySelector('input[name="gender"]:checked')?.value;
-    const birthYear = document.getElementById('birthYear').value;
-    const height = parseFloat(document.getElementById('height').value);
-    const weight = parseFloat(document.getElementById('weight').value);
-    const activity = document.querySelector('input[name="activityLevel"]:checked')?.value;
-    const diseases = Array.from(document.querySelectorAll('input[name="diseases"]:checked')).map(i=>i.value);
-
-    const payload = { userId, gender, birthYear, height, weight, activityLevel: activity?parseFloat(activity):null, diseases };
-
-    try{
-        btnNext.disabled=true; btnNext.textContent='Đang xử lý...';
-        const res = await fetch('http://localhost:3000/api/users/complete-onboarding',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        const result = await res.json();
-        if(result.success){
-            // persist data locally so hosouser.html can reuse it
-            try {
-                const stored = JSON.parse(localStorage.getItem('userProfile') || '{}');
-                if (gender) stored.gender = gender;
-                if (birthYear) stored.birthYear = birthYear;
-                if (height) stored.height = height;
-                if (weight) stored.weight = weight;
-                if (activity) stored.activityLevel = parseFloat(activity);
-                if (diseases && diseases.length) stored.diseases = diseases;
-                localStorage.setItem('userProfile', JSON.stringify(stored));
-            } catch(e) {
-                console.warn('Could not update local profile', e);
-            }
-
-            alert('✅ Khảo sát hoàn tất! Bạn sẽ được chuyển tới hồ sơ.');
-            window.location.href='hosouser.html';
-        }
-        else{alert('❌ Lỗi: '+result.message); btnNext.disabled=false; btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';}    
-    }catch(err){console.error(err);alert('❌ Lỗi kết nối! Vùi lòng kiểm tra server.');btnNext.disabled=false;btnNext.innerHTML='Hoàn thành <i class="fas fa-check"></i>';}    
-}
-
-showStep(currentStep);
-</script>
-
-  <footer class="footer">
-
-  <!-- KHỐI TRÊN -->
-  <div class="footer-container">
-
-    <!-- BÊN TRÁI: LOGO -->
-    <div class="footer-logo">
-      <a href="index.html" title="Về trang chủ">
-        <img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo">
-      </a>
-    </div>
-
-    <!-- BÊN PHẢI: NỘI DUNG -->
-    <div class="footer-links">
-
-      <div class="footer-col">
-        <h4>Về Hecipe</h4>
-        <a href="duan.html">Dự án</a>
-        <a href="blog.html">Blog</a>
-      </div>
-
-      <div class="footer-col">
-   <h4>Khám phá</h4>
-   <a href="congthuc.html">Công thức nổi bật</a>
-   <a href="thucdon.html">Thực đơn hôm nay</a>
-   <a href="chedo.html">Chế độ ăn khỏe</a>
-   <a href="goiy.html">Gợi ý cho bạn</a>
-</div>
-
-      <div class="footer-col">
-        <h4>Trợ giúp</h4>
-        <a href="hotro.html">Yêu cầu hỗ trợ</a>
-        <a href="lienhe.html">Liên hệ</a>
-      </div>
-
-      <div class="footer-col">
-        <h4>Social</h4>
-  <a href="fb.html">
-    <i class="fa-brands fa-facebook-f"></i>
-    Facebook
-  </a>
-  <a href="pin.html">
-    <i class="fa-brands fa-pinterest-p"></i>
-    Pinterest
-  </a>
-  <a href="ig.html">
-    <i class="fa-brands fa-instagram"></i>
-    Instagram
-  </a>
-  <a href="tw.html">
-    <i class="fa-brands fa-tiktok"></i>
-    TikTok
-</div>
-      </div>
-
-      <div class="footer-app">
-   <h4>Download our app:</h4>
-   <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
-   <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
-</div>
-    </div>
+    <div class="sq-points"><i class="fa-solid fa-star"></i> <span id="pointsDisplay">0</span> điểm</div>
+    <button class="sq-close" onclick="confirmExit()" title="Thoát"><i class="fa-solid fa-xmark"></i></button>
   </div>
 
-  <div class="footer-bottom">
-   <div class="copyright">Copyright © 2026 Hecipe.</div>
-   <div class="divider"></div>
-   <div class="policy-links"><a href="dieukhoan.html">Điều khoản dịch vụ</a><a href="chinhsach.html">Chính sách bảo mật</a></div>
+  <!-- MAIN SCROLL AREA -->
+  <div class="sq-main" id="sqMain">
+    <!-- Content rendered by JS -->
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="sq-nav" id="sqNav" style="display:none">
+    <button class="sq-btn sq-btn--back" id="btnBack" onclick="goBack()">
+      <i class="fa-solid fa-arrow-left"></i> Quay lại
+    </button>
+    <div class="sq-nav__center">
+      <div class="sq-nav__step" id="navStepLabel"></div>
+      <div class="sq-nav__dots" id="navDots"></div>
+    </div>
+    <button class="sq-btn sq-btn--next" id="btnNext" onclick="goNext()">
+      Tiếp theo <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
 </div>
-</footer>
+
+<!-- REWARD OVERLAY -->
+<div class="sq-reward" id="rewardOverlay" style="display:none">
+  <div class="sq-reward__card">
+    <span class="sq-reward__emoji" id="rewardEmoji">🎉</span>
+    <div class="sq-reward__title" id="rewardTitle">Xuất sắc!</div>
+    <div class="sq-reward__points" id="rewardPoints">+50 điểm</div>
+    <div class="sq-reward__sub" id="rewardSub">Bạn đã hoàn thành phần này rất tốt!</div>
+    <button class="sq-reward__btn" onclick="dismissReward()">Tiếp tục <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. Lấy toàn bộ đường dẫn URL hiện tại
-    let currentPath = window.location.pathname;
-    let currentPage = currentPath.split('/').pop();
-    
-    // Xử lý trang chủ
-    if (currentPage === '' || currentPage === 'index.html') {
-      currentPage = 'index.html';
+/* ═══════════════════════════════════════════════════════
+   HECIPE HEALTH QUEST — Survey Engine
+   Ánh xạ DB: KHAOSAT / CAUHOI / CAUTRALOI / TRALOI_USER
+              TAIKHOANND / LICHSUBMI / COBENH / BENHLY
+═══════════════════════════════════════════════════════ */
+
+/* ── SURVEY DATA (ánh xạ với DB) ─────────────────── */
+const SURVEY_ID = 'KS000001';  // KHAOSAT.MAKS
+
+const colorPalette = ['#4A6741','#E07B39','#E07B39','#3B82C4','#D9648A','#2CA58D','#7FC26E'];
+
+const SECTIONS = [
+  /* ── SECTION 1: THÔNG TIN CƠ BẢN ── */
+  {
+    id: 'basic',
+    icon: '👤',
+    label: 'Phần 1 / 5',
+    title: 'Thông tin cơ bản',
+    rewardAfter: false,
+    questions: [
+      {
+        id: 'CH000001',
+        type: 'GRID_SINGLE',   // CAUHOI.LOAICH = 'SINGLE'
+        gameStyle: 'emoji-scale',
+        title: 'Bạn là...?',
+        sub: 'Chọn giới tính để chúng tôi tính chỉ số dinh dưỡng phù hợp hơn',
+        dbField: 'GIOITINH',
+        required: true,
+        options: [
+          { id: 'g0', emoji: '👩', label: 'Nữ',  value: 0 },
+          { id: 'g1', emoji: '👨', label: 'Nam',  value: 1 },
+          { id: 'g2', emoji: '🧑', label: 'Khác', value: 2 },
+        ]
+      },
+      {
+        id: 'CH000002',
+        type: 'INPUT',
+        gameStyle: 'number-input',
+        title: 'Chiều cao & cân nặng của bạn?',
+        sub: 'Chúng tôi sẽ tính BMI và nhu cầu calo hằng ngày',
+        dbFields: ['CHIEUCAO', 'CANNANG'],
+        required: true,
+        inputs: [
+          { key: 'CHIEUCAO', label: 'Chiều cao', unit: 'cm', min: 100, max: 250, placeholder: '170' },
+          { key: 'CANNANG',  label: 'Cân nặng',  unit: 'kg', min: 20,  max: 300, placeholder: '65'  },
+        ]
+      },
+      {
+        id: 'CH000003',
+        type: 'SLIDER',
+        gameStyle: 'slider',
+        title: 'Bạn bao nhiêu tuổi?',
+        sub: 'Kéo thanh trượt để chọn tuổi của bạn',
+        dbField: 'NGAYSINH',
+        required: true,
+        min: 10, max: 90, default: 28, unit: 'tuổi',
+        labels: ['10 tuổi', '90 tuổi'],
+      },
+    ]
+  },
+
+  /* ── SECTION 2: MỤC TIÊU SỨC KHOẺ ── */
+  {
+    id: 'goal',
+    icon: '🎯',
+    label: 'Phần 2 / 5',
+    title: 'Mục tiêu của bạn',
+    rewardAfter: true,
+    rewardConfig: { emoji: '🏆', title: 'Tuyệt vời!', points: 50, sub: 'Mục tiêu rõ ràng là bước đầu thay đổi!' },
+    questions: [
+      {
+        id: 'CH000004',
+        type: 'GRID_SINGLE',
+        gameStyle: 'card-grid',
+        title: 'Mục tiêu chính của bạn là gì?',
+        sub: 'Chọn 1 mục tiêu phù hợp nhất với bạn hiện tại',
+        dbField: 'MUCTIEU',
+        required: true,
+        gridCols: 3,
+        options: [
+          { id: 'lose',     emoji: '📉', label: 'Giảm cân',     sub: 'Đốt mỡ, thon gọn', value: 'LOSE'     },
+          { id: 'maintain', emoji: '⚖️', label: 'Duy trì',      sub: 'Giữ vóc dáng hiện tại', value: 'MAINTAIN' },
+          { id: 'gain',     emoji: '💪', label: 'Tăng cơ',      sub: 'Xây dựng cơ bắp', value: 'GAIN'     },
+          { id: 'health',   emoji: '❤️', label: 'Cải thiện sức khoẻ', sub: 'Ăn uống lành mạnh hơn', value: 'MEDICAL'  },
+          { id: 'energy',   emoji: '⚡', label: 'Tăng năng lượng', sub: 'Tràn đầy sức sống', value: 'MAINTAIN' },
+          { id: 'beauty',   emoji: '✨', label: 'Đẹp da, đẹp tóc', sub: 'Dinh dưỡng từ bên trong', value: 'MAINTAIN' },
+        ]
+      },
+      {
+        id: 'CH000005',
+        type: 'GRID_SINGLE',
+        gameStyle: 'card-grid',
+        title: 'Mức độ hoạt động thể chất của bạn?',
+        sub: 'Điều này ảnh hưởng lớn đến lượng calo cần nạp mỗi ngày',
+        dbField: 'MUCHOATDONG',
+        required: true,
+        gridCols: 2,
+        options: [
+          { id: 'sed',    emoji: '🛋️', label: 'Ít vận động',     sub: 'Làm việc văn phòng, ít đi lại', value: 'SEDENTARY' },
+          { id: 'light',  emoji: '🚶', label: 'Nhẹ nhàng',       sub: 'Đi bộ, tập yoga 1-3 ngày/tuần', value: 'LIGHT'     },
+          { id: 'mod',    emoji: '🏃', label: 'Vừa phải',        sub: 'Tập thể dục 3-5 ngày/tuần',    value: 'MODERATE'  },
+          { id: 'active', emoji: '🏋️', label: 'Tích cực',        sub: 'Tập nặng 6-7 ngày/tuần',       value: 'ACTIVE'    },
+          { id: 'vact',   emoji: '🏅', label: 'Rất tích cực',    sub: 'Vận động viên, tập 2 buổi/ngày', value: 'VACTIVE'  },
+        ]
+      },
+    ]
+  },
+
+  /* ── SECTION 3: THÓI QUEN ĂN UỐNG ── */
+  {
+    id: 'habits',
+    icon: '🍽️',
+    label: 'Phần 3 / 5',
+    title: 'Thói quen ăn uống',
+    rewardAfter: true,
+    rewardConfig: { emoji: '🍳', title: 'Ngon miệng!', points: 60, sub: 'Thói quen ăn uống tốt là chìa khoá sức khoẻ!' },
+    questions: [
+      {
+        id: 'CH000006',
+        type: 'SWIPE',
+        gameStyle: 'swipe',
+        title: '🃏 Vuốt để chọn!',
+        sub: 'Vuốt phải nếu bạn thường ăn món này, vuốt trái nếu không',
+        dbField: 'THUCPHAM_THICH',
+        required: false,
+        cards: [
+          { emoji: '🥦', label: 'Rau xanh', sub: 'Cải, bông cải, rau muống...' },
+          { emoji: '🍖', label: 'Thịt đỏ',  sub: 'Bò, heo, cừu...' },
+          { emoji: '🐟', label: 'Hải sản',  sub: 'Cá, tôm, cua, mực...' },
+          { emoji: '🥚', label: 'Trứng',    sub: 'Trứng gà, vịt, cút...' },
+          { emoji: '🥛', label: 'Sữa & Phô mai', sub: 'Sữa tươi, yogurt, cheese...' },
+          { emoji: '🍚', label: 'Cơm trắng', sub: 'Gạo tẻ thông thường' },
+          { emoji: '🍜', label: 'Mì & Bún',  sub: 'Mì gói, bún, phở...' },
+          { emoji: '🍎', label: 'Trái cây',  sub: 'Ăn trái cây mỗi ngày' },
+        ]
+      },
+      {
+        id: 'CH000007',
+        type: 'TIMELINE',
+        gameStyle: 'timeline',
+        title: 'Bạn ăn bao nhiêu bữa mỗi ngày?',
+        sub: 'Chọn số bữa ăn phổ biến nhất của bạn',
+        dbField: 'SOBUAAN',
+        required: true,
+        options: [
+          { value: '1', num: '1', label: 'bữa/ngày' },
+          { value: '2', num: '2', label: 'bữa/ngày' },
+          { value: '3', num: '3', label: 'bữa/ngày' },
+          { value: '4', num: '4', label: 'bữa/ngày' },
+          { value: '5+', num: '5+', label: 'bữa/ngày' },
+        ]
+      },
+      {
+        id: 'CH000008',
+        type: 'GRID_MULTI',
+        gameStyle: 'tag-cloud',
+        title: 'Bạn có kiêng cữ gì không? (Chọn tất cả phù hợp)',
+        sub: 'Chúng tôi sẽ loại bỏ các món không phù hợp ra khỏi gợi ý',
+        dbField: 'KIENGCU',
+        required: false,
+        options: [
+          { emoji: '🥩', label: 'Không ăn thịt đỏ',   value: 'NO_RED_MEAT'  },
+          { emoji: '🐷', label: 'Không ăn thịt heo',   value: 'NO_PORK'      },
+          { emoji: '🐄', label: 'Không ăn thịt bò',    value: 'NO_BEEF'      },
+          { emoji: '🐟', label: 'Không ăn hải sản',    value: 'NO_SEAFOOD'   },
+          { emoji: '🥛', label: 'Không dung nạp sữa',  value: 'NO_DAIRY'     },
+          { emoji: '🌾', label: 'Không ăn Gluten',     value: 'NO_GLUTEN'    },
+          { emoji: '🌱', label: 'Thuần chay Vegan',    value: 'VEGAN'        },
+          { emoji: '🧘', label: 'Chay trường',          value: 'VEGETARIAN'   },
+          { emoji: '🥜', label: 'Dị ứng đậu phộng',   value: 'NO_PEANUT'    },
+          { emoji: '🥚', label: 'Không ăn trứng',      value: 'NO_EGG'       },
+          { emoji: '✅', label: 'Không kiêng gì',       value: 'NONE'         },
+        ]
+      },
+      {
+        id: 'CH000009',
+        type: 'EMOJI_SCALE',
+        gameStyle: 'emoji-scale',
+        title: 'Bạn tự nấu ăn thường xuyên thế nào?',
+        sub: 'Chúng tôi sẽ gợi ý công thức phù hợp với thời gian bạn có',
+        dbField: 'TANSUATNAU',
+        required: true,
+        options: [
+          { emoji: '😴', label: 'Không bao giờ',   value: '0' },
+          { emoji: '🙂', label: 'Thỉnh thoảng',    value: '1' },
+          { emoji: '😊', label: 'Vài lần/tuần',    value: '2' },
+          { emoji: '👨‍🍳', label: 'Hầu hết các ngày', value: '3' },
+          { emoji: '🌟', label: 'Nấu mọi bữa!',   value: '4' },
+        ]
+      },
+    ]
+  },
+
+  /* ── SECTION 4: SỨC KHOẺ & BỆNH LÝ ── */
+  {
+    id: 'health',
+    icon: '🏥',
+    label: 'Phần 4 / 5',
+    title: 'Tình trạng sức khoẻ',
+    rewardAfter: true,
+    rewardConfig: { emoji: '💊', title: 'Cảm ơn bạn!', points: 70, sub: 'Thông tin này giúp chúng tôi bảo vệ sức khoẻ của bạn tốt hơn!' },
+    questions: [
+      {
+        id: 'CH000010',
+        type: 'GRID_SINGLE',
+        gameStyle: 'emoji-scale',
+        title: 'Bạn có đang mắc bệnh mãn tính nào không?',
+        sub: 'Thông tin được bảo mật và chỉ dùng để cá nhân hoá thực đơn',
+        dbField: 'COBENHMAN',
+        required: true,
+        options: [
+          { emoji: '✅', label: 'Không có',        value: 'NONE'    },
+          { emoji: '🩺', label: 'Có, tôi sẽ chọn bên dưới', value: 'YES' },
+          { emoji: '❓', label: 'Chưa chắc chắn', value: 'UNSURE'  },
+        ]
+      },
+      {
+        id: 'CH000011',
+        type: 'GRID_MULTI',
+        gameStyle: 'tag-cloud',
+        title: 'Chọn các bệnh lý bạn đang mắc phải',
+        sub: 'Có thể chọn nhiều — ánh xạ trực tiếp vào bảng COBENH & BENHLY',
+        dbField: 'BENHLY_MACS',   // → COBENH table
+        required: false,
+        conditional: { questionId: 'CH000010', value: 'YES' },
+        options: [
+          { emoji: '🩸', label: 'Tiểu đường Type 2',     value: 'DIABET'  },
+          { emoji: '🩸', label: 'Tiểu đường Type 1',     value: 'DIAB1'   },
+          { emoji: '❤️', label: 'Tim mạch',               value: 'HEART'   },
+          { emoji: '📊', label: 'Tăng huyết áp',          value: 'HBP'     },
+          { emoji: '💧', label: 'Suy thận (giai đoạn 1-2)', value: 'CKD1'  },
+          { emoji: '💧', label: 'Suy thận (giai đoạn 4-5)', value: 'CKD45' },
+          { emoji: '🫀', label: 'Gan nhiễm mỡ',           value: 'LIVER1'  },
+          { emoji: '🫀', label: 'Xơ gan',                 value: 'LIVER3'  },
+          { emoji: '🦴', label: 'Gout',                   value: 'GOUT'    },
+          { emoji: '🎗', label: 'Ung thư (hỗ trợ điều trị)', value: 'CANCER'},
+          { emoji: '🫃', label: 'Hội chứng ruột kích thích (IBS)', value: 'IBS' },
+          { emoji: '🫃', label: 'Loét dạ dày tá tràng',  value: 'ULCER'   },
+          { emoji: '🫃', label: 'Viêm đại tràng / Crohn', value: 'CROHN'  },
+        ]
+      },
+      {
+        id: 'CH000012',
+        type: 'EMOJI_SCALE',
+        gameStyle: 'emoji-scale',
+        title: 'Bạn tự đánh giá tình trạng sức khoẻ hiện tại ra sao?',
+        sub: 'Đánh giá tổng thể cảm giác sức khoẻ của bạn',
+        dbField: 'SUKHOETONGTHE',
+        required: true,
+        options: [
+          { emoji: '😷', label: 'Rất kém',     value: '1' },
+          { emoji: '😕', label: 'Không ổn lắm', value: '2' },
+          { emoji: '😐', label: 'Bình thường',   value: '3' },
+          { emoji: '🙂', label: 'Tốt',           value: '4' },
+          { emoji: '🤩', label: 'Rất tốt!',      value: '5' },
+        ]
+      },
+      {
+        id: 'CH000013',
+        type: 'GRID_MULTI',
+        gameStyle: 'tag-cloud',
+        title: 'Bạn có gặp vấn đề nào sau đây không? (tùy chọn)',
+        sub: 'Giúp chúng tôi tránh gợi ý thực phẩm không phù hợp',
+        dbField: 'TRIEUCHUNG',
+        required: false,
+        options: [
+          { emoji: '😴', label: 'Hay mệt mỏi',       value: 'FATIGUE'      },
+          { emoji: '🫃', label: 'Tiêu hoá kém',       value: 'DIGESTION'    },
+          { emoji: '😤', label: 'Stress, căng thẳng', value: 'STRESS'       },
+          { emoji: '😴', label: 'Mất ngủ',            value: 'INSOMNIA'     },
+          { emoji: '🤧', label: 'Hay bệnh vặt',       value: 'FREQUENT_SICK'},
+          { emoji: '💊', label: 'Thiếu máu',          value: 'ANEMIA'       },
+          { emoji: '🦷', label: 'Xương khớp yếu',     value: 'BONE_JOINT'   },
+          { emoji: '❌', label: 'Không có vấn đề gì', value: 'NONE'         },
+        ]
+      },
+    ]
+  },
+
+  /* ── SECTION 5: SỞ THÍCH & NGÂN SÁCH ── */
+  {
+    id: 'preference',
+    icon: '💚',
+    label: 'Phần 5 / 5',
+    title: 'Sở thích & ngân sách',
+    rewardAfter: false,
+    questions: [
+      {
+        id: 'CH000014',
+        type: 'GRID_MULTI',
+        gameStyle: 'tag-cloud',
+        title: 'Phong cách ăn bạn yêu thích? (có thể chọn nhiều)',
+        sub: 'Chúng tôi sẽ ưu tiên gợi ý những thực đơn phù hợp',
+        dbField: 'PHONGCACAN',
+        required: true,
+        options: [
+          { emoji: '🍱', label: 'Cơm nhà truyền thống', value: 'TRADITIONAL' },
+          { emoji: '🥗', label: 'Eat Clean hiện đại',   value: 'EATCLEAN'    },
+          { emoji: '🍜', label: 'Đặc sản 3 miền',       value: 'REGIONAL'    },
+          { emoji: '🍣', label: 'Ẩm thực nước ngoài',   value: 'INTERNATIONAL'},
+          { emoji: '🧆', label: 'Chay & Thuần chay',    value: 'VEGAN_STYLE' },
+          { emoji: '💪', label: 'High Protein / Gym',   value: 'HIGHPROTEIN' },
+          { emoji: '🥩', label: 'Keto / Low Carb',      value: 'KETO'        },
+          { emoji: '🍱', label: 'Meal Prep cuối tuần',  value: 'MEALPREP'    },
+        ]
+      },
+      {
+        id: 'CH000015',
+        type: 'SLIDER',
+        gameStyle: 'slider',
+        title: 'Ngân sách cho ăn uống mỗi ngày là bao nhiêu?',
+        sub: 'Chúng tôi sẽ gợi ý nguyên liệu & combo phù hợp túi tiền',
+        dbField: 'NGANSACHNGAY',
+        required: true,
+        min: 50, max: 500, default: 150, unit: 'nghìn đồng/ngày',
+        step: 10,
+        labels: ['50k', '500k'],
+        formatFn: (v) => `${v}k đ`,
+      },
+      {
+        id: 'CH000016',
+        type: 'GRID_SINGLE',
+        gameStyle: 'card-grid',
+        title: 'Bạn có bao nhiêu thời gian để nấu ăn?',
+        sub: 'Chúng tôi sẽ gợi ý công thức phù hợp với thời gian của bạn',
+        dbField: 'THOIGANNAU',
+        required: true,
+        gridCols: 2,
+        options: [
+          { id: 't1', emoji: '⚡', label: '< 15 phút',    sub: 'Nhanh gọn',         value: '15'  },
+          { id: 't2', emoji: '🕐', label: '15 - 30 phút', sub: 'Bữa ăn thông thường', value: '30'  },
+          { id: 't3', emoji: '🍳', label: '30 - 60 phút', sub: 'Có thời gian',       value: '60'  },
+          { id: 't4', emoji: '👨‍🍳', label: '> 60 phút',  sub: 'Thích nấu cầu kỳ',  value: '120' },
+        ]
+      },
+    ]
+  },
+];
+
+/* ── STATE ─────────────────────────────────── */
+const answers      = {};          // { questionId: value | value[] }
+const swipeResults = {};          // { CH000006: { 'Rau xanh': true, ... } }
+let totalPoints    = 0;
+let currentSection = -1;          // -1 = intro screen
+let currentQIndex  = 0;
+let swipeCardIndex = 0;
+let rewardCallback = null;
+
+// Flatten tất cả câu hỏi
+const allQuestions = SECTIONS.flatMap(s => s.questions);
+const totalQ = allQuestions.length;
+
+function isQuestionVisible(q) {
+  if (!q || !q.conditional) return true;
+  const c = q.conditional;
+  const answered = answers[c.questionId];
+  if (Array.isArray(answered)) return answered.includes(c.value);
+  return answered === c.value;
+}
+
+function getVisibleQuestions(sectionIndex) {
+  if (sectionIndex < 0 || sectionIndex >= SECTIONS.length) return [];
+  return SECTIONS[sectionIndex].questions.filter(isQuestionVisible);
+}
+
+function getVisibleTotalQuestions() {
+  return SECTIONS.reduce((sum, _sec, idx) => sum + getVisibleQuestions(idx).length, 0);
+}
+
+function getCurrentQuestion() {
+  const visible = getVisibleQuestions(currentSection);
+  if (!visible.length) return null;
+  return visible[currentQIndex] || null;
+}
+
+/* Tính global question index từ section + local index */
+function getGlobalIndex(sIdx, qIdx) {
+  let g = 0;
+  for (let i = 0; i < sIdx; i++) g += getVisibleQuestions(i).length;
+  return g + qIdx;
+}
+
+/* ── RENDER ─────────────────────────────────── */
+function render() {
+  const main = document.getElementById('sqMain');
+  const nav  = document.getElementById('sqNav');
+
+  if (currentSection === -1) {
+    nav.style.display = 'none';
+    main.innerHTML = renderIntro();
+    return;
+  }
+
+  if (currentSection >= SECTIONS.length) {
+    nav.style.display = 'none';
+    main.innerHTML = renderResult();
+    launchConfetti();
+    return;
+  }
+
+  const sec = SECTIONS[currentSection];
+  const visibleQuestions = getVisibleQuestions(currentSection);
+  if (!visibleQuestions.length) {
+    advanceSection();
+    return;
+  }
+  if (currentQIndex >= visibleQuestions.length) {
+    currentQIndex = visibleQuestions.length - 1;
+  }
+  const q = visibleQuestions[currentQIndex];
+
+  // Progress
+  const gIdx = getGlobalIndex(currentSection, currentQIndex);
+  const visibleTotal = Math.max(1, getVisibleTotalQuestions());
+  const pct  = Math.round((gIdx / visibleTotal) * 100);
+  document.getElementById('progressFill').style.width  = pct + '%';
+  document.getElementById('progressPct').textContent   = pct + '%';
+  document.getElementById('progressLabel').textContent = sec.title;
+  document.getElementById('pointsDisplay').textContent = totalPoints;
+
+  // Nav dots (câu hỏi trong section)
+  const dots = document.getElementById('navDots');
+  dots.innerHTML = visibleQuestions.map((_, i) =>
+    `<div class="sq-nav__dot${i === currentQIndex ? ' active' : ''}"></div>`
+  ).join('');
+  document.getElementById('navStepLabel').textContent =
+    `Câu ${currentQIndex + 1} / ${visibleQuestions.length}`;
+
+  nav.style.display = 'flex';
+
+  // Back button
+  const btnBack = document.getElementById('btnBack');
+  btnBack.style.visibility = (currentSection === 0 && currentQIndex === 0) ? 'hidden' : 'visible';
+
+  main.innerHTML = renderQuestion(sec, q, gIdx);
+
+  // Khởi tạo interactive elements sau khi render
+  initQuestion(q);
+}
+
+/* ── INTRO SCREEN ─────────────────────────── */
+function renderIntro() {
+  const visibleTotal = Math.max(1, getVisibleTotalQuestions());
+  return `
+  <div class="sq-intro">
+    <span class="sq-intro__emoji">🥗</span>
+    <h1 class="sq-intro__title">Hecipe <em>Health Quest</em></h1>
+    <p class="sq-intro__sub">
+      Trả lời <strong>${visibleTotal} câu hỏi vui</strong> để chúng tôi hiểu sức khoẻ, 
+      thói quen ăn uống của bạn — và gợi ý thực đơn hoàn toàn cá nhân hoá!
+    </p>
+    <div class="sq-intro__chips">
+      <span class="sq-intro__chip">⏱ Khoảng 3 phút</span>
+      <span class="sq-intro__chip">🔒 Bảo mật 100%</span>
+      <span class="sq-intro__chip">⭐ Nhận đến 300 điểm thưởng</span>
+      <span class="sq-intro__chip">🎯 Thực đơn cá nhân hoá</span>
+    </div>
+    <button class="sq-start-btn" onclick="startSurvey()">
+      <i class="fa-solid fa-play"></i> Bắt đầu ngay!
+    </button>
+  </div>`;
+}
+
+/* ── QUESTION SCREEN ─────────────────────── */
+function renderQuestion(sec, q, gIdx) {
+  return `
+  <div class="sq-question">
+    <div class="sq-section-banner">
+      <div class="sq-section-banner__icon">${sec.icon}</div>
+      <div class="sq-section-banner__text">
+        <div class="sq-section-banner__label">${sec.label}</div>
+        <div class="sq-section-banner__title">${sec.title}</div>
+      </div>
+    </div>
+    <div class="sq-card">
+      <div class="sq-qnum">
+        <span class="sq-qnum-badge">${gIdx + 1}</span>
+        ${q.required ? '' : '<span style="color:var(--text-light);font-size:.72rem">(Tùy chọn)</span>'}
+      </div>
+      <div class="sq-qtitle">${q.title}</div>
+      ${q.sub ? `<div class="sq-qsub">${q.sub}</div>` : ''}
+      <div id="qBody">${renderQBody(q)}</div>
+    </div>
+    ${!q.required ? `<div style="text-align:center;margin-top:-8px">
+      <button class="sq-skip" onclick="goNext()">Bỏ qua câu này</button>
+    </div>` : ''}
+  </div>`;
+}
+
+function renderQBody(q) {
+  switch (q.gameStyle) {
+    case 'card-grid':   return renderCardGrid(q);
+    case 'emoji-scale': return renderEmojiScale(q);
+    case 'tag-cloud':   return renderTagCloud(q);
+    case 'slider':      return renderSlider(q);
+    case 'number-input':return renderNumberInput(q);
+    case 'swipe':       return renderSwipe(q);
+    case 'timeline':    return renderTimeline(q);
+    default:            return renderCardGrid(q);
+  }
+}
+
+/* ── GAME TYPES RENDER ───────────────────── */
+
+// 1. Card Grid
+function renderCardGrid(q) {
+  const colClass = q.gridCols === 3 ? 'sq-grid--3col' : q.gridCols === 2 ? 'sq-grid--2col' : '';
+  return `<div class="sq-grid ${colClass}">
+    ${q.options.map(opt => {
+      const isSel = isSelected(q, opt.value);
+      return `<div class="sq-option${isSel ? ' selected' : ''}"
+                   data-qid="${q.id}" data-val="${opt.value}"
+                   onclick="selectOption(this,'${q.id}','${opt.value}','${q.type}')">
+        <span class="sq-option__emoji">${opt.emoji}</span>
+        <span class="sq-option__label">${opt.label}</span>
+        ${opt.sub ? `<span class="sq-option__sub">${opt.sub}</span>` : ''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// 2. Emoji Scale (horizontal rating)
+function renderEmojiScale(q) {
+  return `<div class="sq-emoji-scale">
+    ${q.options.map(opt => {
+      const isSel = isSelected(q, opt.value);
+      return `<div class="sq-emoji-option${isSel ? ' selected' : ''}"
+                   onclick="selectOption(this,'${q.id}','${opt.value}','${q.type}')">
+        <span class="sq-emoji-option__icon">${opt.emoji}</span>
+        <span class="sq-emoji-option__label">${opt.label}</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// 3. Tag Cloud (multi-select)
+function renderTagCloud(q) {
+  return `<div class="sq-tag-cloud">
+    ${q.options.map(opt => {
+      const isSel = isSelected(q, opt.value);
+      return `<button class="sq-tag${isSel ? ' selected' : ''}"
+                      onclick="selectOption(this,'${q.id}','${opt.value}','${q.type}')">
+        ${opt.emoji} ${opt.label}
+      </button>`;
+    }).join('')}
+  </div>`;
+}
+
+// 4. Slider
+function renderSlider(q) {
+  const cur = answers[q.id] !== undefined ? answers[q.id] : q.default;
+  return `<div class="sq-slider-wrap">
+    <div class="sq-slider-labels">
+      <span>${q.labels[0]}</span><span>${q.labels[1]}</span>
+    </div>
+    <input type="range" class="sq-slider" id="slider_${q.id}"
+           min="${q.min}" max="${q.max}" step="${q.step || 1}" value="${cur}"
+           oninput="onSlider('${q.id}', this.value)">
+    <div class="sq-slider-value" id="sliderVal_${q.id}">
+      ${cur}<span> ${q.unit}</span>
+    </div>
+  </div>`;
+}
+
+// 5. Number Input
+function renderNumberInput(q) {
+  return `<div class="sq-input-row">
+    ${q.inputs.map(inp => `
+      <div class="sq-input-group">
+        <label>${inp.label}</label>
+        <div class="sq-input-unit">
+          <input type="number" min="${inp.min}" max="${inp.max}"
+                 placeholder="${inp.placeholder}"
+                 value="${answers[q.id + '_' + inp.key] || ''}"
+                 oninput="onNumberInput('${q.id}','${inp.key}',this.value)">
+          <span class="sq-input-unit__label">${inp.unit}</span>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+// 6. Swipe Cards
+function renderSwipe(q) {
+  const cards = q.cards;
+  const idx   = swipeCardIndex < cards.length ? swipeCardIndex : cards.length - 1;
+  const card  = cards[idx];
+  const done  = swipeCardIndex >= cards.length;
+  if (done) {
+    return `<div style="text-align:center;padding:40px 0;">
+      <span style="font-size:3rem">✅</span>
+      <p style="margin-top:12px;font-weight:700;color:var(--primary-green)">Đã chọn xong ${cards.length} món!</p>
+    </div>`;
+  }
+  return `
+  <div style="text-align:center;margin-bottom:8px;font-size:.82rem;color:var(--text-light)">
+    ${idx + 1} / ${cards.length} — Bạn thường ăn món này không?
+  </div>
+  <div class="sq-swipe-arena">
+    ${cards.slice(idx, idx + 2).reverse().map((c, i) => `
+      <div class="sq-swipe-card" id="swipeCard${idx + (1 - i)}"
+           style="transform: scale(${i === 1 ? 1 : 0.95}) translateY(${i === 1 ? 0 : 12}px);
+                  z-index: 1000;color:var(--text-light)">${c.sub}</span>
+      </div>`).join('')}
+  </div>
+  <div class="sq-swipe-btns">
+    <button class="sq-swipe-btn sq-swipe-btn--no"  onclick="doSwipe('${q.id}','no')"  title="Không">👎</button>
+    <button class="sq-swipe-btn sq-swipe-btn--yes" onclick="doSwipe('${q.id}','yes')" title="Có">👍</button>
+  </div>`;
+}
+
+// 7. Timeline Picker
+function renderTimeline(q) {
+  return `<div class="sq-timeline">
+    ${q.options.map(opt => {
+      const isSel = answers[q.id] === opt.value;
+      return `<div class="sq-timeline-btn${isSel ? ' selected' : ''}"
+                   onclick="selectOption(this,'${q.id}','${opt.value}','SINGLE')">
+        <div class="sq-timeline-btn__num">${opt.num}</div>
+        <div class="sq-timeline-btn__label">${opt.label}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* ── RESULT SCREEN ─────────────────────────── */
+function renderResult() {
+  const bmi = calcBMI();
+  const bmiCls = bmi < 18.5 ? 'Thiếu cân' : bmi < 25 ? 'Bình thường' : bmi < 30 ? 'Thừa cân' : 'Béo phì';
+  const calo = calcCalo();
+  const diseases = (answers['CH000011'] || []).join(', ') || 'Không có';
+  const goal = { LOSE: 'Giảm cân', MAINTAIN: 'Duy trì cân nặng', GAIN: 'Tăng cơ', MEDICAL: 'Cải thiện sức khoẻ' }[answers['CH000004']] || 'Ăn uống lành mạnh';
+
+  return `
+  <div class="sq-result">
+    <span class="sq-result__hero">🎉</span>
+    <h2 class="sq-result__title">Hoàn thành rồi!</h2>
+    <p class="sq-result__sub">Bạn đã trả lời xong tất cả các câu hỏi và nhận được <strong style="color:var(--primary-green)">${totalPoints} điểm thưởng</strong>. Đây là hồ sơ sức khoẻ của bạn:</p>
+    <div class="sq-result__summary">
+      <div class="sq-result__item">
+        <div class="sq-result__item-label">Chỉ số BMI</div>
+        <div class="sq-result__item-val">${bmi > 0 ? bmi.toFixed(1) : '--'}</div>
+        <div class="sq-result__item-sub">${bmi > 0 ? bmiCls : 'Chưa nhập chiều cao / cân nặng'}</div>
+      </div>
+      <div class="sq-result__item">
+        <div class="sq-result__item-label">Nhu cầu calo</div>
+        <div class="sq-result__item-val">${calo > 0 ? calo : '--'}<span style="font-size:.9rem;font-weight:500"> kcal</span></div>
+        <div class="sq-result__item-sub">Ước tính mỗi ngày</div>
+      </div>
+      <div class="sq-result__item">
+        <div class="sq-result__item-label">Mục tiêu</div>
+        <div class="sq-result__item-val" style="font-size:1rem">${goal}</div>
+        <div class="sq-result__item-sub">Đang hướng tới</div>
+      </div>
+      <div class="sq-result__item">
+        <div class="sq-result__item-label">Điểm thưởng</div>
+        <div class="sq-result__item-val">⭐ ${totalPoints}</div>
+        <div class="sq-result__item-sub">Dùng để đổi voucher</div>
+      </div>
+    </div>
+    <div class="sq-result__cta">
+      <a href="thucdon.html" class="sq-result__btn-primary">
+        <i class="fa-solid fa-utensils"></i> Xem thực đơn cho tôi
+      </a>
+      <a href="index.html" class="sq-result__btn-secondary">
+        <i class="fa-solid fa-house"></i> Về trang chủ
+      </a>
+    </div>
+  </div>`;
+}
+
+/* ── INTERACTIONS ─────────────────────────── */
+function startSurvey() {
+  currentSection = 0;
+  currentQIndex  = 0;
+  render();
+}
+
+function goNext() {
+  const sec = SECTIONS[currentSection];
+  const visibleQuestions = getVisibleQuestions(currentSection);
+  if (!visibleQuestions.length) {
+    advanceSection();
+    return;
+  }
+
+  const q = visibleQuestions[currentQIndex];
+  if (!q) {
+    currentQIndex = Math.max(0, visibleQuestions.length - 1);
+    render();
+    return;
+  }
+
+  // Validate required
+  if (q.required && !hasAnswer(q)) {
+    shakeCard(); return;
+  }
+
+  addPoints(10);
+
+  // Next question or next section
+  if (currentQIndex < visibleQuestions.length - 1) {
+    currentQIndex++;
+    renderWithAnim('up');
+  } else {
+    // Show reward if configured
+    if (sec.rewardAfter && sec.rewardConfig) {
+      showReward(sec.rewardConfig, () => {
+        advanceSection();
+      });
+    } else {
+      advanceSection();
     }
+  }
+}
 
-    // --- BƯỚC MỚI: QUY ĐỔI TRANG CON VỀ TRANG CHA ---
-    // Nếu URL có chứa 'recipe-detail' (đang ở trang chi tiết công thức)
-    if (currentPath.includes('recipe-detail')) {
-      // Ép JS hiểu trang hiện tại là recipes.html để bôi sáng mục Góc Bếp
-      currentPage = 'recipes.html'; 
+function advanceSection() {
+  currentSection++;
+  currentQIndex = 0;
+  if (currentSection < SECTIONS.length) renderWithAnim('up');
+  else {
+    submitSurvey();
+    render();
+  }
+}
+
+function goBack() {
+  if (currentQIndex > 0) {
+    currentQIndex--;
+    renderWithAnim('down');
+  } else if (currentSection > 0) {
+    currentSection--;
+    const prevVisible = getVisibleQuestions(currentSection);
+    currentQIndex = Math.max(0, prevVisible.length - 1);
+    renderWithAnim('down');
+  }
+}
+
+function renderWithAnim(dir) {
+  const main = document.getElementById('sqMain');
+  main.style.opacity = '0';
+  main.style.transform = dir === 'up' ? 'translateY(20px)' : 'translateY(-20px)';
+  setTimeout(() => {
+    render();
+    main.style.transition = 'opacity .3s ease, transform .3s ease';
+    main.style.opacity = '1';
+    main.style.transform = 'translateY(0)';
+    setTimeout(() => { main.style.transition = ''; }, 350);
+  }, 150);
+}
+
+function selectOption(el, qId, value, type) {
+  if (type === 'GRID_MULTI' || type === 'MULTI') {
+    // Multi-select: toggle
+    if (!answers[qId]) answers[qId] = [];
+    const arr = answers[qId];
+    const idx = arr.indexOf(value);
+
+    // Special: chọn NONE thì xoá hết, chọn khác thì bỏ NONE
+    if (value === 'NONE') {
+      answers[qId] = arr.includes('NONE') ? [] : ['NONE'];
+    } else {
+      const noneIdx = arr.indexOf('NONE');
+      if (noneIdx > -1) arr.splice(noneIdx, 1);
+      if (idx > -1) arr.splice(idx, 1);
+      else arr.push(value);
     }
-    // Tương tự cho phần Đi Chợ: Nếu đang ở trang sản phẩm, giỏ hàng, thanh toán...
-    else if (currentPath.includes('product') || currentPath.includes('cart') || currentPath.includes('checkout')) {
-      // Ép JS hiểu là đang ở shopNL.html để bôi sáng mục Đi Chợ
-      currentPage = 'shopNL.html';
+    // Re-render chỉ phần body
+    const q = allQuestions.find(x => x.id === qId);
+    if (q) document.getElementById('qBody').innerHTML = renderQBody(q);
+  } else {
+    // Single-select
+    answers[qId] = value;
+    const q = allQuestions.find(x => x.id === qId);
+    if (q) document.getElementById('qBody').innerHTML = renderQBody(q);
+
+    // Auto-advance sau 0.5s cho single-select
+    if (type !== 'SWIPE') {
+      setTimeout(() => {
+        const currentQ = getCurrentQuestion();
+        if (currentQ && currentQ.id === qId && hasAnswer(q)) goNext();
+      }, 500);
     }
+  }
+}
 
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    // 2. Tắt tất cả class 'active' gán cứng trong HTML trước đó
-    navLinks.forEach(link => link.classList.remove('active'));
+function onSlider(qId, val) {
+  answers[qId] = parseInt(val);
+  const q = allQuestions.find(x => x.id === qId);
+  const unit = q ? q.unit : '';
+  document.getElementById('sliderVal_' + qId).innerHTML =
+    `${val}<span> ${unit}</span>`;
+}
 
-    // 3. Quét từng thẻ <a> để tìm thẻ khớp với trang đã được quy đổi
-    navLinks.forEach((link) => {
-      const href = link.getAttribute('href');
-      
-      // Bỏ qua các link trống hoặc đang dùng dấu #
-      if (!href || href === '#' || href.startsWith('#')) return;
+function onNumberInput(qId, key, val) {
+  answers[qId + '_' + key] = parseFloat(val);
+  answers[qId] = answers[qId] || {};
+  if (typeof answers[qId] === 'object') answers[qId][key] = parseFloat(val);
+}
 
-      const linkPage = href.split('/').pop();
+function doSwipe(qId, direction) {
+  const q = allQuestions.find(x => x.id === qId);
+  if (!q || swipeCardIndex >= q.cards.length) return;
 
-      // Nếu link khớp với trang đích
-      if (linkPage === currentPage) {
-        // Làm sáng mục con
-        link.classList.add('active'); 
+  const card = q.cards[swipeCardIndex];
+  if (!swipeResults[qId]) swipeResults[qId] = {};
+  swipeResults[qId][card.label] = direction === 'yes';
+  answers[qId] = swipeResults[qId];
 
-        // Tìm ngược lên dropdown cha
-        const parentDropdown = link.closest('.dropdown');
-        if (parentDropdown) {
-          const parentToggle = parentDropdown.querySelector('a'); 
-          if (parentToggle) {
-            parentToggle.classList.add('active'); 
-          }
-        }
-      }
+  const cardEl = document.getElementById('swipeCard' + swipeCardIndex);
+  if (cardEl) {
+    cardEl.classList.add(direction === 'yes' ? 'sq-swipe-out-right' : 'sq-swipe-out-left');
+  }
+
+  swipeCardIndex++;
+  setTimeout(() => {
+    document.getElementById('qBody').innerHTML = renderSwipe(q);
+    addPoints(2);
+  }, 380);
+}
+
+function initQuestion(q) {
+  swipeCardIndex = 0;
+  // Slider default init
+  if (q.gameStyle === 'slider' && answers[q.id] === undefined) {
+    answers[q.id] = q.default;
+  }
+}
+
+/* ── HELPERS ─────────────────────────────── */
+function isSelected(q, value) {
+  if (q.type === 'GRID_MULTI') {
+    return Array.isArray(answers[q.id]) && answers[q.id].includes(value);
+  }
+  return answers[q.id] === value;
+}
+
+function hasAnswer(q) {
+  if (!q.required) return true;
+  if (q.gameStyle === 'number-input') {
+    return q.inputs.every(inp => answers[q.id + '_' + inp.key]);
+  }
+  if (q.gameStyle === 'swipe') return true;
+  if (q.type === 'SLIDER') return answers[q.id] !== undefined;
+  if (q.type === 'GRID_MULTI') return answers[q.id] && answers[q.id].length > 0;
+  return answers[q.id] !== undefined && answers[q.id] !== null;
+}
+
+function addPoints(pts) {
+  totalPoints += pts;
+  document.getElementById('pointsDisplay').textContent = totalPoints;
+  // Mini flash animation
+  const badge = document.querySelector('.sq-points');
+  if (badge) {
+    badge.style.transform = 'scale(1.15)';
+    setTimeout(() => { badge.style.transform = ''; }, 200);
+  }
+}
+
+function shakeCard() {
+  const card = document.querySelector('.sq-card');
+  if (!card) return;
+  card.style.animation = 'none';
+  card.style.border = '2px solid #ef4444';
+  card.animate([
+    {transform:'translateX(0)'},{transform:'translateX(-8px)'},
+    {transform:'translateX(8px)'},{transform:'translateX(-6px)'},
+    {transform:'translateX(6px)'},{transform:'translateX(0)'}
+  ], {duration: 400, easing: 'ease'});
+  setTimeout(() => { card.style.border = ''; }, 1200);
+}
+
+/* ── REWARD POPUP ─────────────────────────── */
+function showReward(cfg, cb) {
+  addPoints(cfg.points || 50);
+  document.getElementById('rewardEmoji').textContent  = cfg.emoji;
+  document.getElementById('rewardTitle').textContent  = cfg.title;
+  document.getElementById('rewardPoints').textContent = `+${cfg.points} điểm`;
+  document.getElementById('rewardSub').textContent    = cfg.sub;
+  document.getElementById('rewardOverlay').style.display = 'flex';
+  rewardCallback = cb;
+  launchConfetti(30);
+}
+
+function dismissReward() {
+  document.getElementById('rewardOverlay').style.display = 'none';
+  if (rewardCallback) { rewardCallback(); rewardCallback = null; }
+}
+
+/* ── CONFETTI ─────────────────────────────── */
+function launchConfetti(count = 60) {
+  const colors = colorPalette;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      top: 0;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${6 + Math.random() * 8}px;
+      height: ${6 + Math.random() * 8}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${1.5 + Math.random() * 2}s;
+      animation-delay: ${Math.random() * 0.8}s;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+/* ── BMI & CALO CALCULATOR ───────────────── */
+function calcBMI() {
+  const h = answers['CH000002_CHIEUCAO'] || 0;
+  const w = answers['CH000002_CANNANG']  || 0;
+  if (!h || !w) return 0;
+  return w / ((h / 100) * (h / 100));
+}
+
+function calcCalo() {
+  const h   = answers['CH000002_CHIEUCAO'] || 0;
+  const w   = answers['CH000002_CANNANG']  || 0;
+  const age = answers['CH000003'] || 25;
+  const sex = answers['CH000001'];
+  if (!h || !w) return 0;
+  // Mifflin-St Jeor
+  let bmr = sex === 1
+    ? 10*w + 6.25*h - 5*age + 5      // Nam
+    : 10*w + 6.25*h - 5*age - 161;   // Nữ / mặc định
+  const factors = { SEDENTARY:1.2, LIGHT:1.375, MODERATE:1.55, ACTIVE:1.725, VACTIVE:1.9 };
+  const act = answers['CH000005'] || 'MODERATE';
+  bmr *= (factors[act] || 1.55);
+  // Điều chỉnh theo mục tiêu
+  if (answers['CH000004'] === 'LOSE')     bmr -= 300;
+  if (answers['CH000004'] === 'GAIN')     bmr += 300;
+  return Math.round(bmr);
+}
+
+/* ── SUBMIT TO SERVER ─────────────────────── */
+async function submitSurvey() {
+  addPoints(50); // Bonus hoàn thành
+
+  const userId = localStorage.getItem('userId') || null;
+  const payload = {
+    // KHAOSAT_USER table
+    MAKS: SURVEY_ID,
+    MAND: userId,
+    NGAYLAM: new Date().toISOString(),
+    HOANTHANH: 1,
+
+    // TAIKHOANND updates
+    profile: {
+      GIOITINH:    answers['CH000001'],
+      CHIEUCAO:    answers['CH000002_CHIEUCAO'],
+      CANNANG:     answers['CH000002_CANNANG'],
+      MUCHOATDONG: answers['CH000005'],
+      MUCTIEU:     answers['CH000004'],
+    },
+
+    // LICHSUBMI entry
+    bmi: {
+      CANNANG:  answers['CH000002_CANNANG'],
+      CHIEUCAO: answers['CH000002_CHIEUCAO'],
+    },
+
+    // COBENH entries (array of MABL)
+    diseases: answers['CH000011'] || [],
+
+    // TRALOI_USER — all question answers
+    answers: Object.entries(answers).map(([qId, val]) => ({
+      MACH: qId,
+      MACAUTRALOI: Array.isArray(val) ? null : val,
+      NOIDUNGTUDO:  Array.isArray(val) ? JSON.stringify(val) : null,
+    })),
+
+    // Extra profile fields lưu trong TRALOI_USER
+    extras: {
+      KIENGCU:     answers['CH000008'],
+      BENHLY_MACS: answers['CH000011'],
+      PHONGCACAN:  answers['CH000014'],
+      NGANSACH:    answers['CH000015'],
+      THOIGANNAU:  answers['CH000016'],
+      TANSUATNAU:  answers['CH000009'],
+      SUKHOETONGTHE: answers['CH000012'],
+      THUCPHAM_THICH: answers['CH000006'],
+    },
+
+    // Points earned
+    points: {
+      SODIEM: totalPoints,
+      NGUONGOC: 'SURVEY',
+      NOIDUNG: 'Hoàn thành khảo sát sức khoẻ onboarding',
+    }
+  };
+
+  // Lưu local trước (fallback nếu chưa đăng nhập)
+  localStorage.setItem('healthProfile', JSON.stringify(payload.profile));
+  localStorage.setItem('surveyCompleted', 'true');
+
+  // Gửi lên server
+  try {
+    await fetch('http://localhost:3000/api/survey/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-  });
+  } catch (err) {
+    console.warn('Server chưa kết nối, dữ liệu đã lưu local:', err.message);
+  }
+}
+
+function confirmExit() {
+  if (currentSection === -1 || currentSection >= SECTIONS.length) {
+    window.location.href = 'index.html'; return;
+  }
+  if (confirm('Bạn có chắc muốn thoát? Tiến trình sẽ không được lưu.')) {
+    window.location.href = 'index.html';
+  }
+}
+
+/* ── BOOT ─────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+  // Restore nếu đã làm dở (optional)
+  const saved = localStorage.getItem('surveyProgress');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      Object.assign(answers, s.answers || {});
+      totalPoints = s.points || 0;
+    } catch(e) {}
+  }
+});
+
+// Auto-save mỗi 30s
+setInterval(() => {
+  if (currentSection >= 0) {
+    localStorage.setItem('surveyProgress', JSON.stringify({ answers, points: totalPoints }));
+  }
+}, 30000);
 </script>
 </body>
 </html>

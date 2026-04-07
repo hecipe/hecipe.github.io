@@ -2,7 +2,7 @@
 :root {
     --bg-cream: #FAF9F6;       /* Nền trang */
     --primary-green: #4A6741;  /* Màu chủ đạo (Xanh Rêu Đậm) */
-    --hover-wite:white;    /* Màu khi hover */
+    --hover-green: #3E5A37;    /* Màu hover chuẩn */
     --sage-light: #DCE8D6;     /* Xanh nhạt (nền phụ) */
     --text-dark: #2C3E2D;      /* Màu chữ chính */
     --text-light: #6B7C6B;     /* Màu chữ phụ */
@@ -75,15 +75,18 @@ body {
 
 /* --- LOGO --- */
 .brand-logo {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 36px; 
-    font-weight: 800;
-    color: white;
+    display: inline-block;
+    width: 120px;
+    height: 50px;
+    background-image: url('ImageofWeb/Logo-Photoroom.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-indent: -9999px;
+    overflow: hidden;
     text-decoration: none;
-    margin-bottom: 15px; 
-    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    margin-bottom: 15px;
     z-index: 2;
-    line-height: 1; 
 }
 
 /* --- THANH TÌM KIẾM --- */
@@ -227,8 +230,8 @@ body {
     margin: 0 5px;
 }
 
-/* Đường gạch phân cách cho mục đặc biệt */
-.divider {
+/* Đường gạch phân cách cho mục đặc biệt trong menu */
+.dropdown-menu .divider {
     height: 1px;
     background-color: #eee;
     margin: 5px 20px;
@@ -517,26 +520,25 @@ body {
     width: 100%;
     overflow: hidden;
     line-height: 0;
-    background-color: rgb(209, 230, 214); /* Màu nền phía trên */
-    z-index: 1; /* Đảm bảo sóng nằm trên */
+    background-color: rgb(209, 230, 214);
+    z-index: 1;
 }
 
 .custom-shape-divider-top svg {
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
-    height: 50px; /* Tăng độ cao từ 60px -> 100px cho sóng cong đẹp hơn */
+    height: clamp(40px, 6vw, 80px); /* Co giãn theo màn hình: min 40px, max 80px */
 }
 
 .custom-shape-divider-top .shape-fill {
-    fill: #FAF9F6; /* Màu này phải TRÙNG KHỚP với màu nền footer */
+    fill: #FAF9F6;
 }
 
 .footer {
-    /* Thêm margin âm để kéo footer lên dính chặt vào sóng, xóa lằn ranh */
     margin-top: -2px;
-    padding-top: 10px;  /* Giữ khoảng cách nhỏ với sóng */
-    padding-bottom: 20px; /* Giảm mạnh khoảng trống dưới cùng (cũ là 60px) */
+    padding-top: 10px;
+    padding-bottom: 20px;
     background: rgb(209, 230, 214);
     position: relative;
     z-index: 0;
@@ -544,7 +546,7 @@ body {
 }
 /* các thẻ a sẽ có định dạng không gạch chân(do nó để dưới dạng link) và màu xanh */
 .footer a{
-  text-decoration: none;   /* bỏ gạch chân */
+  text-decoration: none;
   color: rgb(95, 121, 95)
 }
 
@@ -565,30 +567,39 @@ margin-bottom:5px;
 
 /* khung chứa các cột */
 .footer-links{
-  display:flex; /*làm cho các cột nằm ngang*/
-  gap:100px; /*khoảng cách giữa các cột */
+  display:flex;
+  flex-wrap: wrap;         /* tự xuống dòng khi hết chỗ */
+  gap: clamp(20px, 5vw, 100px); /* gap co từ 20px đến 100px theo màn hình */
 } 
 
 /* chỉnh cho các cột riêng lẻ */
 .footer-col{
-  display:flex;  /*biến cột thành các box */
-  flex-direction:column;  /* xếp phần tử theo chiều dọc */
-  gap:10px; /*khoảng cách giữa các dòng trong cột */
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-width: 120px;        /* không bị quá hẹp */
 }
 
 .footer-container{
-  max-width:1500px;   /* giới hạn chiều rộng nội dung */
-  margin:0 auto;      /* căn giữa */
-  padding:0 20px;     /* tạo khoảng cách 2 bên */
-  /* logo + nội dung nằm ngang */
-  display:flex;  /*chia đôi cột logo với nd */
+  max-width:1500px;
+  margin:0 auto;
+  padding: 20px 24px;      /* thêm padding trên dưới, đủ khoảng thở */
+  display:flex;
+  flex-wrap: wrap;         /* cho phép xuống dòng khi hẹp */
   justify-content: space-between; 
-  gap: 60px;   /* điều chỉnh khoảng cách giữa cột logo và ndung */
-  align-items: flex-start; /* điều chỉnh chiều dọc sao cho nó bằng nhau dựa vào flex-direction: column hay row, có flex-start là sát trái, flex-end là sát phải, center là chính giữa */
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* logo footer */
+.footer-logo img {
+  max-width: 140px;
+  width: 100%;
+  height: auto;
 }
 
 /* vạch đứng */
-.divider{
+.footer-links .divider{
    width:1px;
    height:20px;
    background: rgb(51, 67, 55);
@@ -597,7 +608,8 @@ margin-bottom:5px;
 /* nhóm link */
 .policy-links{
    display:flex;
-   gap:25px;
+   flex-wrap: wrap;         /* xuống hàng khi hẹp */
+   gap: 16px 25px;
 }
 
 .policy-links a{
@@ -608,10 +620,11 @@ margin-bottom:5px;
 
 .footer-bottom {
     display: flex;
+    flex-wrap: wrap;         /* wrap khi không đủ chỗ */
     align-items: center;
-    gap: 25px;
-    margin: 20px auto 0; /* Giảm margin-top từ 60px xuống 20px */
-    padding: 15px 20px 0; /* Thêm padding nhẹ */
+    gap: 12px 25px;
+    margin: 20px auto 0;
+    padding: 15px 24px 0;
     border-top: 1px solid rgba(51, 67, 55, 0.15); 
 }
 
@@ -627,28 +640,22 @@ margin-bottom:5px;
    height: 30px;
    font-size:25px;
    padding:6px;
-   background:rgb(95, 121, 95) ;
+   background:rgb(95, 121, 95);
    color:white;
    border-radius:50%;
    display:flex;
    align-items:center;
    justify-content:center;
+   flex-shrink: 0;          /* không bị co méo */
 }
 
-/* màu tràn màn hình */
-body{
-   margin:0;
-   padding:0;
-}
-
-/* điều chỉnh ảnh */
+/* điều chỉnh ảnh app badge */
 .footer-app{
    display:flex;
    flex-direction:column;
-   align-items:center; 
-   gap: 0px;  /*khoảng cách giữa 2 hình */
+   align-items: flex-start; /* căn trái, nhất quán khi wrap */
+   gap: 0px;
 }
-/* điều chỉnh khoảng cách giữa tiêu đề và ảnh */
 .footer-app h4 {
   margin-bottom:0px; 
 }
@@ -656,19 +663,92 @@ body{
    display:block;
    margin:0;
    object-fit:contain;
-
 }
 
 .badge-google{
-   width:150px;
-   height:75px;
+   width: clamp(110px, 15vw, 150px);
+   height: auto;
    object-fit:contain;
 }
 
 .badge-apple{
-   width:155px;
-   height:75px;
-   object-fit:cover;   /* lấp đầy khung */
+   width: clamp(115px, 15vw, 155px);
+   height: auto;
+   object-fit:contain;
+}
+
+/* ---- RESPONSIVE FOOTER ---- */
+
+/* Tablet: ≤ 900px — ẩn logo lớn, các cột tự wrap */
+@media (max-width: 900px) {
+  .footer-container {
+    gap: 24px;
+    padding: 20px 20px;
+  }
+
+  .footer-logo {
+    display: none; /* ẩn logo trên tablet/mobile để tiết kiệm không gian */
+  }
+
+  .footer-links {
+    gap: clamp(16px, 4vw, 50px);
+  }
+
+  .footer-app {
+    align-items: flex-start;
+  }
+}
+
+/* Mobile: ≤ 600px — xếp dọc toàn bộ */
+@media (max-width: 600px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px 16px;
+  }
+
+  .footer-links {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .footer-col {
+    min-width: calc(50% - 10px); /* 2 cột trên mobile nhỏ */
+  }
+
+  .footer-app {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-app h4 {
+    width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px 0;
+  }
+
+  .footer-links .divider {
+    display: none; /* ẩn vạch đứng khi xếp dọc */
+  }
+
+  .policy-links {
+    gap: 10px 20px;
+  }
+}
+
+/* Màn rất nhỏ ≤ 380px — cột full width */
+@media (max-width: 380px) {
+  .footer-col {
+    min-width: 100%;
+  }
 }
 
 /* --- STYLES FOR PROFILE PAGE (BMI FORM) --- */
@@ -1947,4 +2027,784 @@ body{
 .hero-banner-link:hover .banner-label {
     opacity: 1;
     bottom: 40px; /* Nhảy nhẹ lên trên khi hiện */
+}
+
+/* =====================================================
+   GIAN HÀNG ĐỐI TÁC — Partner Marketplace Page CSS
+   Append these styles to style.css
+   ===================================================== */
+
+/* ---- PARTNER HERO SECTION ---- */
+.partner-hero {
+    background: linear-gradient(135deg, #2C3E2D 0%, #4A6741 50%, #6C8F5E 100%);
+    padding: 60px 6rem 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.partner-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+}
+
+.partner-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 220px; height: 220px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+}
+
+.partner-hero__content {
+    max-width: 620px;
+}
+
+.partner-hero__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    color: #DCE8D6;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+}
+
+.partner-hero__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 18px;
+}
+
+.partner-hero__title span {
+    color: #A8D99C;
+}
+
+.partner-hero__subtitle {
+    color: rgba(255,255,255,0.82);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 520px;
+}
+
+.partner-hero__btns {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.partner-hero__btns .btn-primary {
+    background: white;
+    color: var(--primary-green);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.partner-hero__btns .btn-primary:hover {
+    background: #DCE8D6;
+    transform: translateY(-2px);
+}
+
+.partner-hero__link {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+}
+
+.partner-hero__link:hover {
+    color: #A8D99C;
+}
+
+/* Badge cluster khi không có ảnh hero */
+.partner-hero__badges {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 22px;
+    border-radius: 14px;
+    min-width: 220px;
+    transition: 0.3s;
+}
+
+.hero-badge:hover {
+    background: rgba(255,255,255,0.16);
+    transform: translateX(-4px);
+}
+
+.hero-badge i {
+    font-size: 1.6rem;
+    color: #A8D99C;
+    width: 32px;
+    text-align: center;
+}
+
+.hero-badge span {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.hero-badge span strong {
+    color: white;
+    display: block;
+    font-size: 0.95rem;
+}
+
+/* ---- CATEGORY TABS ---- */
+.category-tabs-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--sage-light);
+    position: sticky;
+    top: 75px;
+    z-index: 900;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.category-tabs-wrapper {
+    display: flex;
+    gap: 8px;
+    padding: 14px 6rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.category-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+.cat-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border: 1.5px solid var(--sage-light);
+    background: transparent;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+}
+
+.cat-tab:hover {
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    background: rgba(74, 103, 65, 0.05);
+}
+
+.cat-tab.active {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 103, 65, 0.3);
+}
+
+/* ---- PARTNERS STRIP ---- */
+.partners-strip {
+    background: var(--sage-light);
+    padding: 16px 6rem;
+    border-bottom: 1px solid rgba(74,103,65,0.1);
+}
+
+.partners-strip__inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.partners-strip__label {
+    font-weight: 700;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.partners-logos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.partner-logo-chip {
+    background: white;
+    border: 1px solid rgba(74,103,65,0.15);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.partner-logo-chip:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74,103,65,0.2);
+}
+
+/* ---- FLASH SALE BANNER ---- */
+.flash-sale-banner {
+    background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+    padding: 18px 6rem;
+}
+
+.flash-sale-banner__inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.flash-label {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 6px 16px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+.flash-sale-banner__inner p {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+.flash-sale-banner__inner p strong {
+    color: white;
+    font-size: 1.3rem;
+}
+
+.countdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.countdown-box {
+    background: rgba(0,0,0,0.25);
+    border-radius: 8px;
+    padding: 6px 12px;
+    text-align: center;
+    min-width: 50px;
+}
+
+.countdown-box span {
+    display: block;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: 'Inter', sans-serif;
+}
+
+.countdown-box label {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.countdown-sep {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.btn-flash {
+    background: white;
+    color: #e74c3c;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.btn-flash:hover {
+    background: #ffeaea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* ---- MAIN SHOP AREA ---- */
+.shop-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 6rem 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+/* ---- SECTION HEADER ---- */
+.product-section {
+    animation: fadeInUp 0.5s ease both;
+}
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 20px;
+}
+
+.section-header__left {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.section-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    background: var(--sage-light);
+    border-radius: 14px;
+    font-size: 1.3rem;
+    color: var(--primary-green);
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.section-subtitle {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.see-all-link {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    padding: 8px 0;
+    transition: 0.2s;
+}
+
+.see-all-link:hover {
+    gap: 10px;
+}
+
+/* ---- PRODUCT GRID ---- */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.products-grid--health {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ---- PRODUCT CARD ---- */
+.product-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(74,103,65,0.08);
+    border: 1px solid rgba(74,103,65,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(74,103,65,0.15);
+}
+
+.product-card__img-wrap {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+}
+
+.product-card__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-card__img-wrap img {
+    transform: scale(1.07);
+}
+
+/* Badges */
+.product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    z-index: 2;
+}
+
+.product-badge--sale { background: #e74c3c; color: white; }
+.product-badge--hot  { background: #f39c12; color: white; }
+.product-badge--new  { background: var(--primary-green); color: white; }
+.product-badge--cert { background: rgba(255,255,255,0.92); color: #2C3E2D; border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px; }
+
+/* Ready time tag */
+.ready-time-tag {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.55);
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+}
+
+/* Wishlist button */
+.wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+}
+
+.wishlist-btn:hover { transform: scale(1.1); color: #e74c3c; }
+
+/* Card body */
+.product-card__body {
+    padding: 18px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-partner {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    line-height: 1.3;
+    transition: color 0.2s;
+}
+
+.product-card:hover .product-name {
+    color: var(--primary-green);
+}
+
+.product-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    flex: 1;
+}
+
+/* Meta row */
+.product-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.product-meta__item {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.product-meta__item i {
+    color: var(--primary-green);
+    font-size: 0.8rem;
+}
+
+/* Nutrition chips */
+.nutrition-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.n-chip {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+    background: var(--sage-light);
+    color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.n-chip--clean { background: #e8f5e9; color: #2e7d32; }
+.n-chip--healthy { background: #e3f2fd; color: #1565c0; }
+
+/* Spec chips for health products */
+.product-specs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.spec-chip {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+    background: #f0f4ff;
+    color: #3a5bc7;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Card footer */
+.product-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--sage-light);
+    padding-top: 14px;
+}
+
+.product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.price-current {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.price-old {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-decoration: line-through;
+}
+
+.add-cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.add-cart-btn:hover {
+    background: #3a5232;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74,103,65,0.3);
+}
+
+/* ---- WHY US SECTION ---- */
+.why-us {
+    background: var(--sage-light);
+    padding: 60px 6rem;
+}
+
+.why-us__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.why-us__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.why-us__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.why-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    border: 1px solid rgba(74,103,65,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.why-card__icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-green), #6C8F5E);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.why-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.why-card p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ---- ANIMATIONS ---- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 1200px) {
+    .products-grid,
+    .products-grid--health { grid-template-columns: repeat(3, 1fr); }
+    .why-us__grid { grid-template-columns: repeat(2, 1fr); }
+    .shop-main { padding: 40px 3rem 60px; }
+    .partner-hero { padding: 60px 3rem 50px; }
+    .category-tabs-wrapper,
+    .partners-strip,
+    .flash-sale-banner { padding-left: 3rem; padding-right: 3rem; }
+    .why-us { padding: 60px 3rem; }
+}
+
+@media (max-width: 900px) {
+    .partner-hero { flex-direction: column; align-items: flex-start; }
+    .partner-hero__badges { flex-direction: row; flex-wrap: wrap; }
+    .hero-badge { min-width: 160px; }
+    .products-grid,
+    .products-grid--health { grid-template-columns: repeat(2, 1fr); }
+    .partner-hero__title { font-size: 2.2rem; }
+}
+
+@media (max-width: 600px) {
+    .products-grid,
+    .products-grid--health { grid-template-columns: 1fr; }
+    .why-us__grid { grid-template-columns: 1fr; }
+    .shop-main { padding: 30px 1.2rem 50px; }
+    .partner-hero { padding: 40px 1.2rem; }
+    .category-tabs-wrapper,
+    .partners-strip,
+    .flash-sale-banner { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .partner-hero__title { font-size: 1.8rem; }
+    .flash-sale-banner__inner { gap: 12px; }
+    .why-us { padding: 40px 1.2rem; }
 }

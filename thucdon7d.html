@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chọn Thực Đơn - Hecipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* =============================================
+       THỰC ĐƠN HUB PAGE — thucdon.html
+       ============================================= */
+
+    /* ---- HERO ---- */
+    .hub-hero {
+      background: linear-gradient(135deg, #1e2d1f 0%, #2C3E2D 40%, #4A6741 100%);
+      padding: 56px 6rem 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-hero::before {
+      content:'';
+      position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events:none;
+    }
+    .hub-hero::after {
+      content:'';
+      position:absolute;
+      width:500px; height:500px; border-radius:50%;
+      background:radial-gradient(circle, rgba(168,217,156,0.12) 0%, transparent 70%);
+      top: 0; right:-80px; pointer-events:none;
+    }
+    .hub-hero__inner {
+      position:relative; z-index: 1000;
+      max-width:700px;
+    }
+    .hub-hero__breadcrumb {
+      display:flex; align-items:center; gap:8px;
+      font-size:.8rem; color:rgba(255,255,255,.5);
+      margin-bottom:20px;
+    }
+    .hub-hero__breadcrumb a { color:rgba(255,255,255,.5); text-decoration:none; }
+    .hub-hero__breadcrumb a:hover { color:rgba(255,255,255,.85); }
+    .hub-hero__breadcrumb i { font-size:.65rem; }
+
+    .hub-hero__tag {
+      display:inline-flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.12); color:#c8e6c0;
+      font-size:.8rem; font-weight:700; padding:5px 14px;
+      border-radius:50px; margin-bottom:16px;
+      text-transform:uppercase; letter-spacing:.5px;
+    }
+    .hub-hero__title {
+      font-family:'Playfair Display',serif;
+      font-size:3rem; color:#fff; line-height:1.2;
+      margin-bottom:14px;
+    }
+    .hub-hero__title em { color:#a8d99c; font-style:normal; }
+    .hub-hero__sub {
+      color:rgba(255,255,255,.72); font-size:1rem;
+      line-height:1.7; max-width:560px; margin-bottom:0;
+    }
+
+    /* ---- FILTER + SEARCH BAR ---- */
+    .hub-controls {
+      background:#fff;
+      border-bottom:1px solid var(--sage-light);
+      position:sticky; top: 0; z-index: 1000;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+    .hub-controls__inner {
+      display:flex; align-items:center;
+      gap:16px; padding:14px 6rem;
+      flex-wrap:wrap;
+    }
+    .hub-search {
+      display:flex; align-items:center; gap:8px;
+      background:var(--bg-cream); border:1.5px solid var(--sage-light);
+      border-radius:50px; padding:8px 18px; flex:1; max-width:320px;
+      transition:.2s;
+    }
+    .hub-search:focus-within { border-color:var(--primary-green); box-shadow:0 0 0 3px rgba(74,103,65,.1); }
+    .hub-search i { color:var(--text-light); font-size:.9rem; }
+    .hub-search input {
+      border:none; background:transparent; outline:none;
+      font-family:'Quicksand',sans-serif; font-size:.9rem;
+      color:var(--text-dark); width:100%;
+    }
+    .hub-search input::placeholder { color:var(--text-light); }
+
+    .filter-group {
+      display:flex; gap:8px; flex-wrap:wrap; flex:1;
+    }
+    .fchip {
+      padding:7px 16px; border:1.5px solid var(--sage-light);
+      background:#fff; border-radius:50px;
+      font-family:'Quicksand',sans-serif; font-weight:600;
+      font-size:.85rem; color:var(--text-dark);
+      cursor:pointer; transition:.22s; white-space:nowrap;
+      display:flex; align-items:center; gap:6px;
+    }
+    .fchip:hover { border-color:var(--primary-green); color:var(--primary-green); background:rgba(74,103,65,.04); }
+    .fchip.active { background:var(--primary-green); color:#fff; border-color:var(--primary-green); box-shadow:0 3px 10px rgba(74,103,65,.25); }
+
+    .sort-select {
+      padding:8px 14px; border:1.5px solid var(--sage-light);
+      border-radius:50px; font-family:'Quicksand',sans-serif;
+      font-weight:600; font-size:.85rem; color:var(--text-dark);
+      background:#fff; outline:none; cursor:pointer; transition:.2s;
+      appearance:none; padding-right:28px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7C6B' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 10px center;
+    }
+    .sort-select:focus { border-color:var(--primary-green); }
+
+    .results-count {
+      margin-left:auto; font-size:.85rem; color:var(--text-light); white-space:nowrap;
+    }
+    .results-count strong { color:var(--primary-green); }
+
+    /* ---- FEATURED BANNER ---- */
+    .featured-banner {
+      max-width:1400px; margin:36px auto 0; padding:0 6rem;
+    }
+    .featured-card {
+      background:linear-gradient(120deg,#2C3E2D 0%,#4A6741 60%,#6C8F5E 100%);
+      border-radius:24px; padding:40px 48px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:32px; position:relative; overflow:hidden;
+      cursor:pointer; transition:.3s;
+      text-decoration:none;
+    }
+    .featured-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(44,62,45,.35); }
+    .featured-card::before {
+      content:''; position:absolute;
+      width:350px; height:350px; border-radius:50%;
+      background:rgba(255,255,255,.05);
+      right:-60px; top: 0; pointer-events:none;
+    }
+    .featured-card__badge {
+      position:absolute; top: 0; left:20px;
+      background:rgba(255,255,255,.18); color:#c8e6c0;
+      font-size:.75rem; font-weight:700; padding:4px 12px;
+      border-radius:50px; display:flex; align-items:center; gap:5px;
+      text-transform:uppercase; letter-spacing:.4px;
+    }
+    .featured-card__content { position:relative; z-index: 1000; }
+    .featured-card__label { font-size:.82rem; color:rgba(255,255,255,.6); margin-bottom:10px; font-weight:600; }
+    .featured-card__title {
+      font-family:'Playfair Display',serif; font-size:2rem;
+      color:#fff; margin-bottom:12px; line-height:1.25;
+    }
+    .featured-card__desc { color:rgba(255,255,255,.75); font-size:.95rem; line-height:1.6; max-width:420px; margin-bottom:20px; }
+    .featured-card__chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; }
+    .featured-chip {
+      background:rgba(255,255,255,.15); color:rgba(255,255,255,.9);
+      font-size:.78rem; font-weight:600; padding:4px 12px; border-radius:50px;
+    }
+    .featured-card__cta {
+      display:inline-flex; align-items:center; gap:8px;
+      background:#fff; color:var(--primary-green);
+      padding:11px 24px; border-radius:50px;
+      font-weight:700; font-size:.9rem;
+      transition:.2s; text-decoration:none;
+    }
+    .featured-card:hover .featured-card__cta { background:var(--sage-light); }
+    .featured-card__stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+      position:relative; z-index: 1000; flex-shrink:0;
+    }
+    .fstat {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+      border-radius:14px; padding:16px 20px; text-align:center;
+      backdrop-filter:blur(6px);
+    }
+    .fstat__val { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:800; color:#fff; line-height:1; }
+    .fstat__val small { font-size:.75rem; font-weight:500; }
+    .fstat__lbl { font-size:.72rem; color:rgba(255,255,255,.6); margin-top:3px; }
+
+    /* ---- PLANS GRID ---- */
+    .plans-section {
+      max-width:1400px; margin:0 auto;
+      padding:40px 6rem 70px;
+    }
+    .plans-section__header {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:28px;
+    }
+    .plans-section__title {
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem; color:var(--text-dark);
+    }
+    .plans-section__title span { color:var(--primary-green); }
+    .view-toggle { display:flex; gap:4px; }
+    .view-btn {
+      width:36px; height:36px; border:1.5px solid var(--sage-light);
+      border-radius:8px; background:#fff; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text-light); font-size:.9rem; transition:.2s;
+    }
+    .view-btn.active { background:var(--primary-green); color:#fff; border-color:var(--primary-green); }
+
+    .plans-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:26px;
+    }
+    .plans-grid.list-view {
+      grid-template-columns:1fr;
+    }
+
+    /* ---- PLAN CARD ---- */
+    .plan-card {
+      background:#fff; border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 2px 14px rgba(74,103,65,.08);
+      border:1px solid rgba(74,103,65,.07);
+      transition:transform .3s ease, box-shadow .3s ease;
+      cursor:pointer; display:flex; flex-direction:column;
+      text-decoration:none; color:inherit;
+      position:relative;
+    }
+    .plan-card:hover { transform:translateY(-7px); box-shadow:0 16px 36px rgba(74,103,65,.16); }
+    .plan-card.hidden { display:none; }
+
+    /* Card image area */
+    .plan-card__img {
+      position:relative; height:200px; overflow:hidden; flex-shrink:0;
+    }
+    .plan-card__img img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .5s ease;
+    }
+    .plan-card:hover .plan-card__img img { transform:scale(1.07); }
+    .plan-card__overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 55%);
+    }
+
+    /* Badges on image */
+    .plan-card__badge {
+      position:absolute; top: 0; left:14px;
+      padding:4px 12px; border-radius:50px;
+      font-size:.72rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.3px; z-index: 1000;
+    }
+    .badge--popular { background:#f39c12; color:#fff; }
+    .badge--new     { background:var(--primary-green); color:#fff; }
+    .badge--hot     { background:#e74c3c; color:#fff; }
+    .badge--premium { background:#6c3483; color:#fff; }
+    .badge--free    { background:#27ae60; color:#fff; }
+
+    .plan-card__save {
+      position:absolute; top: 0; right:12px; z-index: 1000;
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(255,255,255,.9); border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; color:#888; transition:.2s;
+      backdrop-filter:blur(4px);
+    }
+    .plan-card__save:hover { color:#e74c3c; transform:scale(1.1); }
+    .plan-card__save.saved { color:#e74c3c; }
+    .plan-card__save.saved i { font-weight:900; }
+
+    /* Duration pill on image */
+    .plan-card__duration {
+      position:absolute; bottom:12px; right:12px; z-index: 1000;
+      background:rgba(0,0,0,.55); color:#fff; backdrop-filter:blur(4px);
+      padding:4px 10px; border-radius:50px; font-size:.75rem; font-weight:600;
+      display:flex; align-items:center; gap:5px;
+    }
+
+    /* Card body */
+    .plan-card__body {
+      padding:20px 22px; display:flex; flex-direction:column; flex:1;
+    }
+    .plan-card__diet {
+      display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;
+    }
+    .diet-tag {
+      font-size:.7rem; font-weight:700; padding:3px 10px;
+      border-radius:50px; background:var(--sage-light); color:var(--primary-green);
+    }
+    .diet-tag--ec  { background:#e8f5e9; color:#2e7d32; }
+    .diet-tag--hp  { background:#fce4ec; color:#c0392b; }
+    .diet-tag--lc  { background:#e3f2fd; color:#1565c0; }
+    .diet-tag--vg  { background:#f3e5f5; color:#6c3483; }
+    .diet-tag--med { background:#fff3e0; color:#e65100; }
+    .diet-tag--det { background:#e0f7fa; color:#00695c; }
+
+    .plan-card__name {
+      font-family:'Playfair Display',serif;
+      font-size:1.2rem; color:var(--text-dark);
+      margin-bottom:6px; line-height:1.3;
+      transition:color .2s;
+    }
+    .plan-card:hover .plan-card__name { color:var(--primary-green); }
+
+    .plan-card__desc {
+      font-size:.85rem; color:var(--text-light);
+      line-height:1.55; margin-bottom:14px; flex:1;
+    }
+
+    /* Macro mini bar */
+    .macro-mini { margin-bottom:14px; }
+    .macro-mini__row {
+      display:flex; justify-content:space-between;
+      font-size:.72rem; color:var(--text-light); margin-bottom:4px;
+    }
+    .macro-mini__bars { display:flex; gap:3px; height:5px; border-radius:10px; overflow:hidden; }
+    .mbar {
+      height:100%; border-radius:10px; transition:width .4s ease;
+    }
+    .mbar--p { background:var(--primary-green); }
+    .mbar--c { background:#e67e22; }
+    .mbar--f { background:#6c3483; }
+
+    /* Stats row */
+    .plan-card__stats {
+      display:flex; gap:16px; padding-top:14px;
+      border-top:1px solid var(--sage-light); flex-wrap:wrap;
+    }
+    .pcstat { display:flex; align-items:center; gap:5px; font-size:.78rem; color:var(--text-light); }
+    .pcstat i { color:var(--primary-green); font-size:.75rem; }
+
+    /* Rating */
+    .plan-card__rating {
+      display:flex; align-items:center; gap:5px;
+      margin-bottom:10px;
+    }
+    .stars { color:#f39c12; font-size:.82rem; letter-spacing:1px; }
+    .rating-val { font-size:.82rem; font-weight:700; color:var(--text-dark); }
+    .rating-cnt { font-size:.78rem; color:var(--text-light); }
+
+    /* List view override */
+    .plans-grid.list-view .plan-card {
+      flex-direction:row; height:160px;
+    }
+    .plans-grid.list-view .plan-card__img { width:220px; height:100%; flex-shrink:0; }
+    .plans-grid.list-view .plan-card__body { flex-direction:row; align-items:center; gap:20px; padding:18px 24px; }
+    .plans-grid.list-view .plan-card__left { flex:1; }
+    .plans-grid.list-view .plan-card__stats { padding-top:0; border:none; gap:20px; }
+    .plans-grid.list-view .macro-mini { display:none; }
+
+    /* ---- EMPTY STATE ---- */
+    .empty-state {
+      text-align:center; padding:80px 20px; display:none;
+      grid-column:1/-1;
+    }
+    .empty-state i { font-size:3rem; color:var(--sage-light); margin-bottom:16px; display:block; }
+    .empty-state p { color:var(--text-light); font-size:1rem; }
+
+    /* ---- LOAD MORE ---- */
+    .load-more-wrap { text-align:center; margin-top:40px; }
+    .load-more-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 36px; border:2px solid var(--primary-green);
+      border-radius:50px; background:#fff; color:var(--primary-green);
+      font-family:'Quicksand',sans-serif; font-weight:700; font-size:.95rem;
+      cursor:pointer; transition:.25s;
+    }
+    .load-more-btn:hover { background:var(--primary-green); color:#fff; transform:translateY(-2px); box-shadow:0 6px 16px rgba(74,103,65,.25); }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:1200px){
+      .plans-grid { grid-template-columns:repeat(2,1fr); }
+      .hub-hero { padding:48px 3rem 44px; }
+      .hub-controls__inner { padding:14px 3rem; }
+      .featured-banner { padding:0 3rem; }
+      .plans-section { padding:36px 3rem 60px; }
+    }
+    @media(max-width:900px){
+      .featured-card { flex-direction:column; align-items:flex-start; padding:32px 28px; }
+      .featured-card__stats { grid-template-columns:repeat(4,1fr); width:100%; }
+      .hub-hero__title { font-size:2.2rem; }
+    }
+    @media(max-width:768px){
+      .plans-grid { grid-template-columns:1fr; }
+      .hub-hero { padding:36px 1.4rem 32px; }
+      .hub-controls__inner { padding:12px 1.4rem; gap:10px; }
+      .featured-banner { padding:0 1.4rem; }
+      .plans-section { padding:28px 1.4rem 52px; }
+      .hub-search { max-width:100%; width:100%; }
+      .results-count { display:none; }
+      .featured-card__stats { grid-template-columns:1fr 1fr; }
+      .plans-grid.list-view .plan-card { flex-direction:column; height:auto; }
+      .plans-grid.list-view .plan-card__img { width:100%; height:180px; }
+    }
+  </style>
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="hero-header">
+    <div class="top-icons">
+      <a href="#" class="icon-link"><i class="far fa-user"></i></a>
+      <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+    <a href="index.html" class="brand-logo" style="color:#4A6741">hecipe</a>
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..."/>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NAVBAR ===== -->
+      <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hub-hero">
+    <div class="hub-hero__inner">
+      <div class="hub-hero__breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Thực đơn</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span style="color:rgba(255,255,255,.85)">Lộ trình 7 ngày</span>
+      </div>
+      <span class="hub-hero__tag"><i class="fa-solid fa-calendar-week"></i> Lộ Trình 7 Ngày</span>
+      <h1 class="hub-hero__title">Chọn thực đơn<br><em>phù hợp với bạn</em></h1>
+      <p class="hub-hero__sub">Hơn 12 lộ trình được thiết kế bởi chuyên gia dinh dưỡng — từ giảm cân, tăng cơ đến phục hồi sức khoẻ. Nhấp vào bất kỳ thực đơn để xem chi tiết và bắt đầu ngay hôm nay.</p>
+    </div>
+  </section>
+
+  <!-- ===== FILTER + SEARCH ===== -->
+  <div class="hub-controls">
+    <div class="hub-controls__inner">
+      <div class="hub-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Tìm thực đơn..." oninput="filterPlans()"/>
+      </div>
+      <div class="filter-group" id="filterGroup">
+        <button class="fchip active" data-filter="all"><i class="fa-solid fa-border-all"></i> Tất cả</button>
+        <button class="fchip" data-filter="eatclean"><i class="fa-solid fa-seedling"></i> Eat Clean</button>
+        <button class="fchip" data-filter="highprotein"><i class="fa-solid fa-dumbbell"></i> High Protein</button>
+        <button class="fchip" data-filter="lowcarb"><i class="fa-solid fa-ban"></i> Low Carb</button>
+        <button class="fchip" data-filter="vegetarian"><i class="fa-solid fa-leaf"></i> Chay</button>
+        <button class="fchip" data-filter="detox"><i class="fa-solid fa-droplet"></i> Detox</button>
+        <button class="fchip" data-filter="balanced"><i class="fa-solid fa-scale-balanced"></i> Cân bằng</button>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="filterPlans()">
+        <option value="popular">Phổ biến nhất</option>
+        <option value="newest">Mới nhất</option>
+        <option value="kcal_asc">Kcal tăng dần</option>
+        <option value="kcal_desc">Kcal giảm dần</option>
+        <option value="rating">Đánh giá cao</option>
+      </select>
+      <div class="results-count">Hiển thị <strong id="visibleCount">12</strong> thực đơn</div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURED ===== -->
+  <div class="featured-banner" id="featuredBanner">
+    <a class="featured-card" href="thucdon7d-detail1.html">
+      <div class="featured-card__badge"><i class="fa-solid fa-star"></i> Nổi bật tuần này</div>
+      <div class="featured-card__content">
+        <div class="featured-card__label">Thực đơn được chọn nhiều nhất</div>
+        <div class="featured-card__title">Cân Bằng Dinh Dưỡng<br>7 Ngày Chuẩn WHO</div>
+        <div class="featured-card__desc">Thực đơn cân bằng đầy đủ 4 nhóm chất theo khuyến nghị của Tổ chức Y tế Thế giới — phù hợp với mọi lứa tuổi, không cần điều chỉnh nhiều.</div>
+        <div class="featured-card__chips">
+          <span class="featured-chip">⚖️ Cân bằng</span>
+          <span class="featured-chip">1.800 kcal/ngày</span>
+          <span class="featured-chip">28 bữa ăn</span>
+          <span class="featured-chip">⭐ 4.9 / 5</span>
+        </div>
+        <span class="featured-card__cta">Xem thực đơn <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      <div class="featured-card__stats">
+        <div class="fstat"><div class="fstat__val">1.800<small>kcal</small></div><div class="fstat__lbl">Mỗi ngày</div></div>
+        <div class="fstat"><div class="fstat__val">120<small>g</small></div><div class="fstat__lbl">Protein</div></div>
+        <div class="fstat"><div class="fstat__val">4.9<small>★</small></div><div class="fstat__lbl">Đánh giá</div></div>
+        <div class="fstat"><div class="fstat__val">2.4<small>K</small></div><div class="fstat__lbl">Người dùng</div></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ===== PLANS GRID ===== -->
+  <section class="plans-section">
+    <div class="plans-section__header">
+      <h2 class="plans-section__title">Tất cả thực đơn <span id="sectionCountLabel">(12)</span></h2>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Lưới"><i class="fa-solid fa-grip"></i></button>
+        <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="Danh sách"><i class="fa-solid fa-list"></i></button>
+      </div>
+    </div>
+
+    <div class="plans-grid" id="plansGrid">
+      <!-- Rendered by JS -->
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <i class="fa-solid fa-bowl-food"></i>
+      <p>Không tìm thấy thực đơn phù hợp. Hãy thử từ khoá khác!</p>
+    </div>
+
+    <div class="load-more-wrap" id="loadMoreWrap">
+      <button class="load-more-btn" onclick="loadMore()">
+        <i class="fa-solid fa-rotate-right"></i> Xem thêm thực đơn
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== WAVE + FOOTER ===== -->
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <a href="index.html"><img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo"></a>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Về Hecipe</h4>
+          <a href="duan.html">Dự án</a>
+          <a href="blog.html">Blog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Khám phá</h4>
+          <a href="congthuc.html">Công thức nổi bật</a>
+          <a href="thucdon.html">Thực đơn hôm nay</a>
+          <a href="chedo.html">Chế độ ăn khỏe</a>
+        </div>
+        <div class="footer-col">
+          <h4>Trợ giúp</h4>
+          <a href="hotro.html">Hỗ trợ</a>
+          <a href="lienhe.html">Liên hệ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Social</h4>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+          <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+        </div>
+      </div>
+      <div class="footer-app">
+        <h4>Download our app:</h4>
+        <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+        <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyright">Copyright © 2026 Hecipe.</div>
+      <div class="divider"></div>
+      <div class="policy-links">
+        <a href="dieukhoan.html">Điều khoản dịch vụ</a>
+        <a href="chinhsach.html">Chính sách bảo mật</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+  /* =====================================================
+     DATA — All available 7-day meal plans
+     ===================================================== */
+  const ALL_PLANS = [
+    {
+      id: 'balanced-who',
+      name: 'Cân Bằng Dinh Dưỡng 7 Ngày Chuẩn WHO',
+      desc: 'Cân bằng 4 nhóm chất theo khuyến nghị Tổ chức Y tế Thế giới. Phù hợp duy trì cân nặng và sức khoẻ tổng thể.',
+      img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=300&fit=crop',
+      kcal: 1800, protein: 120, carb: 220, fat: 55,
+      rating: 4.9, reviews: 2400,
+      badge: 'popular', badgeLabel: 'Phổ biến nhất',
+      tags: ['balanced'], tagLabels: [{ text:'⚖️ Cân bằng', cls:'diet-tag' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Dễ',
+      author: 'BS. Minh Tâm', views: 12000,
+      href: 'thucdon7d-detail1.html',
+      isNew: false, sortScore: 100,
+    },
+    {
+      id: 'eatclean-basic',
+      name: 'Eat Clean Căn Bản — Bắt Đầu Lành Mạnh',
+      desc: 'Loại bỏ thực phẩm chế biến sẵn, đường tinh luyện. Tập trung rau xanh, protein sạch và ngũ cốc nguyên hạt.',
+      img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=300&fit=crop',
+      kcal: 1650, protein: 110, carb: 185, fat: 52,
+      rating: 4.8, reviews: 1800,
+      badge: 'popular', badgeLabel: 'Phổ biến',
+      tags: ['eatclean'], tagLabels: [{ text:'🥗 Eat Clean', cls:'diet-tag diet-tag--ec' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Trung bình',
+      author: 'CN. Lan Anh', views: 9800,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 92,
+    },
+    {
+      id: 'highprotein-gym',
+      name: 'High Protein 7 Ngày Dành Cho Người Tập Gym',
+      desc: 'Tối ưu cơ bắp với 150–180g protein/ngày. Kết hợp carb thời điểm và chất béo lành mạnh để phục hồi nhanh.',
+      img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=300&fit=crop',
+      kcal: 2200, protein: 165, carb: 240, fat: 65,
+      rating: 4.8, reviews: 1560,
+      badge: 'hot', badgeLabel: '🔥 Hot',
+      tags: ['highprotein'], tagLabels: [{ text:'💪 High Protein', cls:'diet-tag diet-tag--hp' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Trung bình',
+      author: 'PT. Quốc Hùng', views: 8700,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 88,
+    },
+    {
+      id: 'lowcarb-ketofriendly',
+      name: 'Low Carb Thân Thiện Keto — Giảm Mỡ Nhanh',
+      desc: 'Hạn chế carb xuống dưới 100g/ngày, ưu tiên chất béo tốt và protein để đốt mỡ hiệu quả, không mất cơ.',
+      img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=300&fit=crop',
+      kcal: 1700, protein: 130, carb: 90, fat: 100,
+      rating: 4.7, reviews: 1240,
+      badge: 'new', badgeLabel: 'MỚI',
+      tags: ['lowcarb'], tagLabels: [{ text:'🥩 Low Carb', cls:'diet-tag diet-tag--lc' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Khó',
+      author: 'BS. Phương Chi', views: 5600,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: true, sortScore: 75,
+    },
+    {
+      id: 'vegetarian-complete',
+      name: 'Thuần Chay Đầy Đủ Dưỡng Chất 7 Ngày',
+      desc: 'Thực đơn chay hoàn toàn đủ B12, iron, omega-3, canxi — được thiết kế để không thiếu hụt vi chất.',
+      img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=300&fit=crop',
+      kcal: 1600, protein: 85, carb: 220, fat: 50,
+      rating: 4.7, reviews: 980,
+      badge: 'free', badgeLabel: 'Miễn phí',
+      tags: ['vegetarian'], tagLabels: [{ text:'🌱 Chay', cls:'diet-tag diet-tag--vg' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Trung bình',
+      author: 'CN. Ngọc Hà', views: 6200,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 72,
+    },
+    {
+      id: 'detox-7day',
+      name: 'Detox 7 Ngày — Thanh Lọc & Tái Tạo Cơ Thể',
+      desc: 'Giảm tải cho gan, thận và hệ tiêu hoá qua chế độ ăn giàu chất xơ, enzyme và antioxidant tự nhiên.',
+      img: 'https://images.unsplash.com/photo-1622621746668-59fb299bc4d7?w=600&h=300&fit=crop',
+      kcal: 1400, protein: 70, carb: 200, fat: 38,
+      rating: 4.6, reviews: 760,
+      badge: 'new', badgeLabel: 'MỚI',
+      tags: ['detox', 'vegetarian'], tagLabels: [{ text:'💧 Detox', cls:'diet-tag diet-tag--det' }, { text:'🌱 Chay', cls:'diet-tag diet-tag--vg' }],
+      duration: '7 ngày', meals: 21, difficulty: 'Dễ',
+      author: 'BS. Thu Hương', views: 4100,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: true, sortScore: 65,
+    },
+    {
+      id: 'mediterranean',
+      name: 'Địa Trung Hải 7 Ngày — Trái Tim Khoẻ Mạnh',
+      desc: 'Dầu ô liu, cá, rau xanh, hạt — chế độ ăn được nghiên cứu là tốt nhất thế giới cho tim mạch và longevity.',
+      img: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&h=300&fit=crop',
+      kcal: 1900, protein: 105, carb: 230, fat: 75,
+      rating: 4.9, reviews: 1120,
+      badge: 'premium', badgeLabel: '⭐ Premium',
+      tags: ['balanced', 'eatclean'], tagLabels: [{ text:'🫒 Mediterranean', cls:'diet-tag diet-tag--med' }, { text:'❤️ Tim mạch', cls:'diet-tag' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Trung bình',
+      author: 'Prof. Alessandro', views: 7300,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 87,
+    },
+    {
+      id: 'weightloss-1500',
+      name: 'Giảm Cân Khoa Học 1.500 kcal/Ngày',
+      desc: 'Tạo thâm hụt calo 300–500 kcal/ngày một cách an toàn. Không bỏ bữa, không đói, không yo-yo effect.',
+      img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=300&fit=crop',
+      kcal: 1500, protein: 115, carb: 170, fat: 45,
+      rating: 4.8, reviews: 2100,
+      badge: 'popular', badgeLabel: 'Phổ biến',
+      tags: ['eatclean', 'lowcarb'], tagLabels: [{ text:'📉 Giảm cân', cls:'diet-tag diet-tag--ec' }, { text:'🔬 Khoa học', cls:'diet-tag' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Dễ',
+      author: 'BS. Minh Tâm', views: 11200,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 95,
+    },
+    {
+      id: 'bulking',
+      name: 'Tăng Cân Cơ Bắp — Bulk 2.800 kcal',
+      desc: 'Surplus calo thông minh với tỷ lệ macro tối ưu để tăng cơ tối đa, hạn chế tích mỡ trong chu kỳ bulk.',
+      img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=300&fit=crop',
+      kcal: 2800, protein: 200, carb: 330, fat: 80,
+      rating: 4.7, reviews: 890,
+      badge: 'hot', badgeLabel: '🔥 Hot',
+      tags: ['highprotein'], tagLabels: [{ text:'💪 Tăng cơ', cls:'diet-tag diet-tag--hp' }, { text:'🏋️ Bulk', cls:'diet-tag' }],
+      duration: '7 ngày', meals: 35, difficulty: 'Khó',
+      author: 'PT. Quốc Hùng', views: 6500,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 80,
+    },
+    {
+      id: 'diabetes-friendly',
+      name: 'Thực Đơn Thân Thiện Tiểu Đường',
+      desc: 'Chỉ số GI thấp, kiểm soát đường huyết sau ăn. Được soạn bởi bác sĩ nội tiết, phù hợp tiểu đường type 2.',
+      img: 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=600&h=300&fit=crop',
+      kcal: 1600, protein: 100, carb: 180, fat: 55,
+      rating: 4.8, reviews: 640,
+      badge: 'new', badgeLabel: 'MỚI',
+      tags: ['balanced', 'lowcarb'], tagLabels: [{ text:'🩺 Bệnh lý', cls:'diet-tag diet-tag--lc' }, { text:'Low GI', cls:'diet-tag' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Trung bình',
+      author: 'BS. CK II Hồng Anh', views: 3800,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: true, sortScore: 68,
+    },
+    {
+      id: 'pregnancy',
+      name: 'Dinh Dưỡng Thai Kỳ — Tam Cá Nguyệt 2',
+      desc: 'Đủ acid folic, sắt, canxi, DHA cho mẹ và bé. Tránh thực phẩm nguy hiểm, đủ năng lượng cho cả hai.',
+      img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=300&fit=crop',
+      kcal: 2100, protein: 100, carb: 270, fat: 65,
+      rating: 4.9, reviews: 520,
+      badge: 'premium', badgeLabel: '⭐ Premium',
+      tags: ['balanced'], tagLabels: [{ text:'🤰 Thai kỳ', cls:'diet-tag' }, { text:'🧬 Chuyên khoa', cls:'diet-tag diet-tag--med' }],
+      duration: '7 ngày', meals: 35, difficulty: 'Dễ',
+      author: 'BS. Sản khoa Bích Ngọc', views: 4900,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 71,
+    },
+    {
+      id: 'elder-care',
+      name: 'Dinh Dưỡng Người Cao Tuổi — Dễ Tiêu Hoá',
+      desc: 'Dành cho người 60+: dễ nhai, dễ tiêu, đủ protein giữ cơ, canxi giữ xương, ít natri bảo vệ tim mạch.',
+      img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=300&fit=crop',
+      kcal: 1700, protein: 90, carb: 210, fat: 55,
+      rating: 4.7, reviews: 410,
+      badge: 'free', badgeLabel: 'Miễn phí',
+      tags: ['balanced'], tagLabels: [{ text:'👴 Cao tuổi', cls:'diet-tag' }, { text:'🦴 Xương khớp', cls:'diet-tag diet-tag--det' }],
+      duration: '7 ngày', meals: 28, difficulty: 'Dễ',
+      author: 'BS. Lão khoa Mạnh Cường', views: 2900,
+      href: 'lode-trinh-7-ngay.html',
+      isNew: false, sortScore: 60,
+    },
+  ];
+
+  /* =====================================================
+     STATE
+     ===================================================== */
+  let visibleCount = 9;
+  let currentFilter = 'all';
+  let currentView = 'grid';
+
+  /* =====================================================
+     RENDER
+     ===================================================== */
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5 ? 1 : 0;
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half);
+  }
+
+  function calcMacroWidths(p, c, f) {
+    const total = p + c + f;
+    return { pw: Math.round(p/total*100), cw: Math.round(c/total*100), fw: Math.round(f/total*100) };
+  }
+
+  function difficultyIcon(d) {
+    return d === 'Dễ' ? '🟢' : d === 'Trung bình' ? '🟡' : '🔴';
+  }
+
+  function badgeClass(b) {
+    return { popular:'badge--popular', new:'badge--new', hot:'badge--hot', premium:'badge--premium', free:'badge--free' }[b] || '';
+  }
+
+  function renderCard(plan, idx) {
+    const mw = calcMacroWidths(plan.protein, plan.carb, plan.fat);
+    const saved = JSON.parse(localStorage.getItem('savedPlans') || '[]').includes(plan.id);
+    return `
+    <a class="plan-card${idx >= visibleCount ? ' hidden' : ''}"
+       href="${plan.href}" data-tags="${plan.tags.join(',')}"
+       data-name="${plan.name.toLowerCase()}" data-kcal="${plan.kcal}"
+       data-rating="${plan.rating}" data-score="${plan.sortScore}" data-id="${plan.id}">
+
+      <div class="plan-card__img">
+        <img src="${plan.img}" alt="${plan.name}"
+             onerror="this.src='https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=300&fit=crop'"/>
+        <div class="plan-card__overlay"></div>
+        <span class="plan-card__badge ${badgeClass(plan.badge)}">${plan.badgeLabel}</span>
+        <button class="plan-card__save${saved?' saved':''}" onclick="toggleSave(event,'${plan.id}')" title="Lưu">
+          <i class="${saved?'fas':'far'} fa-bookmark"></i>
+        </button>
+        <div class="plan-card__duration"><i class="fa-regular fa-calendar"></i> ${plan.duration}</div>
+      </div>
+
+      <div class="plan-card__body">
+        <div class="plan-card__diet">
+          ${plan.tagLabels.map(t=>`<span class="${t.cls}">${t.text}</span>`).join('')}
+        </div>
+        <div class="plan-card__rating">
+          <span class="stars">${renderStars(plan.rating)}</span>
+          <span class="rating-val">${plan.rating}</span>
+          <span class="rating-cnt">(${plan.reviews.toLocaleString('vi')})</span>
+        </div>
+        <div class="plan-card__name">${plan.name}</div>
+        <div class="plan-card__desc">${plan.desc}</div>
+
+        <div class="macro-mini">
+          <div class="macro-mini__row">
+            <span>🟢 P: ${plan.protein}g &nbsp; 🟠 C: ${plan.carb}g &nbsp; 🟣 F: ${plan.fat}g</span>
+            <span>${plan.kcal} kcal</span>
+          </div>
+          <div class="macro-mini__bars">
+            <div class="mbar mbar--p" style="width:${mw.pw}%"></div>
+            <div class="mbar mbar--c" style="width:${mw.cw}%"></div>
+            <div class="mbar mbar--f" style="width:${mw.fw}%"></div>
+          </div>
+        </div>
+
+        <div class="plan-card__stats">
+          <div class="pcstat"><i class="fa-solid fa-bowl-food"></i> ${plan.meals} bữa</div>
+          <div class="pcstat"><i class="fa-solid fa-signal"></i> ${difficultyIcon(plan.difficulty)} ${plan.difficulty}</div>
+          <div class="pcstat"><i class="fa-solid fa-user-doctor"></i> ${plan.author}</div>
+          <div class="pcstat"><i class="fa-regular fa-eye"></i> ${(plan.views/1000).toFixed(1)}K lượt xem</div>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  function renderAllCards(plans) {
+    const grid = document.getElementById('plansGrid');
+    grid.innerHTML = plans.map((p, i) => renderCard(p, i)).join('');
+    updateCount(plans.filter((_, i) => i < visibleCount).length, plans.length);
+
+    // hide load more if all visible
+    document.getElementById('loadMoreWrap').style.display =
+      plans.length <= visibleCount ? 'none' : '';
+    document.getElementById('emptyState').style.display =
+      plans.length === 0 ? 'block' : 'none';
+  }
+
+  function getFilteredSorted() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const sort = document.getElementById('sortSelect').value;
+
+    let result = ALL_PLANS.filter(p => {
+      const matchFilter = currentFilter === 'all' || p.tags.includes(currentFilter);
+      const matchSearch = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+      return matchFilter && matchSearch;
+    });
+
+    result.sort((a, b) => {
+      if (sort === 'newest')    return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0) || b.sortScore - a.sortScore;
+      if (sort === 'kcal_asc')  return a.kcal - b.kcal;
+      if (sort === 'kcal_desc') return b.kcal - a.kcal;
+      if (sort === 'rating')    return b.rating - a.rating;
+      return b.sortScore - a.sortScore; // popular (default)
+    });
+
+    return result;
+  }
+
+  function filterPlans() {
+    visibleCount = 9;
+    renderAllCards(getFilteredSorted());
+    // hide featured if filtering
+    document.getElementById('featuredBanner').style.display =
+      currentFilter === 'all' && !document.getElementById('searchInput').value ? '' : 'none';
+  }
+
+  function updateCount(visible, total) {
+    document.getElementById('visibleCount').textContent = visible;
+    document.getElementById('sectionCountLabel').textContent = `(${total})`;
+  }
+
+  /* =====================================================
+     INTERACTIONS
+     ===================================================== */
+  // Filter chips
+  document.getElementById('filterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip) return;
+    document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFilter = chip.dataset.filter;
+    filterPlans();
+  });
+
+  function setView(v) {
+    currentView = v;
+    const grid = document.getElementById('plansGrid');
+    grid.classList.toggle('list-view', v === 'list');
+    document.getElementById('gridViewBtn').classList.toggle('active', v === 'grid');
+    document.getElementById('listViewBtn').classList.toggle('active', v === 'list');
+  }
+
+  function loadMore() {
+    visibleCount += 3;
+    const plans = getFilteredSorted();
+    // show newly visible cards
+    document.querySelectorAll('.plan-card').forEach((el, i) => {
+      if (i < visibleCount) el.classList.remove('hidden');
+    });
+    updateCount(Math.min(visibleCount, plans.length), plans.length);
+    if (visibleCount >= plans.length) {
+      document.getElementById('loadMoreWrap').style.display = 'none';
+    }
+  }
+
+  function toggleSave(e, id) {
+    e.preventDefault(); e.stopPropagation();
+    let saved = JSON.parse(localStorage.getItem('savedPlans') || '[]');
+    const btn = e.currentTarget;
+    const icon = btn.querySelector('i');
+    if (saved.includes(id)) {
+      saved = saved.filter(s => s !== id);
+      btn.classList.remove('saved');
+      icon.className = 'far fa-bookmark';
+    } else {
+      saved.push(id);
+      btn.classList.add('saved');
+      icon.className = 'fas fa-bookmark';
+      // micro-bounce
+      btn.animate([{transform:'scale(1)'},{transform:'scale(1.35)'},{transform:'scale(1)'}],{duration:320,easing:'ease'});
+    }
+    localStorage.setItem('savedPlans', JSON.stringify(saved));
+  }
+
+  /* Auth */
+  function toggleAuthUI() {
+    const logged = localStorage.getItem('loggedIn') === 'true';
+    const profile = document.getElementById('profileContainer');
+    const authBtns = document.getElementById('authButtons');
+    const display = document.getElementById('displayUsername');
+    if (profile) profile.classList.toggle('hidden', !logged);
+    if (authBtns) authBtns.classList.toggle('hidden', logged);
+    if (logged) {
+      const av = localStorage.getItem('avatar');
+      if (av) { const img = document.getElementById('avatarImg'); if (img) img.src = av; }
+      if (display) display.textContent = localStorage.getItem('userId') || '';
+    }
+  }
+
+  /* Init */
+  document.addEventListener('DOMContentLoaded', () => {
+    toggleAuthUI();
+    const logoutLink = document.getElementById('logoutLink');
+    if (logoutLink) logoutLink.addEventListener('click', e => { e.preventDefault(); localStorage.removeItem('loggedIn'); toggleAuthUI(); });
+    renderAllCards(getFilteredSorted());
+  });
+  </script>
+
+<script src="search-unified.js" defer></script>
+</body>
+</html>

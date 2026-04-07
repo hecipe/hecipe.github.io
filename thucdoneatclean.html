@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eat Clean & Diet - Hecipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+
+    /* =============================================
+       EAT CLEAN & DIET — eatclean-diet.html
+       Màu accent riêng: xanh lá non (#4CAF50 family)
+       ============================================= */
+    :root {
+    --ec-green:   #3d7a45;
+    --ec-light:   #e8f5e9;
+    --ec-mint:    #a5d6a7;
+    }
+    /* ---- HERO ---- */
+    .hub-hero {
+      background: linear-gradient(135deg, #1a2e1c 0%, #2d5230 45%, #4CAF50 100%);
+      padding: 56px 6rem 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* lá cây trang trí nền */
+    .hub-hero::before {
+      content:'';
+      position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M40 0 C20 20 0 20 0 40 C0 60 20 80 40 80 C60 80 80 60 80 40 C80 20 60 20 40 0Z'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events:none;
+    }
+    .hub-hero::after {
+      content:'';
+      position:absolute;
+      width:560px; height:560px; border-radius:50%;
+      background:radial-gradient(circle, rgba(165,214,167,0.14) 0%, transparent 70%);
+      top: 0; right:-100px; pointer-events:none;
+    }
+    .hub-hero__inner {
+      position:relative; z-index: 1000;
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:40px; flex-wrap:wrap;
+    }
+    .hub-hero__left { max-width:640px; }
+    .hub-hero__breadcrumb {
+      display:flex; align-items:center; gap:8px;
+      font-size:.8rem; color:rgba(255,255,255,.5); margin-bottom:20px;
+    }
+    .hub-hero__breadcrumb a { color:rgba(255,255,255,.5); text-decoration:none; transition:.15s; }
+    .hub-hero__breadcrumb a:hover { color:rgba(255,255,255,.85); }
+    .hub-hero__breadcrumb i { font-size:.65rem; }
+
+    .hub-hero__tag {
+      display:inline-flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.12); color:#c8f0c0;
+      font-size:.8rem; font-weight:700; padding:5px 14px;
+      border-radius:50px; margin-bottom:16px;
+      text-transform:uppercase; letter-spacing:.5px;
+    }
+    .hub-hero__title {
+      font-family:'Playfair Display',serif;
+      font-size:3rem; color:#fff; line-height:1.2; margin-bottom:14px;
+    }
+    .hub-hero__title em { color:#a5d6a7; font-style:normal; }
+    .hub-hero__sub {
+      color:rgba(255,255,255,.72); font-size:1rem;
+      line-height:1.7; max-width:540px; margin-bottom:24px;
+    }
+
+    /* quick-stats nằm phải hero */
+    .hero-pill-row {
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .hero-pill {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.18);
+      color:#fff; padding:10px 18px; border-radius:50px;
+      font-size:.85rem; font-weight:600; backdrop-filter:blur(6px);
+    }
+    .hero-pill i { color:#a5d6a7; }
+
+    /* Duration quick-pick — thanh thời gian nổi bật ở hero */
+    .hero-duration-strip {
+      display:flex; gap:12px; flex-wrap:wrap; margin-top:28px;
+    }
+    .dur-pill {
+      padding:9px 20px; border-radius:50px;
+      background:rgba(255,255,255,.13); border:1.5px solid rgba(255,255,255,.22);
+      color:rgba(255,255,255,.85); font-weight:700; font-size:.85rem;
+      cursor:pointer; transition:.22s; white-space:nowrap;
+      display:flex; align-items:center; gap:7px; backdrop-filter:blur(5px);
+    }
+    .dur-pill:hover { background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.5); }
+    .dur-pill.active { background:#fff; color:#3d7a45; border-color:#fff; box-shadow:0 3px 12px rgba(0,0,0,.15); }
+    .dur-pill .dur-icon { font-size:.95rem; }
+
+    /* ---- FILTER BAR ---- */
+    /* ---- FILTER BAR REWORK ---- */
+    .hub-controls {
+      background: #fff;
+      border-bottom: 1px solid var(--sage-light, #e0e0e0); /* Dùng fallback color nếu chưa define biến */
+      position: sticky; 
+      top: 0; /* Điều chỉnh con số này cho khớp với chiều cao Navbar của bạn */
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,.04);
+    }
+    
+    .hub-controls__inner {
+      display: flex; 
+      flex-direction: column; /* Xếp thành 2 hàng dọc */
+      gap: 14px; 
+      padding: 16px 6rem;
+    }
+
+    /* Hàng 1 */
+    .hub-controls__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 16px;
+    }
+
+    .hub-controls__actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Hàng 2: Cuộn ngang mượt mà */
+    .hub-controls__bottom {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      overflow-x: auto; /* Cho phép cuộn ngang */
+      padding-bottom: 6px; /* Chừa không gian cho scrollbar */
+    }
+
+    /* Làm đẹp thanh cuộn ngang (Scrollbar) */
+    .hub-controls__bottom::-webkit-scrollbar {
+      height: 5px;
+    }
+    .hub-controls__bottom::-webkit-scrollbar-thumb {
+      background: #c5e1a5; 
+      border-radius: 10px;
+    }
+    .hub-controls__bottom::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .filter-group { 
+      display: flex; 
+      gap: 8px; 
+      flex-wrap: nowrap; /* Bắt buộc KHÔNG rớt dòng */
+      flex-shrink: 0;
+    }
+
+    .filter-divider {
+      width: 2px;
+      height: 24px;
+      background: #e0e0e0;
+      flex-shrink: 0;
+      border-radius: 2px;
+    }
+
+    /* Khắc phục lỗi độ rộng cho thanh tìm kiếm */
+    .hub-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg-cream, #f9f9f9); border: 1.5px solid var(--sage-light, #e0e0e0);
+      border-radius: 50px; padding: 10px 20px; 
+      flex: 1; max-width: 400px; transition: .2s;
+    }
+    .hub-search:focus-within { border-color:#4CAF50; box-shadow:0 0 0 3px rgba(76,175,80,.1); }
+    .hub-search i { color:var(--text-light); font-size:.9rem; }
+    .hub-search input {
+      border:none; background:transparent; outline:none;
+      font-family:'Quicksand',sans-serif; font-size:.9rem;
+      color:var(--text-dark); width:100%;
+    }
+    .hub-search input::placeholder { color:var(--text-light); }
+
+    .filter-group { display:flex; gap:7px; flex-wrap:wrap; flex:1; }
+    .fchip {
+      padding:7px 15px; border:1.5px solid var(--sage-light);
+      background:#fff; border-radius:50px;
+      font-family:'Quicksand',sans-serif; font-weight:600;
+      font-size:.83rem; color:var(--text-dark);
+      cursor:pointer; transition:.22s; white-space:nowrap;
+      display:flex; align-items:center; gap:6px;
+    }
+    .fchip:hover { border-color:#4CAF50; color:#3d7a45; background:rgba(76,175,80,.04); }
+    .fchip.active { background:#4CAF50; color:#fff; border-color:#4CAF50; box-shadow:0 3px 10px rgba(76,175,80,.3); }
+
+    /* Duration filter chips — màu khác biệt so với loại filter */
+    .fchip.dur-filter { background:#f1f8e9; border-color:#c5e1a5; color:#558b2f; }
+    .fchip.dur-filter:hover { background:#dcedc8; border-color:#aed581; }
+    .fchip.dur-filter.active { background:#558b2f; color:#fff; border-color:#558b2f; }
+
+    .sort-select {
+      padding:8px 28px 8px 14px; border:1.5px solid var(--sage-light);
+      border-radius:50px; font-family:'Quicksand',sans-serif;
+      font-weight:600; font-size:.83rem; color:var(--text-dark);
+      background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7C6B' d='M6 8L0 0h12z'/%3E%3C/svg%3E") no-repeat right 10px center;
+      outline:none; cursor:pointer; appearance:none; transition:.2s;
+    }
+    .sort-select:focus { border-color:#4CAF50; }
+
+    .results-count { margin-left:auto; font-size:.83rem; color:var(--text-light); white-space:nowrap; }
+    .results-count strong { color:#3d7a45; }
+
+    /* ---- FEATURED CARD ---- */
+    .featured-banner { max-width:1400px; margin:36px auto 0; padding:0 6rem; }
+    .featured-card {
+      background:linear-gradient(120deg,#1a3a1d 0%,#2d6e33 55%,#4CAF50 100%);
+      border-radius:24px; padding:40px 48px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:32px; position:relative; overflow:hidden;
+      cursor:pointer; transition:.3s; text-decoration:none;
+    }
+    .featured-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(30,80,35,.4); }
+    .featured-card::before {
+      content:''; position:absolute;
+      width:380px; height:380px; border-radius:50%;
+      background:rgba(255,255,255,.05); right:-60px; top: 0; pointer-events:none;
+    }
+    .featured-card::after {
+      content:''; position:absolute;
+      width:200px; height:200px; border-radius:50%;
+      background:rgba(255,255,255,.03); left:38%; bottom:-60px; pointer-events:none;
+    }
+    .featured-card__badge {
+      position:absolute; top: 0; left:20px;
+      background:rgba(255,255,255,.18); color:#c8f0c0;
+      font-size:.75rem; font-weight:700; padding:4px 12px;
+      border-radius:50px; display:flex; align-items:center; gap:5px;
+      text-transform:uppercase; letter-spacing:.4px;
+    }
+    .featured-card__content { position:relative; z-index: 1000; }
+    .featured-card__label { font-size:.82rem; color:rgba(255,255,255,.6); margin-bottom:10px; font-weight:600; }
+    .featured-card__title {
+      font-family:'Playfair Display',serif; font-size:2rem;
+      color:#fff; margin-bottom:12px; line-height:1.25;
+    }
+    .featured-card__desc { color:rgba(255,255,255,.75); font-size:.95rem; line-height:1.6; max-width:420px; margin-bottom:20px; }
+    .featured-card__chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; }
+    .featured-chip {
+      background:rgba(255,255,255,.15); color:rgba(255,255,255,.9);
+      font-size:.78rem; font-weight:600; padding:4px 12px; border-radius:50px;
+    }
+    .featured-card__cta {
+      display:inline-flex; align-items:center; gap:8px;
+      background:#fff; color:#3d7a45;
+      padding:11px 24px; border-radius:50px;
+      font-weight:700; font-size:.9rem; transition:.2s; text-decoration:none;
+    }
+    .featured-card:hover .featured-card__cta { background:#e8f5e9; }
+    .featured-card__stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+      position:relative; z-index: 1000; flex-shrink:0;
+    }
+    .fstat {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+      border-radius:14px; padding:16px 20px; text-align:center; backdrop-filter:blur(6px);
+    }
+    .fstat__val { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:800; color:#fff; line-height:1; }
+    .fstat__val small { font-size:.75rem; font-weight:500; }
+    .fstat__lbl { font-size:.72rem; color:rgba(255,255,255,.6); margin-top:3px; }
+
+    /* ---- DURATION SECTION HEADERS ---- */
+    /* Mỗi nhóm thời gian có banner tiêu đề riêng */
+    .dur-section { margin-bottom:52px; }
+    .dur-section__header {
+      display:flex; align-items:center; gap:16px;
+      margin-bottom:22px; padding-bottom:14px;
+      border-bottom:2px solid var(--sage-light);
+    }
+    .dur-section__icon {
+      width:48px; height:48px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; flex-shrink:0;
+    }
+    .dur-icon--3  { background:#fff8e1; }
+    .dur-icon--5  { background:#e8f5e9; }
+    .dur-icon--10 { background:#e3f2fd; }
+    .dur-icon--14 { background:#f3e5f5; }
+    .dur-icon--21 { background:#fff3e0; }
+    .dur-icon--30 { background:#fce4ec; }
+
+    .dur-section__title {
+      font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--text-dark);
+      flex:1;
+    }
+    .dur-section__title span { color:#3d7a45; }
+    .dur-section__sub { font-size:.85rem; color:var(--text-light); margin-top:2px; }
+    .dur-section__count {
+      background:#e8f5e9; color:#3d7a45;
+      padding:4px 14px; border-radius:50px;
+      font-size:.8rem; font-weight:700; white-space:nowrap;
+    }
+    .dur-section.hidden { display:none; }
+
+    /* ---- PLANS GRID ---- */
+    .plans-section { max-width:1400px; margin:0 auto; padding:40px 6rem 70px; }
+    .plans-section__header {
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:32px;
+    }
+    .plans-section__title {
+      font-family:'Playfair Display',serif; font-size:1.6rem; color:var(--text-dark);
+    }
+    .plans-section__title span { color:#3d7a45; }
+    .view-toggle { display:flex; gap:4px; }
+    .view-btn {
+      width:36px; height:36px; border:1.5px solid var(--sage-light);
+      border-radius:8px; background:#fff; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text-light); font-size:.9rem; transition:.2s;
+    }
+    .view-btn.active { background:#4CAF50; color:#fff; border-color:#4CAF50; }
+
+    .plans-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+    .plans-grid.list-view { grid-template-columns:1fr; }
+
+    /* ---- PLAN CARD ---- */
+    .plan-card {
+      background:#fff; border-radius:22px; overflow:hidden;
+      box-shadow:0 2px 14px rgba(74,103,65,.08);
+      border:1px solid rgba(74,103,65,.07);
+      transition:transform .3s ease, box-shadow .3s ease;
+      cursor:pointer; display:flex; flex-direction:column;
+      text-decoration:none; color:inherit; position:relative;
+    }
+    .plan-card:hover { transform:translateY(-7px); box-shadow:0 16px 36px rgba(61,122,69,.18); }
+    .plan-card.hidden { display:none; }
+
+    .plan-card__img { position:relative; height:200px; overflow:hidden; flex-shrink:0; }
+    .plan-card__img img {
+      width:100%; height:100%; object-fit:cover; transition:transform .5s ease;
+    }
+    .plan-card:hover .plan-card__img img { transform:scale(1.07); }
+    .plan-card__overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 55%);
+    }
+
+    /* Duration ribbon — nổi bật hơn pill thông thường */
+    .plan-card__duration {
+      position:absolute; bottom:0; left:0; right:0; z-index: 1000;
+      background:linear-gradient(90deg,rgba(61,122,69,.92),rgba(76,175,80,.85));
+      color:#fff; font-weight:700; font-size:.78rem;
+      padding:6px 14px; display:flex; align-items:center; gap:6px;
+    }
+    .plan-card__duration .dur-days {
+      font-family:'Inter',sans-serif; font-size:1.05rem; font-weight:800; line-height:1;
+    }
+
+    .plan-card__badge {
+      position:absolute; top: 0; left:14px;
+      padding:4px 12px; border-radius:50px;
+      font-size:.72rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.3px; z-index: 1000;
+    }
+    .badge--popular { background:#f39c12; color:#fff; }
+    .badge--new     { background:#4CAF50; color:#fff; }
+    .badge--hot     { background:#e74c3c; color:#fff; }
+    .badge--premium { background:#6c3483; color:#fff; }
+    .badge--free    { background:#27ae60; color:#fff; }
+
+    .plan-card__save {
+      position:absolute; top: 0; right:12px; z-index: 1000;
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(255,255,255,.9); border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; color:#888; transition:.2s; backdrop-filter:blur(4px);
+    }
+    .plan-card__save:hover { color:#e74c3c; transform:scale(1.1); }
+    .plan-card__save.saved { color:#e74c3c; }
+
+    .plan-card__body { padding:20px 22px; display:flex; flex-direction:column; flex:1; }
+
+    .plan-card__diet { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .diet-tag { font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:50px; background:var(--sage-light); color:var(--primary-green); }
+    .diet-tag--ec  { background:#e8f5e9; color:#2e7d32; }
+    .diet-tag--det { background:#e0f7fa; color:#00695c; }
+    .diet-tag--lc  { background:#e3f2fd; color:#1565c0; }
+    .diet-tag--vg  { background:#f3e5f5; color:#6c3483; }
+    .diet-tag--if  { background:#fff8e1; color:#f57f17; }
+    .diet-tag--raw { background:#f1f8e9; color:#558b2f; }
+    .diet-tag--hp  { background:#fce4ec; color:#c0392b; }
+
+    .plan-card__rating { display:flex; align-items:center; gap:5px; margin-bottom:8px; }
+    .stars { color:#f39c12; font-size:.82rem; letter-spacing:1px; }
+    .rating-val { font-size:.82rem; font-weight:700; color:var(--text-dark); }
+    .rating-cnt { font-size:.78rem; color:var(--text-light); }
+
+    .plan-card__name {
+      font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--text-dark);
+      margin-bottom:6px; line-height:1.3; transition:color .2s;
+    }
+    .plan-card:hover .plan-card__name { color:#3d7a45; }
+
+    .plan-card__desc { font-size:.84rem; color:var(--text-light); line-height:1.55; margin-bottom:14px; flex:1; }
+
+    /* Macro bar */
+    .macro-mini { margin-bottom:14px; }
+    .macro-mini__row { display:flex; justify-content:space-between; font-size:.72rem; color:var(--text-light); margin-bottom:4px; }
+    .macro-mini__bars { display:flex; gap:3px; height:5px; border-radius:10px; overflow:hidden; }
+    .mbar { height:100%; border-radius:10px; }
+    .mbar--p { background:#4CAF50; }
+    .mbar--c { background:#e67e22; }
+    .mbar--f { background:#6c3483; }
+
+    /* Progress ring — % hoàn thành lộ trình nếu đã bắt đầu */
+    .plan-card__progress {
+      display:flex; align-items:center; gap:10px;
+      background:#f1f8e9; border-radius:10px;
+      padding:8px 12px; margin-bottom:14px;
+    }
+    .prog-ring { width:32px; height:32px; flex-shrink:0; }
+    .prog-ring circle { transition:stroke-dashoffset .6s ease; }
+    .prog-label { font-size:.78rem; color:#3d7a45; font-weight:600; }
+    .prog-label span { font-weight:400; color:var(--text-light); }
+
+    .plan-card__stats {
+      display:flex; gap:14px; padding-top:14px;
+      border-top:1px solid var(--sage-light); flex-wrap:wrap;
+    }
+    .pcstat { display:flex; align-items:center; gap:5px; font-size:.77rem; color:var(--text-light); }
+    .pcstat i { color:#4CAF50; font-size:.74rem; }
+
+    /* list view */
+    .plans-grid.list-view .plan-card { flex-direction:row; min-height:150px; }
+    .plans-grid.list-view .plan-card__img { width:200px; height:auto; flex-shrink:0; }
+    .plans-grid.list-view .plan-card__duration { writing-mode:initial; bottom:0; }
+    .plans-grid.list-view .plan-card__body { flex-direction:row; align-items:center; gap:20px; padding:16px 22px; }
+    .plans-grid.list-view .plan-card__left { flex:1; min-width:0; }
+    .plans-grid.list-view .plan-card__stats { padding-top:0; border:none; }
+    .plans-grid.list-view .macro-mini,
+    .plans-grid.list-view .plan-card__progress { display:none; }
+
+    /* empty + load more */
+    .empty-state { text-align:center; padding:80px 20px; display:none; }
+    .empty-state i { font-size:3rem; color:var(--sage-light); margin-bottom:16px; display:block; }
+    .empty-state p { color:var(--text-light); }
+    .load-more-wrap { text-align:center; margin-top:40px; }
+    .load-more-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:13px 36px; border:2px solid #4CAF50;
+      border-radius:50px; background:#fff; color:#3d7a45;
+      font-family:'Quicksand',sans-serif; font-weight:700; font-size:.93rem;
+      cursor:pointer; transition:.25s;
+    }
+    .load-more-btn:hover { background:#4CAF50; color:#fff; transform:translateY(-2px); box-shadow:0 6px 16px rgba(76,175,80,.3); }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:1200px){
+      .plans-grid { grid-template-columns:repeat(2,1fr); }
+      .hub-hero,.featured-banner,.plans-section { padding-left:3rem; padding-right:3rem; }
+      .hub-controls__inner { padding-left:3rem; padding-right:3rem; }
+    }
+    @media(max-width:900px){
+      .featured-card { flex-direction:column; padding:30px 26px; }
+      .featured-card__stats { grid-template-columns:repeat(4,1fr); width:100%; }
+      .hub-hero__title { font-size:2.2rem; }
+      .hub-hero__inner { flex-direction:column; }
+    }
+    @media(max-width:768px){
+      .plans-grid { grid-template-columns:1fr; }
+      .hub-hero,.featured-banner,.plans-section { padding-left:1.4rem; padding-right:1.4rem; }
+      .hub-controls__inner { padding-left:1.4rem; padding-right:1.4rem; gap:9px; }
+      .hub-search { max-width:100%; width:100%; }
+      .results-count { display:none; }
+      .featured-card__stats { grid-template-columns:1fr 1fr; }
+      .plans-grid.list-view .plan-card { flex-direction:column; }
+      .plans-grid.list-view .plan-card__img { width:100%; height:180px; }
+      .hub-hero__title { font-size:1.9rem; }
+    }
+  </style>
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="hero-header">
+    <div class="top-icons">
+      <a href="#" class="icon-link"><i class="far fa-user"></i></a>
+      <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+    <a href="index.html" class="brand-logo" style="color:#4A6741">hecipe</a>
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..."/>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NAVBAR ===== -->
+      <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hub-hero">
+    <div class="hub-hero__inner">
+      <div class="hub-hero__left">
+        <div class="hub-hero__breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Thực đơn</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span style="color:rgba(255,255,255,.85)">Eat Clean & Diet</span>
+        </div>
+        <span class="hub-hero__tag"><i class="fa-solid fa-seedling"></i> Eat Clean & Diet</span>
+        <h1 class="hub-hero__title">Lộ trình ăn sạch<br><em>từ 3 đến 30 ngày</em></h1>
+        <p class="hub-hero__sub">Từ thử thách ngắn 3 ngày detox đến hành trình 30 ngày đổi thói quen — mỗi lộ trình được thiết kế riêng cho từng mục tiêu sức khoẻ của bạn. Chọn thời gian, chọn phong cách, bắt đầu ngay.</p>
+        <div class="hero-pill-row">
+          <div class="hero-pill"><i class="fa-solid fa-leaf"></i> Không phụ gia</div>
+          <div class="hero-pill"><i class="fa-solid fa-calculator"></i> Tính macro tự động</div>
+          <div class="hero-pill"><i class="fa-solid fa-basket-shopping"></i> Có danh sách mua sắm</div>
+        </div>
+
+        <!-- Duration quick-pick -->
+        <div class="hero-duration-strip" id="heroDurStrip">
+          <button class="dur-pill active" data-dur="all"><span class="dur-icon">📋</span> Tất cả</button>
+          <button class="dur-pill" data-dur="3"><span class="dur-icon">⚡</span> 3 ngày</button>
+          <button class="dur-pill" data-dur="5"><span class="dur-icon">🌿</span> 5 ngày</button>
+          <button class="dur-pill" data-dur="10"><span class="dur-icon">🎯</span> 10 ngày</button>
+          <button class="dur-pill" data-dur="14"><span class="dur-icon">📅</span> 14 ngày</button>
+          <button class="dur-pill" data-dur="21"><span class="dur-icon">🔥</span> 21 ngày</button>
+          <button class="dur-pill" data-dur="30"><span class="dur-icon">🏆</span> 30 ngày</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTER BAR ===== -->
+  <div class="hub-controls">
+    <div class="hub-controls__inner">
+      
+      <div class="hub-controls__top">
+        <div class="hub-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Tìm lộ trình..." oninput="applyFilters()"/>
+        </div>
+        
+        <div class="hub-controls__actions">
+          <div class="results-count">Hiển thị <strong id="visibleCount">0</strong> lộ trình</div>
+          <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+            <option value="popular">Phổ biến nhất</option>
+            <option value="newest">Mới nhất</option>
+            <option value="dur_asc">Ngắn → Dài</option>
+            <option value="dur_desc">Dài → Ngắn</option>
+            <option value="kcal_asc">Kcal tăng dần</option>
+            <option value="rating">Đánh giá cao</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hub-controls__bottom">
+        <div class="filter-group" id="typeFilterGroup">
+          <button class="fchip active" data-type="all"><i class="fa-solid fa-border-all"></i> Tất cả</button>
+          <button class="fchip" data-type="eatclean"><i class="fa-solid fa-seedling"></i> Eat Clean</button>
+          <button class="fchip" data-type="detox"><i class="fa-solid fa-droplet"></i> Detox</button>
+          <button class="fchip" data-type="lowcarb"><i class="fa-solid fa-wheat-awn-slash"></i> Low Carb</button>
+          <button class="fchip" data-type="intermittent"><i class="fa-solid fa-clock"></i> Nhịn Ăn Gián Đoạn</button>
+          <button class="fchip" data-type="raw"><i class="fa-solid fa-apple-whole"></i> Raw Food</button>
+          <button class="fchip" data-type="vegetarian"><i class="fa-solid fa-leaf"></i> Chay</button>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <div class="filter-group" id="durFilterGroup">
+          <button class="fchip dur-filter active" data-dur="all">⏱ Mọi lộ trình</button>
+          <button class="fchip dur-filter" data-dur="3">3N</button>
+          <button class="fchip dur-filter" data-dur="5">5N</button>
+          <button class="fchip dur-filter" data-dur="10">10N</button>
+          <button class="fchip dur-filter" data-dur="14">14N</button>
+          <button class="fchip dur-filter" data-dur="21">21N</button>
+          <button class="fchip dur-filter" data-dur="30">30N</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ===== FEATURED ===== -->
+  <div class="featured-banner" id="featuredBanner">
+    <a class="featured-card" href="#">
+      <div class="featured-card__badge"><i class="fa-solid fa-fire"></i> Thử thách hot nhất tháng</div>
+      <div class="featured-card__content">
+        <div class="featured-card__label">Lộ trình được bắt đầu nhiều nhất</div>
+        <div class="featured-card__title">Eat Clean 21 Ngày<br>Đổi Thói Quen Trọn Vẹn</div>
+        <div class="featured-card__desc">21 ngày đủ để hình thành một thói quen mới. Loại bỏ đường tinh luyện, thực phẩm chế biến và xây dựng nền tảng ăn sạch bền vững cho cả đời.</div>
+        <div class="featured-card__chips">
+          <span class="featured-chip">🌿 Eat Clean</span>
+          <span class="featured-chip">21 ngày · 63 bữa</span>
+          <span class="featured-chip">1.650 kcal/ngày</span>
+          <span class="featured-chip">⭐ 4.9 / 5</span>
+        </div>
+        <span class="featured-card__cta">Bắt đầu thử thách <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      <div class="featured-card__stats">
+        <div class="fstat"><div class="fstat__val">21<small>ngày</small></div><div class="fstat__lbl">Lộ trình</div></div>
+        <div class="fstat"><div class="fstat__val">1.650<small>kcal</small></div><div class="fstat__lbl">Mỗi ngày</div></div>
+        <div class="fstat"><div class="fstat__val">4.9<small>★</small></div><div class="fstat__lbl">Đánh giá</div></div>
+        <div class="fstat"><div class="fstat__val">3.1<small>K</small></div><div class="fstat__lbl">Đang thực hiện</div></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ===== PLANS SECTION ===== -->
+  <section class="plans-section">
+    <div class="plans-section__header">
+      <h2 class="plans-section__title">Tất cả lộ trình <span id="sectionCountLabel">(0)</span></h2>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Lưới"><i class="fa-solid fa-grip"></i></button>
+        <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="Danh sách"><i class="fa-solid fa-list"></i></button>
+      </div>
+    </div>
+
+    <!-- Sections theo thời gian — mỗi nhóm 1 tiêu đề -->
+    <div id="plansBySections"><!-- rendered by JS --></div>
+
+    <div class="empty-state" id="emptyState">
+      <i class="fa-solid fa-seedling"></i>
+      <p>Không tìm thấy lộ trình phù hợp. Hãy thử bộ lọc khác!</p>
+    </div>
+
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+      <button class="load-more-btn" onclick="loadMore()">
+        <i class="fa-solid fa-rotate-right"></i> Xem thêm lộ trình
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== WAVE + FOOTER ===== -->
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo"><a href="index.html"><img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo"></a></div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>Về Hecipe</h4><a href="duan.html">Dự án</a><a href="blog.html">Blog</a></div>
+        <div class="footer-col"><h4>Khám phá</h4><a href="#">Công thức nổi bật</a><a href="thucdon7d.html">Thực đơn 7 ngày</a><a href="#">Chế độ ăn khỏe</a></div>
+        <div class="footer-col"><h4>Trợ giúp</h4><a href="#">Hỗ trợ</a><a href="#">Liên hệ</a></div>
+        <div class="footer-col"><h4>Social</h4>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+          <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+        </div>
+      </div>
+      <div class="footer-app">
+        <h4>Download our app:</h4>
+        <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+        <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyright">Copyright © 2026 Hecipe.</div>
+      <div class="divider"></div>
+      <div class="policy-links">
+        <a href="#">Điều khoản dịch vụ</a>
+        <a href="#">Chính sách bảo mật</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+  /* ==========================================================
+     DATA — Eat Clean & Diet plans (đa dạng lộ trình 3–30 ngày)
+     ========================================================== */
+  const ALL_PLANS = [
+
+    /* ── 3 NGÀY ── */
+    {
+      id:'detox-3day', days:3, types:['detox','vegetarian'],
+      name:'Detox 3 Ngày Thanh Lọc Nhanh',
+      desc:'Reset hệ tiêu hoá sau những ngày ăn uống thả ga. Nước ép, smoothie, rau sống và súp nhẹ — không cần nấu phức tạp.',
+      img:'https://images.unsplash.com/photo-1622621746668-59fb299bc4d7?w=600&h=280&fit=crop',
+      kcal:1100, protein:45, carb:160, fat:28,
+      rating:4.7, reviews:1240, badge:'hot', badgeLabel:'🔥 Phổ biến',
+      meals:9, difficulty:'Dễ', author:'BS. Thu Hương', views:8600,
+      tagLabels:[{text:'💧 Detox',cls:'diet-tag diet-tag--det'},{text:'🌱 Chay',cls:'diet-tag diet-tag--vg'}],
+      isNew:false, sortScore:88, href:'#',
+    },
+    {
+      id:'eatclean-3kick', days:3, types:['eatclean'],
+      name:'Kick-Start Eat Clean 3 Ngày',
+      desc:'Bước đệm hoàn hảo trước khi bắt đầu lộ trình dài. 3 ngày cắt đường, tinh bột trắng và thực phẩm chế biến sẵn.',
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop',
+      kcal:1350, protein:90, carb:145, fat:42,
+      rating:4.6, reviews:870, badge:'new', badgeLabel:'MỚI',
+      meals:9, difficulty:'Dễ', author:'CN. Lan Anh', views:4200,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:true, sortScore:72, href:'#',
+    },
+
+    /* ── 5 NGÀY ── */
+    {
+      id:'eatclean-5day', days:5, types:['eatclean'],
+      name:'Eat Clean Căn Bản 5 Ngày',
+      desc:'Thực đơn cơm văn phòng lành mạnh cho tuần làm việc. Chuẩn bị trước cuối tuần, ăn cả tuần không lo.',
+      img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=280&fit=crop',
+      kcal:1550, protein:105, carb:180, fat:48,
+      rating:4.8, reviews:2100, badge:'popular', badgeLabel:'Phổ biến',
+      meals:15, difficulty:'Dễ', author:'CN. Lan Anh', views:12400,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:96, href:'#',
+    },
+    {
+      id:'lowcarb-5day', days:5, types:['lowcarb'],
+      name:'Low Carb 5 Ngày Trước Sự Kiện',
+      desc:'Giảm phù nề, định hình cơ thể nhanh trong 5 ngày. Lý tưởng trước dịp cưới, du lịch hay sự kiện quan trọng.',
+      img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=280&fit=crop',
+      kcal:1450, protein:125, carb:75, fat:80,
+      rating:4.7, reviews:980, badge:'hot', badgeLabel:'🔥 Hot',
+      meals:15, difficulty:'Trung bình', author:'BS. Phương Chi', views:7300,
+      tagLabels:[{text:'🥩 Low Carb',cls:'diet-tag diet-tag--lc'}],
+      isNew:false, sortScore:82, href:'#',
+    },
+    {
+      id:'intermittent-5day', days:5, types:['intermittent','eatclean'],
+      name:'Nhịn Ăn Gián Đoạn 16:8 — 5 Ngày Nhập Môn',
+      desc:'Làm quen với phương pháp 16 giờ nhịn, 8 giờ ăn. Thực đơn 2 bữa chính + 1 snack trong khung giờ ăn tối ưu.',
+      img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=280&fit=crop',
+      kcal:1600, protein:110, carb:170, fat:58,
+      rating:4.6, reviews:760, badge:'new', badgeLabel:'MỚI',
+      meals:10, difficulty:'Trung bình', author:'BS. Minh Khoa', views:5100,
+      tagLabels:[{text:'⏰ IF 16:8',cls:'diet-tag diet-tag--if'},{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:true, sortScore:68, href:'#',
+    },
+
+    /* ── 10 NGÀY ── */
+    {
+      id:'eatclean-10day', days:10, types:['eatclean'],
+      name:'Eat Clean 10 Ngày — Cân Bằng Thực Sự',
+      desc:'Đủ thời gian để cơ thể phản ứng và bạn cảm nhận sự thay đổi rõ rệt. Năng lượng tốt hơn, ngủ ngon hơn, da sáng hơn.',
+      img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=280&fit=crop',
+      kcal:1600, protein:115, carb:190, fat:50,
+      rating:4.8, reviews:1680, badge:'popular', badgeLabel:'Phổ biến',
+      meals:30, difficulty:'Trung bình', author:'CN. Ngọc Hà', views:9800,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:90, href:'#',
+    },
+    {
+      id:'raw-10day', days:10, types:['raw','vegetarian'],
+      name:'Raw Food 10 Ngày — Thực Phẩm Sống',
+      desc:'100% thực phẩm chưa qua chế biến nhiệt — salad, sprouted, fermented. Enzyme và vi chất được bảo toàn tối đa.',
+      img:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&h=280&fit=crop',
+      kcal:1300, protein:52, carb:200, fat:44,
+      rating:4.5, reviews:420, badge:'new', badgeLabel:'MỚI',
+      meals:30, difficulty:'Khó', author:'Nutritionist Kim Anh', views:3100,
+      tagLabels:[{text:'🌾 Raw Food',cls:'diet-tag diet-tag--raw'},{text:'🌱 Chay',cls:'diet-tag diet-tag--vg'}],
+      isNew:true, sortScore:60, href:'#',
+    },
+    {
+      id:'detox-10day', days:10, types:['detox','lowcarb'],
+      name:'Detox Sâu 10 Ngày Hỗ Trợ Gan Thận',
+      desc:'Rau xanh đậm, củ nghệ, gừng, trà thảo mộc — giảm viêm, hỗ trợ thanh lọc gan và cải thiện tiêu hoá.',
+      img:'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=600&h=280&fit=crop',
+      kcal:1350, protein:65, carb:175, fat:40,
+      rating:4.7, reviews:890, badge:'hot', badgeLabel:'🔥 Hot',
+      meals:30, difficulty:'Trung bình', author:'BS. Thu Hương', views:6700,
+      tagLabels:[{text:'💧 Detox',cls:'diet-tag diet-tag--det'},{text:'🥩 Low Carb',cls:'diet-tag diet-tag--lc'}],
+      isNew:false, sortScore:78, href:'#',
+    },
+
+    /* ── 14 NGÀY ── */
+    {
+      id:'eatclean-14day', days:14, types:['eatclean'],
+      name:'Eat Clean 14 Ngày — Thay Đổi Thể Chất',
+      desc:'Hai tuần kiên trì để thấy kết quả thật sự trên cơ thể. Giảm mỡ bụng, tăng cơ bắp gọn, cải thiện chỉ số đường huyết.',
+      img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&h=280&fit=crop',
+      kcal:1650, protein:120, carb:195, fat:52,
+      rating:4.9, reviews:2800, badge:'popular', badgeLabel:'⭐ Bán chạy nhất',
+      meals:42, difficulty:'Trung bình', author:'BS. Minh Tâm', views:16500,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:99, href:'#',
+    },
+    {
+      id:'intermittent-14day', days:14, types:['intermittent'],
+      name:'Nhịn Ăn 5:2 — 14 Ngày Chuẩn Khoa Học',
+      desc:'5 ngày ăn bình thường, 2 ngày ăn 500–600 kcal. Giảm mỡ không mất cơ, được nhiều nghiên cứu chứng minh hiệu quả.',
+      img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=280&fit=crop',
+      kcal:1500, protein:100, carb:165, fat:50,
+      rating:4.7, reviews:1120, badge:'new', badgeLabel:'MỚI',
+      meals:28, difficulty:'Khó', author:'BS. CK II Hồng Anh', views:5800,
+      tagLabels:[{text:'⏰ IF 5:2',cls:'diet-tag diet-tag--if'}],
+      isNew:true, sortScore:74, href:'#',
+    },
+    {
+      id:'vegetarian-14day', days:14, types:['vegetarian','eatclean'],
+      name:'Thuần Chay Eat Clean 14 Ngày',
+      desc:'Chay hoàn toàn nhưng đủ protein (đậu phụ, tempeh, quinoa), canxi và B12 để không thiếu hụt vi chất.',
+      img:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=280&fit=crop',
+      kcal:1550, protein:82, carb:215, fat:48,
+      rating:4.7, reviews:940, badge:'free', badgeLabel:'Miễn phí',
+      meals:42, difficulty:'Trung bình', author:'CN. Ngọc Hà', views:6200,
+      tagLabels:[{text:'🌱 Chay',cls:'diet-tag diet-tag--vg'},{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:71, href:'#',
+    },
+
+    /* ── 21 NGÀY ── */
+    {
+      id:'eatclean-21day', days:21, types:['eatclean'],
+      name:'Eat Clean 21 Ngày Đổi Thói Quen Trọn Vẹn',
+      desc:'21 ngày đủ để hình thành một thói quen mới. Loại bỏ hoàn toàn đường tinh luyện, flour trắng và xây dựng nền tảng ăn sạch bền vững.',
+      img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=280&fit=crop',
+      kcal:1650, protein:118, carb:202, fat:54,
+      rating:4.9, reviews:3100, badge:'popular', badgeLabel:'🏆 Số 1',
+      meals:63, difficulty:'Trung bình', author:'BS. Minh Tâm', views:18200,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:100, href:'#',
+    },
+    {
+      id:'lowcarb-21day', days:21, types:['lowcarb','eatclean'],
+      name:'Low Carb Eat Clean 21 Ngày Giảm Mỡ Bền Vững',
+      desc:'Carb <100g/ngày kết hợp nguyên liệu sạch. Không bỏ bữa, không đói, mỡ bụng giảm đều đặn mỗi tuần.',
+      img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=280&fit=crop',
+      kcal:1700, protein:135, carb:95, fat:105,
+      rating:4.8, reviews:1760, badge:'hot', badgeLabel:'🔥 Hot',
+      meals:63, difficulty:'Khó', author:'BS. Phương Chi', views:10400,
+      tagLabels:[{text:'🥩 Low Carb',cls:'diet-tag diet-tag--lc'},{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:false, sortScore:88, href:'#',
+    },
+
+    /* ── 30 NGÀY ── */
+    {
+      id:'eatclean-30day', days:30, types:['eatclean'],
+      name:'Hành Trình Eat Clean 30 Ngày — Transformation',
+      desc:'Một tháng thay đổi toàn diện: loại bỏ thực phẩm độc hại, xây dựng vi khuẩn đường ruột lành mạnh, thiết lập thói quen ăn uống khoa học cả đời.',
+      img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=280&fit=crop',
+      kcal:1700, protein:122, carb:208, fat:55,
+      rating:4.9, reviews:2460, badge:'premium', badgeLabel:'⭐ Premium',
+      meals:90, difficulty:'Khó', author:'BS. Minh Tâm & Team', views:14800,
+      tagLabels:[{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'},{text:'🏆 Transformation',cls:'diet-tag'}],
+      isNew:false, sortScore:97, href:'#',
+    },
+    {
+      id:'whole30', days:30, types:['eatclean','raw'],
+      name:'Whole30 Việt — 30 Ngày Reset Cơ Thể',
+      desc:'Phiên bản Whole30 thuần Việt: loại trừ gluten, đường, sữa, legumes trong 30 ngày. Thực phẩm thay thế 100% có sẵn tại chợ Việt.',
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop',
+      kcal:1750, protein:130, carb:165, fat:70,
+      rating:4.8, reviews:1340, badge:'new', badgeLabel:'MỚI',
+      meals:90, difficulty:'Khó', author:'Nutritionist Kim Anh', views:7600,
+      tagLabels:[{text:'🌾 Whole30',cls:'diet-tag diet-tag--raw'},{text:'🥗 Eat Clean',cls:'diet-tag diet-tag--ec'}],
+      isNew:true, sortScore:85, href:'#',
+    },
+    {
+      id:'intermittent-30day', days:30, types:['intermittent','lowcarb'],
+      name:'Nhịn Ăn Gián Đoạn 30 Ngày — Keto Hybrid',
+      desc:'Kết hợp IF 18:6 và low carb theo chu kỳ. Đốt mỡ liên tục, bảo toàn khối cơ, tối ưu hormone insulin và GH.',
+      img:'https://images.unsplash.com/photo-1517093728432-a0440f8d45af?w=600&h=280&fit=crop',
+      kcal:1800, protein:145, carb:80, fat:115,
+      rating:4.7, reviews:980, badge:'premium', badgeLabel:'⭐ Premium',
+      meals:60, difficulty:'Rất khó', author:'BS. CK II Hồng Anh', views:6100,
+      tagLabels:[{text:'⏰ IF 18:6',cls:'diet-tag diet-tag--if'},{text:'🥩 Low Carb',cls:'diet-tag diet-tag--lc'}],
+      isNew:false, sortScore:80, href:'#',
+    },
+  ];
+
+  /* Group config */
+  const DUR_GROUPS = [
+    { days:3,  icon:'⚡', label:'3 Ngày', sub:'Nhanh gọn — dành cho người bận rộn hoặc mới bắt đầu', colorClass:'dur-icon--3'  },
+    { days:5,  icon:'🌿', label:'5 Ngày', sub:'Một tuần làm việc — kế hoạch cơm văn phòng lành mạnh', colorClass:'dur-icon--5'  },
+    { days:10, icon:'🎯', label:'10 Ngày', sub:'Đủ để cảm nhận thay đổi rõ ràng trên cơ thể', colorClass:'dur-icon--10' },
+    { days:14, icon:'📅', label:'14 Ngày', sub:'Hai tuần thay đổi thể chất có thể nhìn thấy', colorClass:'dur-icon--14' },
+    { days:21, icon:'🔥', label:'21 Ngày', sub:'Đủ để tạo thói quen mới theo khoa học thần kinh', colorClass:'dur-icon--21' },
+    { days:30, icon:'🏆', label:'30 Ngày', sub:'Hành trình transformation toàn diện', colorClass:'dur-icon--30' },
+  ];
+
+  /* ==========================================================
+     STATE
+     ========================================================== */
+  let activeType = 'all';
+  let activeDur  = 'all';
+
+  /* ==========================================================
+     RENDER HELPERS
+     ========================================================== */
+  function renderStars(r) {
+    const f = Math.floor(r), h = r % 1 >= .5 ? 1 : 0;
+    return '★'.repeat(f) + (h ? '½' : '') + '☆'.repeat(5 - f - h);
+  }
+  function calcMW(p, c, f) {
+    const t = p + c + f;
+    return { pw: Math.round(p/t*100), cw: Math.round(c/t*100), fw: Math.round(f/t*100) };
+  }
+  function diffIcon(d) {
+    return { 'Dễ':'🟢', 'Trung bình':'🟡', 'Khó':'🔴', 'Rất khó':'🔴🔴' }[d] || '⚪';
+  }
+  function badgeCls(b) {
+    return { popular:'badge--popular', new:'badge--new', hot:'badge--hot', premium:'badge--premium', free:'badge--free' }[b] || '';
+  }
+  function progressRing(pct, size=32, stroke=3) {
+    const r = size/2 - stroke;
+    const circ = 2 * Math.PI * r;
+    const off  = circ * (1 - pct/100);
+    return `<svg class="prog-ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#dcedc8" stroke-width="${stroke}"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#4CAF50" stroke-width="${stroke}"
+        stroke-dasharray="${circ}" stroke-dashoffset="${off}"
+        stroke-linecap="round" transform="rotate(-90 ${size/2} ${size/2})"/>
+    </svg>`;
+  }
+
+  function renderCard(plan) {
+    const mw    = calcMW(plan.protein, plan.carb, plan.fat);
+    const saved = JSON.parse(localStorage.getItem('savedPlansEC') || '[]').includes(plan.id);
+    const prog  = Math.floor(Math.random() * 40); // demo progress
+    return `
+    <a class="plan-card" href="${plan.href}" data-id="${plan.id}">
+      <div class="plan-card__img">
+        <img src="${plan.img}" alt="${plan.name}"
+             onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop'"/>
+        <div class="plan-card__overlay"></div>
+        <span class="plan-card__badge ${badgeCls(plan.badge)}">${plan.badgeLabel}</span>
+        <button class="plan-card__save${saved?' saved':''}" onclick="toggleSave(event,'${plan.id}')" title="Lưu">
+          <i class="${saved?'fas':'far'} fa-bookmark"></i>
+        </button>
+        <div class="plan-card__duration">
+          <span class="dur-days">${plan.days}</span>&nbsp;NGÀY
+          &nbsp;·&nbsp;<i class="fa-solid fa-bowl-food"></i>&nbsp;${plan.meals} bữa
+        </div>
+      </div>
+      <div class="plan-card__body">
+        <div class="plan-card__diet">
+          ${plan.tagLabels.map(t=>`<span class="${t.cls}">${t.text}</span>`).join('')}
+        </div>
+        <div class="plan-card__rating">
+          <span class="stars">${renderStars(plan.rating)}</span>
+          <span class="rating-val">${plan.rating}</span>
+          <span class="rating-cnt">(${plan.reviews.toLocaleString('vi')})</span>
+        </div>
+        <div class="plan-card__name">${plan.name}</div>
+        <div class="plan-card__desc">${plan.desc}</div>
+        <div class="macro-mini">
+          <div class="macro-mini__row">
+            <span>🟢 P:${plan.protein}g &nbsp;🟠 C:${plan.carb}g &nbsp;🟣 F:${plan.fat}g</span>
+            <span>${plan.kcal} kcal</span>
+          </div>
+          <div class="macro-mini__bars">
+            <div class="mbar mbar--p" style="width:${mw.pw}%"></div>
+            <div class="mbar mbar--c" style="width:${mw.cw}%"></div>
+            <div class="mbar mbar--f" style="width:${mw.fw}%"></div>
+          </div>
+        </div>
+        <div class="plan-card__stats">
+          <div class="pcstat"><i class="fa-solid fa-signal"></i> ${diffIcon(plan.difficulty)} ${plan.difficulty}</div>
+          <div class="pcstat"><i class="fa-solid fa-user-doctor"></i> ${plan.author}</div>
+          <div class="pcstat"><i class="fa-regular fa-eye"></i> ${(plan.views/1000).toFixed(1)}K xem</div>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  /* ==========================================================
+     RENDER SECTIONS (grouped by duration)
+     ========================================================== */
+  function getFiltered() {
+    const q    = document.getElementById('searchInput').value.toLowerCase().trim();
+    const sort = document.getElementById('sortSelect').value;
+
+    let result = ALL_PLANS.filter(p => {
+      const matchType = activeType === 'all' || p.types.includes(activeType);
+      const matchDur  = activeDur  === 'all' || p.days === parseInt(activeDur);
+      const matchQ    = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+      return matchType && matchDur && matchQ;
+    });
+
+    result.sort((a, b) => {
+      if (sort === 'newest')   return (b.isNew?1:0)-(a.isNew?1:0) || b.sortScore-a.sortScore;
+      if (sort === 'dur_asc')  return a.days - b.days;
+      if (sort === 'dur_desc') return b.days - a.days;
+      if (sort === 'kcal_asc') return a.kcal - b.kcal;
+      if (sort === 'rating')   return b.rating - a.rating;
+      return b.sortScore - a.sortScore;
+    });
+    return result;
+  }
+
+  function renderAll() {
+    const plans = getFiltered();
+    const container = document.getElementById('plansBySections');
+    const emptyEl   = document.getElementById('emptyState');
+
+    if (plans.length === 0) {
+      container.innerHTML = '';
+      emptyEl.style.display = 'block';
+      document.getElementById('visibleCount').textContent = '0';
+      document.getElementById('sectionCountLabel').textContent = '(0)';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    const sort = document.getElementById('sortSelect').value;
+    const groupByDur = activeDur === 'all' && !['kcal_asc','rating'].includes(sort);
+
+    if (groupByDur) {
+      // Group theo thời gian — mỗi nhóm có header riêng
+      let html = '';
+      DUR_GROUPS.forEach(g => {
+        const group = plans.filter(p => p.days === g.days);
+        if (!group.length) return;
+        html += `
+        <div class="dur-section">
+          <div class="dur-section__header">
+            <div class="dur-section__icon ${g.colorClass}">${g.icon}</div>
+            <div>
+              <div class="dur-section__title">Lộ trình <span>${g.label}</span></div>
+              <div class="dur-section__sub">${g.sub}</div>
+            </div>
+            <div class="dur-section__count">${group.length} lộ trình</div>
+          </div>
+          <div class="plans-grid${document.getElementById('plansGrid')?.classList.contains('list-view') ? ' list-view' : ''}" id="grid-${g.days}">
+            ${group.map(p => renderCard(p)).join('')}
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    } else {
+      // Flat grid khi đang lọc theo loại hoặc sort đặc biệt
+      container.innerHTML = `
+        <div class="plans-grid" id="flatGrid">
+          ${plans.map(p => renderCard(p)).join('')}
+        </div>`;
+    }
+
+    document.getElementById('visibleCount').textContent = plans.length;
+    document.getElementById('sectionCountLabel').textContent = `(${plans.length})`;
+
+    // hide featured khi đang lọc
+    document.getElementById('featuredBanner').style.display =
+      (activeType === 'all' && activeDur === 'all' && !document.getElementById('searchInput').value)
+        ? '' : 'none';
+  }
+
+  /* ==========================================================
+     INTERACTIONS
+     ========================================================== */
+  function applyFilters() { renderAll(); }
+
+  // Type filter chips
+  document.getElementById('typeFilterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip || chip.classList.contains('dur-filter')) return;
+    document.querySelectorAll('#typeFilterGroup .fchip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeType = chip.dataset.type;
+    applyFilters();
+  });
+
+  // Duration filter chips (in filter bar)
+  document.getElementById('durFilterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip) return;
+    document.querySelectorAll('#durFilterGroup .fchip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeDur = chip.dataset.dur;
+    // sync hero pills
+    document.querySelectorAll('.dur-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.dur === activeDur);
+    });
+    applyFilters();
+  });
+
+  // Hero duration pills
+  document.getElementById('heroDurStrip').addEventListener('click', e => {
+    const pill = e.target.closest('.dur-pill');
+    if (!pill) return;
+    document.querySelectorAll('.dur-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeDur = pill.dataset.dur;
+    // sync filter bar
+    document.querySelectorAll('#durFilterGroup .fchip').forEach(c => {
+      c.classList.toggle('active', c.dataset.dur === activeDur);
+    });
+    applyFilters();
+    // scroll to section
+    document.querySelector('.plans-section')?.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  function setView(v) {
+    document.getElementById('gridViewBtn').classList.toggle('active', v === 'grid');
+    document.getElementById('listViewBtn').classList.toggle('active', v === 'list');
+    // apply list-view to all grids
+    document.querySelectorAll('.plans-grid').forEach(g => g.classList.toggle('list-view', v === 'list'));
+  }
+
+  function loadMore() { /* not used — all shown */ }
+
+  function toggleSave(e, id) {
+    e.preventDefault(); e.stopPropagation();
+    let saved = JSON.parse(localStorage.getItem('savedPlansEC') || '[]');
+    const btn  = e.currentTarget;
+    const icon = btn.querySelector('i');
+    if (saved.includes(id)) {
+      saved = saved.filter(s => s !== id);
+      btn.classList.remove('saved'); icon.className = 'far fa-bookmark';
+    } else {
+      saved.push(id);
+      btn.classList.add('saved'); icon.className = 'fas fa-bookmark';
+      btn.animate([{transform:'scale(1)'},{transform:'scale(1.4)'},{transform:'scale(1)'}],{duration:300});
+    }
+    localStorage.setItem('savedPlansEC', JSON.stringify(saved));
+  }
+
+  /* Auth */
+  function toggleAuthUI() {
+    const logged = localStorage.getItem('loggedIn') === 'true';
+    const profile = document.getElementById('profileContainer');
+    const authBtns = document.getElementById('authButtons');
+    const display  = document.getElementById('displayUsername');
+    if (profile)  profile.classList.toggle('hidden', !logged);
+    if (authBtns) authBtns.classList.toggle('hidden', logged);
+    if (logged) {
+      const av = localStorage.getItem('avatar');
+      if (av) { const img = document.getElementById('avatarImg'); if(img) img.src = av; }
+      if (display) display.textContent = localStorage.getItem('userId') || '';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    toggleAuthUI();
+    const logoutLink = document.getElementById('logoutLink');
+    if (logoutLink) logoutLink.addEventListener('click', e => {
+      e.preventDefault(); localStorage.removeItem('loggedIn'); toggleAuthUI();
+    });
+    renderAll();
+  });
+  </script>
+
+<script src="search-unified.js" defer></script>
+</body>
+</html>

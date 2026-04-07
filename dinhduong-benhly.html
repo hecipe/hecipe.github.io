@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dinh Dưỡng Bệnh Lý - Hecipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ============================================================
+       DINH DƯỠNG BỆNH LÝ — dinhduong-benhly.html
+       Accent: xanh y tế #1565C0 / teal #00838F / đỏ nhẹ #C62828
+       Khác biệt hoàn toàn với Eat Clean (xanh lá)
+       ============================================================ */
+    :root {
+      --med-blue:   #1565C0;
+      --med-teal:   #00838F;
+      --med-light:  #E3F2FD;
+      --med-soft:   #E0F7FA;
+      --med-warn:   #E65100;
+      --med-danger: #B71C1C;
+      --sev-mild:   #2E7D32;
+      --sev-mod:    #E65100;
+      --sev-severe: #B71C1C;
+    }
+
+    /* ---- HERO ---- */
+    .hub-hero {
+      background: linear-gradient(135deg, #0d1f3c 0%, #1565C0 55%, #00838F 100%);
+      padding: 56px 6rem 52px;
+      position: relative; overflow: hidden;
+    }
+    .hub-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3Cpath d='M34 10h12v60H34z M10 34h60v12H10z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hub-hero::after {
+      content:''; position:absolute; pointer-events:none;
+      width:600px; height:600px; border-radius:50%;
+      background:radial-gradient(circle, rgba(0,200,220,0.1) 0%, transparent 70%);
+      top: 0; right:-120px;
+    }
+    .hub-hero__inner {
+      position:relative; z-index: 1000;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:40px; flex-wrap:wrap;
+    }
+    .hub-hero__left { max-width:640px; }
+    .hub-hero__breadcrumb {
+      display:flex; align-items:center; gap:8px;
+      font-size:.8rem; color:rgba(255,255,255,.5); margin-bottom:20px;
+    }
+    .hub-hero__breadcrumb a { color:rgba(255,255,255,.5); text-decoration:none; }
+    .hub-hero__breadcrumb a:hover { color:rgba(255,255,255,.85); }
+    .hub-hero__breadcrumb i { font-size:.65rem; }
+    .hub-hero__tag {
+      display:inline-flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.12); color:#b3e5fc;
+      font-size:.8rem; font-weight:700; padding:5px 14px;
+      border-radius:50px; margin-bottom:16px;
+      text-transform:uppercase; letter-spacing:.5px;
+    }
+    .hub-hero__title {
+      font-family:'Playfair Display',serif;
+      font-size:2.9rem; color:#fff; line-height:1.2; margin-bottom:14px;
+    }
+    .hub-hero__title em { color:#80d8ff; font-style:normal; }
+    .hub-hero__sub {
+      color:rgba(255,255,255,.72); font-size:1rem;
+      line-height:1.7; max-width:540px; margin-bottom:24px;
+    }
+    .hero-pill-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+    .hero-pill {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.18);
+      color:#fff; padding:9px 16px; border-radius:50px;
+      font-size:.82rem; font-weight:600; backdrop-filter:blur(6px);
+    }
+    .hero-pill i { color:#80d8ff; }
+
+    /* Disclaimer nổi bật */
+    .hero-disclaimer {
+      display:flex; align-items:flex-start; gap:12px;
+      background:rgba(255,193,7,.12); border:1px solid rgba(255,193,7,.35);
+      border-radius:14px; padding:14px 18px; max-width:580px;
+    }
+    .hero-disclaimer i { color:#FFD54F; font-size:1.1rem; flex-shrink:0; margin-top:2px; }
+    .hero-disclaimer p { color:rgba(255,255,255,.82); font-size:.83rem; line-height:1.55; margin:0; }
+    .hero-disclaimer strong { color:#FFE082; }
+
+    /* Quick disease navigation — thay thế duration pills */
+    .disease-nav-strip {
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:28px;
+    }
+    .dis-pill {
+      padding:9px 18px; border-radius:50px;
+      background:rgba(255,255,255,.11); border:1.5px solid rgba(255,255,255,.2);
+      color:rgba(255,255,255,.85); font-weight:600; font-size:.83rem;
+      cursor:pointer; transition:.22s; white-space:nowrap;
+      display:flex; align-items:center; gap:7px; backdrop-filter:blur(5px);
+    }
+    .dis-pill:hover { background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.5); }
+    .dis-pill.active { background:#fff; color:#1565C0; border-color:#fff; box-shadow:0 3px 14px rgba(0,0,0,.2); }
+
+    /* Hero right — stats panel */
+    .hero-stats-panel {
+      display:flex; flex-direction:column; gap:12px; flex-shrink:0;
+    }
+    .hsp-card {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+      border-radius:16px; padding:18px 22px; backdrop-filter:blur(8px);
+      display:flex; align-items:center; gap:14px; min-width:230px;
+      transition:.25s;
+    }
+    .hsp-card:hover { background:rgba(255,255,255,.17); transform:translateX(-4px); }
+    .hsp-card__icon {
+      width:44px; height:44px; border-radius:12px; display:flex;
+      align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;
+    }
+    .hsp-card__icon--blue   { background:rgba(33,150,243,.25); }
+    .hsp-card__icon--teal   { background:rgba(0,131,143,.25); }
+    .hsp-card__icon--orange { background:rgba(230,81,0,.25); }
+    .hsp-card__icon--red    { background:rgba(183,28,28,.25); }
+    .hsp-card__val { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:800; color:#fff; line-height:1; }
+    .hsp-card__val small { font-size:.75rem; font-weight:500; }
+    .hsp-card__lbl { font-size:.75rem; color:rgba(255,255,255,.6); margin-top:2px; }
+
+    /* ---- FILTER BAR ---- */
+    .hub-controls {
+      background:#fff; border-bottom:1px solid var(--sage-light);
+      position:sticky; top: 0; z-index: 1000;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+    .hub-controls__inner {
+      display:flex; align-items:center;
+      gap:12px; padding:12px 6rem; flex-wrap:wrap;
+    }
+    .hub-search {
+      display:flex; align-items:center; gap:8px;
+      background:var(--bg-cream); border:1.5px solid var(--sage-light);
+      border-radius:50px; padding:8px 18px; flex:1; max-width:280px; transition:.2s;
+    }
+    .hub-search:focus-within { border-color:#1565C0; box-shadow:0 0 0 3px rgba(21,101,192,.1); }
+    .hub-search i { color:var(--text-light); font-size:.9rem; }
+    .hub-search input {
+      border:none; background:transparent; outline:none;
+      font-family:'Quicksand',sans-serif; font-size:.9rem; color:var(--text-dark); width:100%;
+    }
+    .hub-search input::placeholder { color:var(--text-light); }
+
+    .filter-group { display:flex; gap:7px; flex-wrap:wrap; }
+    .fchip {
+      padding:7px 14px; border:1.5px solid var(--sage-light);
+      background:#fff; border-radius:50px;
+      font-family:'Quicksand',sans-serif; font-weight:600;
+      font-size:.82rem; color:var(--text-dark);
+      cursor:pointer; transition:.22s; white-space:nowrap;
+      display:flex; align-items:center; gap:5px;
+    }
+    .fchip:hover { border-color:#1565C0; color:#1565C0; background:rgba(21,101,192,.04); }
+    .fchip.active { background:#1565C0; color:#fff; border-color:#1565C0; box-shadow:0 3px 10px rgba(21,101,192,.3); }
+
+    /* Severity filter chips — màu riêng */
+    .fchip.sev-filter         { border-color:#c5e1a5; background:#f9fbe7; color:#558b2f; }
+    .fchip.sev-filter:hover   { background:#f0f4c3; }
+    .fchip.sev-filter.active  { background:#558b2f; color:#fff; border-color:#558b2f; }
+    .fchip.sev-filter[data-sev="moderate"].active  { background:#E65100; border-color:#E65100; }
+    .fchip.sev-filter[data-sev="severe"].active    { background:#B71C1C; border-color:#B71C1C; }
+
+    /* Duration filter — xanh đậm */
+    .fchip.dur-filter        { background:#e3f2fd; border-color:#90caf9; color:#1565C0; }
+    .fchip.dur-filter:hover  { background:#bbdefb; }
+    .fchip.dur-filter.active { background:#1565C0; color:#fff; border-color:#1565C0; }
+
+    .sort-select {
+      padding:8px 28px 8px 14px; border:1.5px solid var(--sage-light);
+      border-radius:50px; font-family:'Quicksand',sans-serif;
+      font-weight:600; font-size:.82rem; color:var(--text-dark);
+      background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7C6B' d='M6 8L0 0h12z'/%3E%3C/svg%3E") no-repeat right 10px center;
+      outline:none; cursor:pointer; appearance:none;
+    }
+    .sort-select:focus { border-color:#1565C0; }
+    .results-count { margin-left:auto; font-size:.82rem; color:var(--text-light); white-space:nowrap; }
+    .results-count strong { color:#1565C0; }
+
+    /* ---- FEATURED CARD ---- */
+    .featured-banner { max-width:1400px; margin:36px auto 0; padding:0 6rem; }
+    .featured-card {
+      background:linear-gradient(120deg,#0d2137 0%,#1565C0 50%,#00838F 100%);
+      border-radius:24px; padding:40px 48px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:32px; position:relative; overflow:hidden;
+      cursor:pointer; transition:.3s; text-decoration:none;
+    }
+    .featured-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(13,33,55,.4); }
+    .featured-card::before {
+      content:''; position:absolute;
+      width:380px; height:380px; border-radius:50%;
+      background:rgba(255,255,255,.05); right:-60px; top: 0; pointer-events:none;
+    }
+    .featured-card__badge {
+      position:absolute; top: 0; left:20px;
+      background:rgba(255,255,255,.18); color:#b3e5fc;
+      font-size:.75rem; font-weight:700; padding:4px 12px;
+      border-radius:50px; display:flex; align-items:center; gap:5px; letter-spacing:.4px;
+    }
+    .featured-card__content { position:relative; z-index: 1000; }
+    .featured-card__label { font-size:.82rem; color:rgba(255,255,255,.6); margin-bottom:8px; font-weight:600; }
+    .featured-card__title {
+      font-family:'Playfair Display',serif; font-size:2rem;
+      color:#fff; margin-bottom:10px; line-height:1.25;
+    }
+    .featured-card__desc { color:rgba(255,255,255,.74); font-size:.93rem; line-height:1.6; max-width:420px; margin-bottom:18px; }
+    .featured-card__chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+    .featured-chip {
+      background:rgba(255,255,255,.15); color:rgba(255,255,255,.9);
+      font-size:.78rem; font-weight:600; padding:4px 12px; border-radius:50px;
+    }
+    .featured-card__cta {
+      display:inline-flex; align-items:center; gap:8px;
+      background:#fff; color:#1565C0; padding:11px 24px; border-radius:50px;
+      font-weight:700; font-size:.9rem; transition:.2s; text-decoration:none;
+    }
+    .featured-card:hover .featured-card__cta { background:#e3f2fd; }
+    .featured-card__stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+      position:relative; z-index: 1000; flex-shrink:0;
+    }
+    .fstat {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+      border-radius:14px; padding:16px 20px; text-align:center; backdrop-filter:blur(6px);
+    }
+    .fstat__val { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:800; color:#fff; line-height:1; }
+    .fstat__val small { font-size:.75rem; font-weight:500; }
+    .fstat__lbl { font-size:.72rem; color:rgba(255,255,255,.6); margin-top:3px; }
+
+    /* ---- DISEASE SECTION HEADERS ---- */
+    /* Mỗi bệnh lý có một section header màu riêng */
+    .dis-section { margin-bottom:56px; }
+    .dis-section__header {
+      display:flex; align-items:center; gap:16px;
+      margin-bottom:22px; padding:18px 24px;
+      border-radius:18px; position:relative; overflow:hidden;
+    }
+    /* Màu nền riêng cho từng bệnh */
+    .dis-section__header--diabetes  { background:linear-gradient(135deg,#e8f5e9,#f1f8e9); border-left:4px solid #2E7D32; }
+    .dis-section__header--cardiac   { background:linear-gradient(135deg,#fce4ec,#ffeef4); border-left:4px solid #C62828; }
+    .dis-section__header--kidney    { background:linear-gradient(135deg,#e3f2fd,#e8f4ff); border-left:4px solid #1565C0; }
+    .dis-section__header--liver     { background:linear-gradient(135deg,#fff3e0,#fffde7); border-left:4px solid #E65100; }
+    .dis-section__header--hyper     { background:linear-gradient(135deg,#f3e5f5,#fce4ec); border-left:4px solid #6A1B9A; }
+    .dis-section__header--gout      { background:linear-gradient(135deg,#e0f7fa,#e8f5e9); border-left:4px solid #00695C; }
+    .dis-section__header--cancer    { background:linear-gradient(135deg,#efebe9,#fafafa); border-left:4px solid #4E342E; }
+    .dis-section__header--digestion { background:linear-gradient(135deg,#e8eaf6,#f3e5f5); border-left:4px solid #283593; }
+
+    .dis-section__icon-wrap {
+      width:52px; height:52px; border-radius:14px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:1.5rem;
+    }
+    .dis-icon--diabetes  { background:rgba(46,125,50,.15); }
+    .dis-icon--cardiac   { background:rgba(198,40,40,.12); }
+    .dis-icon--kidney    { background:rgba(21,101,192,.12); }
+    .dis-icon--liver     { background:rgba(230,81,0,.12); }
+    .dis-icon--hyper     { background:rgba(106,27,154,.12); }
+    .dis-icon--gout      { background:rgba(0,105,92,.12); }
+    .dis-icon--cancer    { background:rgba(78,52,46,.12); }
+    .dis-icon--digestion { background:rgba(40,53,147,.12); }
+
+    .dis-section__text { flex:1; }
+    .dis-section__title {
+      font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--text-dark);
+      margin-bottom:3px;
+    }
+    .dis-section__title span { color:#1565C0; }
+    .dis-section__sub { font-size:.84rem; color:var(--text-light); line-height:1.5; }
+    .dis-section__meta {
+      display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0;
+    }
+    .dis-count {
+      background:rgba(21,101,192,.1); color:#1565C0;
+      padding:4px 14px; border-radius:50px;
+      font-size:.8rem; font-weight:700; white-space:nowrap;
+    }
+    .dis-section.hidden { display:none; }
+
+    /* ---- SEVERITY BADGES trên card ---- */
+    /* Khác với badge thông thường — hiển thị mức độ bệnh */
+    .sev-badge {
+      position:absolute; top: 0; left:14px; z-index: 1000;
+      display:flex; align-items:center; gap:5px;
+      padding:4px 12px; border-radius:50px;
+      font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.3px;
+    }
+    .sev-badge--mild    { background:rgba(46,125,50,.85); color:#fff; }
+    .sev-badge--moderate{ background:rgba(230,81,0,.9);   color:#fff; }
+    .sev-badge--severe  { background:rgba(183,28,28,.9);  color:#fff; }
+
+    /* Doctor badge trên card */
+    .doc-badge {
+      position:absolute; top: 0; right:14px; z-index: 1000;
+      background:rgba(21,101,192,.85); color:#fff;
+      padding:4px 10px; border-radius:50px; font-size:.68rem; font-weight:700;
+      display:flex; align-items:center; gap:4px; backdrop-filter:blur(4px);
+    }
+
+    /* ---- PLAN CARDS ---- */
+    .plans-section { max-width:1400px; margin:0 auto; padding:40px 6rem 70px; }
+    .plans-section__header {
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:32px;
+    }
+    .plans-section__title {
+      font-family:'Playfair Display',serif; font-size:1.6rem; color:var(--text-dark);
+    }
+    .plans-section__title span { color:#1565C0; }
+    .view-toggle { display:flex; gap:4px; }
+    .view-btn {
+      width:36px; height:36px; border:1.5px solid var(--sage-light);
+      border-radius:8px; background:#fff; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text-light); font-size:.9rem; transition:.2s;
+    }
+    .view-btn.active { background:#1565C0; color:#fff; border-color:#1565C0; }
+
+    .plans-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+    .plans-grid.list-view { grid-template-columns:1fr; }
+
+    .plan-card {
+      background:#fff; border-radius:22px; overflow:hidden;
+      box-shadow:0 2px 14px rgba(21,101,192,.08);
+      border:1px solid rgba(21,101,192,.07);
+      transition:transform .3s ease, box-shadow .3s ease;
+      cursor:pointer; display:flex; flex-direction:column;
+      text-decoration:none; color:inherit; position:relative;
+    }
+    .plan-card:hover { transform:translateY(-7px); box-shadow:0 16px 36px rgba(21,101,192,.16); }
+    .plan-card.hidden { display:none; }
+
+    .plan-card__img { position:relative; height:195px; overflow:hidden; flex-shrink:0; }
+    .plan-card__img img {
+      width:100%; height:100%; object-fit:cover; transition:transform .5s ease;
+    }
+    .plan-card:hover .plan-card__img img { transform:scale(1.07); }
+    .plan-card__overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 55%);
+    }
+
+    /* Duration + meals ribbon ở đáy ảnh */
+    .plan-card__ribbon {
+      position:absolute; bottom:0; left:0; right:0; z-index: 1000;
+      background:linear-gradient(90deg,rgba(21,101,192,.88),rgba(0,131,143,.82));
+      color:#fff; font-weight:700; font-size:.78rem;
+      padding:7px 14px; display:flex; align-items:center; gap:10px;
+    }
+    .ribbon-days { font-family:'Inter',sans-serif; font-size:1.1rem; font-weight:800; line-height:1; }
+    .ribbon-sep { opacity:.5; }
+
+    .plan-card__body { padding:20px 22px; display:flex; flex-direction:column; flex:1; }
+
+    /* Tags hàng đầu */
+    .plan-card__tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .med-tag { font-size:.68rem; font-weight:700; padding:3px 10px; border-radius:50px; }
+    .med-tag--diabetes  { background:#e8f5e9; color:#2e7d32; }
+    .med-tag--cardiac   { background:#fce4ec; color:#c62828; }
+    .med-tag--kidney    { background:#e3f2fd; color:#1565c0; }
+    .med-tag--liver     { background:#fff3e0; color:#e65100; }
+    .med-tag--hyper     { background:#f3e5f5; color:#6a1b9a; }
+    .med-tag--gout      { background:#e0f7fa; color:#00695c; }
+    .med-tag--cancer    { background:#efebe9; color:#4e342e; }
+    .med-tag--digestion { background:#e8eaf6; color:#283593; }
+    .med-tag--lowsodium { background:#fff9c4; color:#f57f17; }
+    .med-tag--lowfat    { background:#e0f2f1; color:#004d40; }
+    .med-tag--lowpurine { background:#f1f8e9; color:#33691e; }
+    .med-tag--lowgi     { background:#e8f5e9; color:#1b5e20; }
+
+    .plan-card__rating { display:flex; align-items:center; gap:5px; margin-bottom:8px; }
+    .stars { color:#f39c12; font-size:.82rem; letter-spacing:1px; }
+    .rating-val { font-size:.82rem; font-weight:700; color:var(--text-dark); }
+    .rating-cnt { font-size:.78rem; color:var(--text-light); }
+
+    .plan-card__name {
+      font-family:'Playfair Display',serif; font-size:1.12rem; color:var(--text-dark);
+      margin-bottom:6px; line-height:1.3; transition:color .2s;
+    }
+    .plan-card:hover .plan-card__name { color:#1565C0; }
+    .plan-card__desc { font-size:.83rem; color:var(--text-light); line-height:1.55; margin-bottom:14px; flex:1; }
+
+    /* Nutrients avoid/focus — đặc trưng của trang bệnh lý */
+    .nutrient-rules {
+      display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;
+    }
+    .rule-chip {
+      font-size:.7rem; font-weight:700; padding:4px 10px; border-radius:50px;
+      display:flex; align-items:center; gap:4px;
+    }
+    .rule-chip--avoid { background:#ffebee; color:#c62828; }
+    .rule-chip--focus { background:#e8f5e9; color:#2e7d32; }
+    .rule-chip--limit { background:#fff3e0; color:#e65100; }
+
+    /* Macro bar */
+    .macro-mini { margin-bottom:14px; }
+    .macro-mini__row { display:flex; justify-content:space-between; font-size:.72rem; color:var(--text-light); margin-bottom:4px; }
+    .macro-mini__bars { display:flex; gap:3px; height:5px; border-radius:10px; overflow:hidden; }
+    .mbar { height:100%; border-radius:10px; }
+    .mbar--p { background:#1565C0; }
+    .mbar--c { background:#e67e22; }
+    .mbar--f { background:#00838F; }
+
+    /* Stats footer */
+    .plan-card__stats {
+      display:flex; gap:12px; padding-top:12px;
+      border-top:1px solid var(--sage-light); flex-wrap:wrap;
+    }
+    .pcstat { display:flex; align-items:center; gap:5px; font-size:.76rem; color:var(--text-light); }
+    .pcstat i { color:#1565C0; font-size:.73rem; }
+
+    /* Bookmark */
+    .plan-card__save {
+      position:absolute; bottom:14px; right:14px; z-index: 1000;
+      width:32px; height:32px; border-radius:50%;
+      background:rgba(255,255,255,.92); border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.85rem; color:#888; transition:.2s; backdrop-filter:blur(4px);
+    }
+    .plan-card__save:hover { color:#e74c3c; transform:scale(1.1); }
+    .plan-card__save.saved { color:#e74c3c; }
+
+    /* list view */
+    .plans-grid.list-view .plan-card { flex-direction:row; min-height:155px; }
+    .plans-grid.list-view .plan-card__img { width:210px; height:auto; flex-shrink:0; }
+    .plans-grid.list-view .plan-card__body { flex-direction:row; align-items:center; gap:18px; padding:16px 20px; }
+    .plans-grid.list-view .plan-card__left { flex:1; min-width:0; }
+    .plans-grid.list-view .plan-card__stats { padding-top:0; border:none; }
+    .plans-grid.list-view .macro-mini,
+    .plans-grid.list-view .nutrient-rules { display:none; }
+
+    /* empty */
+    .empty-state { text-align:center; padding:80px 20px; display:none; }
+    .empty-state i { font-size:3rem; color:var(--sage-light); margin-bottom:16px; display:block; }
+    .empty-state p { color:var(--text-light); }
+
+    /* load more */
+    .load-more-wrap { text-align:center; margin-top:40px; }
+    .load-more-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:13px 36px; border:2px solid #1565C0;
+      border-radius:50px; background:#fff; color:#1565C0;
+      font-family:'Quicksand',sans-serif; font-weight:700; font-size:.93rem;
+      cursor:pointer; transition:.25s;
+    }
+    .load-more-btn:hover { background:#1565C0; color:#fff; transform:translateY(-2px); box-shadow:0 6px 16px rgba(21,101,192,.3); }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:1200px){
+      .plans-grid { grid-template-columns:repeat(2,1fr); }
+      .hub-hero,.featured-banner,.plans-section { padding-left:3rem; padding-right:3rem; }
+      .hub-controls__inner { padding-left:3rem; padding-right:3rem; }
+    }
+    @media(max-width:900px){
+      .featured-card { flex-direction:column; padding:30px 26px; }
+      .featured-card__stats { grid-template-columns:repeat(4,1fr); width:100%; }
+      .hub-hero__inner { flex-direction:column; }
+      .hub-hero__title { font-size:2.2rem; }
+      .hero-stats-panel { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+    }
+    @media(max-width:768px){
+      .plans-grid { grid-template-columns:1fr; }
+      .hub-hero,.featured-banner,.plans-section { padding-left:1.4rem; padding-right:1.4rem; }
+      .hub-controls__inner { padding-left:1.4rem; padding-right:1.4rem; gap:8px; }
+      .hub-search { max-width:100%; width:100%; }
+      .results-count { display:none; }
+      .featured-card__stats { grid-template-columns:1fr 1fr; }
+      .plans-grid.list-view .plan-card { flex-direction:column; }
+      .plans-grid.list-view .plan-card__img { width:100%; height:180px; }
+      .hub-hero__title { font-size:1.9rem; }
+      .hero-stats-panel { grid-template-columns:1fr; }
+    }
+  </style>
+    <link rel="icon" href="/Hecipe-Frontend/ImageofWeb/Logo-Photoroom.png" type="image/png" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="hero-header">
+    <div class="top-icons">
+      <a href="#" class="icon-link"><i class="far fa-user"></i></a>
+      <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+    <a href="index.html" class="brand-logo" style="color:#4A6741">hecipe</a>
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Tìm công thức hoặc nguyên liệu..."/>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NAVBAR ===== -->
+      <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li class="dropdown">
+          <a href="#">Đi Chợ <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="shopNL.html">Nguyên Liệu</a></li>
+            <li><a href="gianhangdt.html">Gian Hàng Đối Tác</a></li>
+            <li><a href="combotietkiem.html">Combo Tiết Kiệm</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Thực Đơn <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="thucdon7d.html">Lộ Trình 7 Ngày</a></li>
+            <li><a href="thucdoneatclean.html">Eat Clean & Diet</a></li>
+            <li class="divider"></li>
+            <li><a href="dinhduong-benhly.html">Dinh Dưỡng Bệnh Lý</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Góc Bếp <i class="fa-solid fa-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="recipes.html">Công Thức Nấu Ăn</a></li>
+            <li><a href="#">Video Hướng Dẫn</a></li>
+            <li><a href="#">Góc Y Khoa</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Khuyến Mãi</a></li>
+        <li><a href="onboarding.html">Khảo sát</a></li>
+      </ul>
+
+      <div class="user-actions">
+        <div class="cart-box">
+          <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-primary" id="loginBtn">Đăng nhập</a>
+          <a href="register.html" class="btn-primary" id="registerBtn" style="margin-left:8px; background-color:#6C8F5E;">Đăng ký</a>
+        </div>
+        <div class="user-profile hidden" id="profileContainer">
+          <img src="ImageofWeb/Nguyencaophi.jpg" alt="User Avatar" class="avatar" id="avatarImg" />
+          <input type="file" id="avatarInput" style="display:none;" accept="image/*" />
+          <button class="btn-secondary" id="changeAvatarBtn" onclick="document.getElementById('avatarInput').click()" style="margin-top:5px; font-size:0.8rem;">Đổi ảnh</button>
+          <ul class="profile-dropdown">
+            <li class="profile-name" style="padding:10px 20px; font-weight:600; cursor:default;"><span id="displayUsername"></span></li>
+            <li><a href="hosouser.html">Hồ sơ sức khỏe (BMI)</a></li>
+            <li><a href="#">Lịch sử đơn hàng</a></li>
+            <li><a href="#">Ví Voucher</a></li>
+            <li class="logout"><a href="#" id="logoutLink">Đăng xuất</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hub-hero">
+    <div class="hub-hero__inner">
+      <div class="hub-hero__left">
+        <div class="hub-hero__breadcrumb">
+          <a href="index.html">Trang chủ</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span>Thực đơn</span>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span style="color:rgba(255,255,255,.85)">Dinh Dưỡng Bệnh Lý</span>
+        </div>
+        <span class="hub-hero__tag"><i class="fa-solid fa-stethoscope"></i> Góc Y Khoa · Dinh Dưỡng Bệnh Lý</span>
+        <h1 class="hub-hero__title">Ăn đúng để<br><em>kiểm soát bệnh tốt hơn</em></h1>
+        <p class="hub-hero__sub">Thực đơn chuyên biệt thiết kế riêng cho từng bệnh lý mãn tính — được xây dựng và kiểm duyệt bởi bác sĩ dinh dưỡng lâm sàng. Chọn bệnh lý của bạn, chọn lộ trình phù hợp.</p>
+
+        <div class="hero-pill-row">
+          <div class="hero-pill"><i class="fa-solid fa-user-doctor"></i> Bác sĩ kiểm duyệt</div>
+          <div class="hero-pill"><i class="fa-solid fa-flask"></i> Căn cứ y văn</div>
+          <div class="hero-pill"><i class="fa-solid fa-shield-heart"></i> An toàn lâm sàng</div>
+        </div>
+
+        <div class="hero-disclaimer">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p><strong>Lưu ý quan trọng:</strong> Các thực đơn này có tính chất tham khảo và hỗ trợ — <strong>không thay thế chỉ định của bác sĩ điều trị.</strong> Người bệnh cần tham khảo ý kiến bác sĩ trước khi áp dụng bất kỳ thay đổi chế độ ăn nào.</p>
+        </div>
+
+        <!-- Quick disease navigation -->
+        <div class="disease-nav-strip" id="diseaseNavStrip">
+          <button class="dis-pill active" data-dis="all">📋 Tất cả</button>
+          <button class="dis-pill" data-dis="diabetes">🩸 Tiểu đường</button>
+          <button class="dis-pill" data-dis="cardiac">❤️ Tim mạch</button>
+          <button class="dis-pill" data-dis="kidney">💧 Thận</button>
+          <button class="dis-pill" data-dis="liver">🫀 Gan</button>
+          <button class="dis-pill" data-dis="hyper">📊 Huyết áp</button>
+          <button class="dis-pill" data-dis="gout">🦴 Gout</button>
+          <button class="dis-pill" data-dis="cancer">🎗 Ung thư</button>
+          <button class="dis-pill" data-dis="digestion">🫃 Tiêu hoá</button>
+        </div>
+      </div>
+
+      <!-- Stats panel -->
+      <div class="hero-stats-panel">
+        <div class="hsp-card">
+          <div class="hsp-card__icon hsp-card__icon--blue"><i class="fa-solid fa-notes-medical" style="color:#90CAF9"></i></div>
+          <div>
+            <div class="hsp-card__val">8<small> bệnh</small></div>
+            <div class="hsp-card__lbl">Nhóm bệnh lý</div>
+          </div>
+        </div>
+        <div class="hsp-card">
+          <div class="hsp-card__icon hsp-card__icon--teal"><i class="fa-solid fa-calendar-check" style="color:#80DEEA"></i></div>
+          <div>
+            <div class="hsp-card__val">7–90<small>ngày</small></div>
+            <div class="hsp-card__lbl">Lộ trình đa dạng</div>
+          </div>
+        </div>
+        <div class="hsp-card">
+          <div class="hsp-card__icon hsp-card__icon--orange"><i class="fa-solid fa-user-doctor" style="color:#FFCC80"></i></div>
+          <div>
+            <div class="hsp-card__val">12<small>+ BS</small></div>
+            <div class="hsp-card__lbl">Bác sĩ thẩm định</div>
+          </div>
+        </div>
+        <div class="hsp-card">
+          <div class="hsp-card__icon hsp-card__icon--red"><i class="fa-solid fa-heart-pulse" style="color:#EF9A9A"></i></div>
+          <div>
+            <div class="hsp-card__val">24<small> lộ trình</small></div>
+            <div class="hsp-card__lbl">Thực đơn hiện có</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTER BAR ===== -->
+  <div class="hub-controls">
+    <div class="hub-controls__inner">
+      <div class="hub-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Tìm theo bệnh, thực đơn..." oninput="applyFilters()"/>
+      </div>
+
+      <!-- Filter theo bệnh -->
+      <div class="filter-group" id="disFilterGroup">
+        <button class="fchip active" data-dis="all"><i class="fa-solid fa-border-all"></i> Tất cả</button>
+        <button class="fchip" data-dis="diabetes">🩸 Tiểu đường</button>
+        <button class="fchip" data-dis="cardiac">❤️ Tim mạch</button>
+        <button class="fchip" data-dis="kidney">💧 Thận</button>
+        <button class="fchip" data-dis="liver">🫀 Gan</button>
+        <button class="fchip" data-dis="hyper">📊 Huyết áp</button>
+        <button class="fchip" data-dis="gout">🦴 Gout</button>
+        <button class="fchip" data-dis="cancer">🎗 Ung thư</button>
+        <button class="fchip" data-dis="digestion">🫃 Tiêu hoá</button>
+      </div>
+
+      <!-- Filter theo mức độ bệnh -->
+      <div class="filter-group" id="sevFilterGroup" style="flex:none;">
+        <button class="fchip sev-filter active" data-sev="all">⚕ Mọi mức độ</button>
+        <button class="fchip sev-filter" data-sev="mild">🟢 Nhẹ</button>
+        <button class="fchip sev-filter" data-sev="moderate">🟡 Trung bình</button>
+        <button class="fchip sev-filter" data-sev="severe">🔴 Nặng</button>
+      </div>
+
+      <!-- Filter theo thời gian lộ trình -->
+      <div class="filter-group" id="durFilterGroup" style="flex:none;">
+        <button class="fchip dur-filter active" data-dur="all">📅 Mọi lộ trình</button>
+        <button class="fchip dur-filter" data-dur="7">7N</button>
+        <button class="fchip dur-filter" data-dur="14">14N</button>
+        <button class="fchip dur-filter" data-dur="30">30N</button>
+        <button class="fchip dur-filter" data-dur="60">60N</button>
+        <button class="fchip dur-filter" data-dur="90">90N</button>
+      </div>
+
+      <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+        <option value="popular">Phổ biến nhất</option>
+        <option value="newest">Mới nhất</option>
+        <option value="dur_asc">Lộ trình: Ngắn → Dài</option>
+        <option value="dur_desc">Lộ trình: Dài → Ngắn</option>
+        <option value="rating">Đánh giá cao</option>
+      </select>
+      <div class="results-count">Hiển thị <strong id="visibleCount">0</strong> thực đơn</div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURED ===== -->
+  <div class="featured-banner" id="featuredBanner">
+    <a class="featured-card" href="#">
+      <div class="featured-card__badge"><i class="fa-solid fa-award"></i> Được sử dụng nhiều nhất</div>
+      <div class="featured-card__content">
+        <div class="featured-card__label">Thực đơn bệnh lý nổi bật</div>
+        <div class="featured-card__title">Tiểu Đường Type 2 —<br>Kiểm Soát Đường Huyết 30 Ngày</div>
+        <div class="featured-card__desc">Giảm HbA1c, ổn định đường huyết sau ăn với chỉ số GI thấp, kiểm soát carb theo từng bữa. Phác đồ được 3 bác sĩ nội tiết kiểm duyệt.</div>
+        <div class="featured-card__chips">
+          <span class="featured-chip">🩸 Tiểu đường Type 2</span>
+          <span class="featured-chip">30 ngày · 90 bữa</span>
+          <span class="featured-chip">1.600 kcal/ngày</span>
+          <span class="featured-chip">Low GI · Giảm carb</span>
+        </div>
+        <span class="featured-card__cta">Xem thực đơn <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      <div class="featured-card__stats">
+        <div class="fstat"><div class="fstat__val">30<small>ngày</small></div><div class="fstat__lbl">Lộ trình</div></div>
+        <div class="fstat"><div class="fstat__val">Low<small>GI</small></div><div class="fstat__lbl">Chỉ số đường</div></div>
+        <div class="fstat"><div class="fstat__val">4.9<small>★</small></div><div class="fstat__lbl">Đánh giá</div></div>
+        <div class="fstat"><div class="fstat__val">5.2<small>K</small></div><div class="fstat__lbl">Người dùng</div></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ===== PLANS ===== -->
+  <section class="plans-section">
+    <div class="plans-section__header">
+      <h2 class="plans-section__title">Tất cả thực đơn bệnh lý <span id="sectionCountLabel">(0)</span></h2>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Lưới"><i class="fa-solid fa-grip"></i></button>
+        <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="Danh sách"><i class="fa-solid fa-list"></i></button>
+      </div>
+    </div>
+    <div id="plansBySections"><!-- rendered by JS --></div>
+    <div class="empty-state" id="emptyState">
+      <i class="fa-solid fa-stethoscope"></i>
+      <p>Không tìm thấy thực đơn phù hợp. Hãy thử bộ lọc khác!</p>
+    </div>
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+      <button class="load-more-btn" onclick="loadMore()"><i class="fa-solid fa-rotate-right"></i> Xem thêm</button>
+    </div>
+  </section>
+
+  <!-- ===== WAVE + FOOTER ===== -->
+  <div class="custom-shape-divider-top">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo"><a href="index.html"><img src="ImageofWeb/Logo-Photoroom.png" alt="Hecipe Logo"></a></div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>Về Hecipe</h4><a href="duan.html">Dự án</a><a href="blog.html">Blog</a></div>
+        <div class="footer-col"><h4>Thực đơn</h4><a href="thucdon7d.html">Lộ Trình 7 Ngày</a><a href="thucdoneatclean.html">Eat Clean</a><a href="dinhduong-benhly.html">Bệnh Lý</a></div>
+        <div class="footer-col"><h4>Trợ giúp</h4><a href="#">Hỗ trợ</a><a href="#">Liên hệ</a></div>
+        <div class="footer-col"><h4>Social</h4>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+          <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+        </div>
+      </div>
+      <div class="footer-app">
+        <h4>Download our app:</h4>
+        <a href="https://play.google.com" target="_blank"><img src="ImageofWeb/ggplay.webp" class="badge-google"></a>
+        <a href="https://www.apple.com/app-store/" target="_blank"><img src="ImageofWeb/appstore.png" class="badge-apple"></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyright">Copyright © 2026 Hecipe.</div>
+      <div class="divider"></div>
+      <div class="policy-links"><a href="#">Điều khoản dịch vụ</a><a href="#">Chính sách bảo mật</a></div>
+    </div>
+  </footer>
+
+  <script>
+  /* ============================================================
+     DATA — Medical Nutrition Plans
+     ============================================================ */
+  const ALL_PLANS = [
+
+    /* ══════════════════ TIỂU ĐƯỜNG ══════════════════ */
+    {
+      id:'dm2-7day', disease:'diabetes', severity:'mild', days:7,
+      name:'Tiểu Đường Type 2 — Khởi Đầu 7 Ngày Low GI',
+      desc:'Tuần đầu làm quen kiểm soát đường huyết: thay tinh bột trắng bằng gạo lứt, khoai lang, yến mạch. Hướng dẫn đọc nhãn GI.',
+      img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=280&fit=crop',
+      kcal:1600, protein:90, carb:190, fat:52,
+      rating:4.8, reviews:2100, badge:'popular', badgeLabel:'Phổ biến',
+      meals:21, doctor:'BS. CKI Hồng Anh — Nội tiết', views:14200,
+      isNew:false, sortScore:95,
+      tags:[{text:'🩸 Tiểu đường',cls:'med-tag med-tag--diabetes'},{text:'Low GI',cls:'med-tag med-tag--lowgi'}],
+      avoid:[{text:'Đường tinh luyện',cls:'rule-chip rule-chip--avoid'},{text:'Tinh bột trắng',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Chất xơ hoà tan',cls:'rule-chip rule-chip--focus'},{text:'Protein nạc',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'dm2-30day', disease:'diabetes', severity:'moderate', days:30,
+      name:'Tiểu Đường Type 2 — Kiểm Soát Đường Huyết 30 Ngày',
+      desc:'Giảm HbA1c bền vững. Thực đơn chia 5 bữa nhỏ, kiểm soát tải đường (GL) từng bữa, kết hợp hướng dẫn vận động nhẹ.',
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop',
+      kcal:1600, protein:95, carb:185, fat:50,
+      rating:4.9, reviews:5200, badge:'popular', badgeLabel:'🏆 Số 1',
+      meals:150, doctor:'BS. CKI Hồng Anh & Team Nội tiết', views:28000,
+      isNew:false, sortScore:100,
+      tags:[{text:'🩸 Tiểu đường',cls:'med-tag med-tag--diabetes'},{text:'Low GI',cls:'med-tag med-tag--lowgi'},{text:'5 bữa/ngày',cls:'med-tag'}],
+      avoid:[{text:'Đường & mật',cls:'rule-chip rule-chip--avoid'},{text:'Đồ chiên',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Rau xanh',cls:'rule-chip rule-chip--focus'},{text:'Omega-3',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'dm1-14day', disease:'diabetes', severity:'severe', days:14,
+      name:'Tiểu Đường Type 1 — Thực Đơn Hỗ Trợ Insulin 14 Ngày',
+      desc:'Đồng bộ lượng carb với liều insulin. Tính chính xác carb từng bữa, dự phòng hạ đường huyết, snack an toàn ban đêm.',
+      img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=280&fit=crop',
+      kcal:1800, protein:100, carb:210, fat:58,
+      rating:4.8, reviews:980, badge:'premium', badgeLabel:'⭐ Chuyên sâu',
+      meals:70, doctor:'BS. CKII Minh Quân — Nội tiết ĐTĐ', views:6800,
+      isNew:true, sortScore:82,
+      tags:[{text:'🩸 Tiểu đường',cls:'med-tag med-tag--diabetes'},{text:'Type 1',cls:'med-tag'}],
+      avoid:[{text:'Carb nhanh',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Carb tính chính xác',cls:'rule-chip rule-chip--focus'},{text:'Snack cân bằng',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ TIM MẠCH ══════════════════ */
+    {
+      id:'cardiac-7day', disease:'cardiac', severity:'mild', days:7,
+      name:'Sức Khoẻ Tim 7 Ngày — DASH Diet Nhập Môn',
+      desc:'Áp dụng phác đồ DASH (Dietary Approaches to Stop Hypertension) phiên bản Việt. Giảm natri, tăng kali, magie từ thực phẩm.',
+      img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=280&fit=crop',
+      kcal:1800, protein:100, carb:230, fat:55,
+      rating:4.7, reviews:1680, badge:'popular', badgeLabel:'Phổ biến',
+      meals:21, doctor:'BS. CKI Thuỳ Linh — Tim mạch', views:10400,
+      isNew:false, sortScore:88,
+      tags:[{text:'❤️ Tim mạch',cls:'med-tag med-tag--cardiac'},{text:'DASH Diet',cls:'med-tag'},{text:'Ít muối',cls:'med-tag med-tag--lowsodium'}],
+      avoid:[{text:'Muối >1500mg/ngày',cls:'rule-chip rule-chip--avoid'},{text:'Chất béo bão hoà',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Omega-3',cls:'rule-chip rule-chip--focus'},{text:'Kali & Magie',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'cardiac-30day', disease:'cardiac', severity:'moderate', days:30,
+      name:'Phục Hồi Tim Mạch — 30 Ngày Sau Can Thiệp',
+      desc:'Dành cho bệnh nhân sau stent, CABG hoặc nhồi máu cơ tim. Tái cấu trúc chế độ ăn từ từ, phòng tái phát, cải thiện lipid máu.',
+      img:'https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&h=280&fit=crop',
+      kcal:1700, protein:95, carb:215, fat:52,
+      rating:4.9, reviews:1420, badge:'premium', badgeLabel:'⭐ Lâm sàng',
+      meals:90, doctor:'BS. CKII Trọng Nhân — Tim mạch can thiệp', views:8200,
+      isNew:false, sortScore:90,
+      tags:[{text:'❤️ Tim mạch',cls:'med-tag med-tag--cardiac'},{text:'Sau can thiệp',cls:'med-tag'},{text:'Ít muối',cls:'med-tag med-tag--lowsodium'}],
+      avoid:[{text:'Trans fat',cls:'rule-chip rule-chip--avoid'},{text:'Natri >1g/ngày',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Sterol thực vật',cls:'rule-chip rule-chip--focus'},{text:'Chất xơ hoà tan',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'cardiac-90day', disease:'cardiac', severity:'severe', days:90,
+      name:'Suy Tim Mạn — Kiểm Soát Dịch & Dinh Dưỡng 90 Ngày',
+      desc:'Thực đơn cho bệnh nhân suy tim độ III-IV: giới hạn dịch 1,5–2L/ngày, natri <1g, năng lượng đủ chống suy mòn cơ tim.',
+      img:'https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&h=280&fit=crop',
+      kcal:1650, protein:105, carb:200, fat:50,
+      rating:4.8, reviews:620, badge:'premium', badgeLabel:'⭐ Chuyên sâu',
+      meals:270, doctor:'BS. CKII Trọng Nhân & BS. Dinh dưỡng Lan Hoa', views:4100,
+      isNew:false, sortScore:78,
+      tags:[{text:'❤️ Tim mạch',cls:'med-tag med-tag--cardiac'},{text:'Suy tim',cls:'med-tag'},{text:'Hạn chế dịch',cls:'med-tag'}],
+      avoid:[{text:'Natri >1g',cls:'rule-chip rule-chip--avoid'},{text:'Dịch >2L/ngày',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Protein chất lượng cao',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ THẬN ══════════════════ */
+    {
+      id:'kidney-mild-30day', disease:'kidney', severity:'mild', days:30,
+      name:'Bảo Vệ Thận Giai Đoạn 1-2 — 30 Ngày Phòng Ngừa',
+      desc:'CKD giai đoạn sớm: kiểm soát protein (0.8g/kg), hạn chế muối và phosphate. Ngăn tiến triển mất chức năng thận.',
+      img:'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&h=280&fit=crop',
+      kcal:1750, protein:58, carb:250, fat:58,
+      rating:4.7, reviews:890, badge:'popular', badgeLabel:'Phổ biến',
+      meals:90, doctor:'BS. CKI Bích Phượng — Thận học', views:7200,
+      isNew:false, sortScore:85,
+      tags:[{text:'💧 Thận',cls:'med-tag med-tag--kidney'},{text:'CKD Giai đoạn 1-2',cls:'med-tag'}],
+      avoid:[{text:'Protein >0.8g/kg',cls:'rule-chip rule-chip--limit'},{text:'Muối >1.5g',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Carb chất lượng',cls:'rule-chip rule-chip--focus'},{text:'Kiểm soát kali',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'kidney-severe-60day', disease:'kidney', severity:'severe', days:60,
+      name:'Suy Thận Mạn Giai Đoạn 4-5 — 60 Ngày Trước Thẩm Phân',
+      desc:'Protein rất thấp (0.6g/kg), kiểm soát chặt kali, phosphate, natri và dịch. Phối hợp với bác sĩ thận học.',
+      img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=280&fit=crop',
+      kcal:1600, protein:40, carb:260, fat:55,
+      rating:4.8, reviews:480, badge:'premium', badgeLabel:'⭐ Lâm sàng',
+      meals:180, doctor:'BS. CKII Bích Phượng & BS. Nội khoa Tuấn Kiệt', views:3400,
+      isNew:false, sortScore:75,
+      tags:[{text:'💧 Thận',cls:'med-tag med-tag--kidney'},{text:'CKD Giai đoạn 4-5',cls:'med-tag'},{text:'Protein rất thấp',cls:'med-tag'}],
+      avoid:[{text:'Kali cao (chuối, cam)',cls:'rule-chip rule-chip--avoid'},{text:'Phosphate (sữa, đậu)',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Carb từ tinh bột trắng',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'kidney-dialysis-30day', disease:'kidney', severity:'severe', days:30,
+      name:'Lọc Thận Chu Kỳ — Dinh Dưỡng 30 Ngày Hỗ Trợ Thẩm Phân',
+      desc:'Bệnh nhân đang chạy thận nhân tạo cần protein CAO hơn (1.2g/kg) để bù mất qua màng lọc, nhưng vẫn kiểm soát kali, phosphate.',
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop',
+      kcal:1900, protein:85, carb:245, fat:62,
+      rating:4.7, reviews:360, badge:'new', badgeLabel:'MỚI',
+      meals:90, doctor:'BS. CKI Bích Phượng — Thận học', views:2600,
+      isNew:true, sortScore:70,
+      tags:[{text:'💧 Thận',cls:'med-tag med-tag--kidney'},{text:'Lọc thận chu kỳ',cls:'med-tag'}],
+      avoid:[{text:'Kali >2g/ngày',cls:'rule-chip rule-chip--avoid'},{text:'Phosphate >800mg',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Protein 1.2g/kg',cls:'rule-chip rule-chip--focus'},{text:'Kẽm & Sắt',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ GAN ══════════════════ */
+    {
+      id:'liver-fatty-14day', disease:'liver', severity:'mild', days:14,
+      name:'Gan Nhiễm Mỡ Độ 1-2 — Hồi Phục 14 Ngày',
+      desc:'Giảm mỡ gan không do rượu (NAFLD): cắt giảm đường fructose, carb tinh chế, chất béo bão hoà. Tăng cường choline, chất xơ.',
+      img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=280&fit=crop',
+      kcal:1600, protein:88, carb:188, fat:50,
+      rating:4.7, reviews:1340, badge:'popular', badgeLabel:'Phổ biến',
+      meals:42, doctor:'BS. CKI Thanh Vân — Tiêu hoá gan mật', views:9600,
+      isNew:false, sortScore:87,
+      tags:[{text:'🫀 Gan',cls:'med-tag med-tag--liver'},{text:'Gan nhiễm mỡ',cls:'med-tag'},{text:'Ít chất béo',cls:'med-tag med-tag--lowfat'}],
+      avoid:[{text:'Fructose công nghiệp',cls:'rule-chip rule-chip--avoid'},{text:'Rượu bia',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Choline (trứng, cá)',cls:'rule-chip rule-chip--focus'},{text:'Vitamin E',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'liver-cirrhosis-30day', disease:'liver', severity:'severe', days:30,
+      name:'Xơ Gan Giai Đoạn Bù — Dinh Dưỡng Tránh Cơ Não 30 Ngày',
+      desc:'Xơ gan Child-Pugh A-B: protein vừa phải từ thực vật và BCAA, giảm nguy cơ bệnh não gan, kiểm soát phù và cổ trướng.',
+      img:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=280&fit=crop',
+      kcal:1800, protein:80, carb:255, fat:52,
+      rating:4.8, reviews:520, badge:'premium', badgeLabel:'⭐ Lâm sàng',
+      meals:120, doctor:'BS. CKII Thanh Vân & GS. Hữu Nghĩa — Gan mật', views:3800,
+      isNew:false, sortScore:76,
+      tags:[{text:'🫀 Gan',cls:'med-tag med-tag--liver'},{text:'Xơ gan',cls:'med-tag'},{text:'BCAA',cls:'med-tag'}],
+      avoid:[{text:'Protein động vật quá cao',cls:'rule-chip rule-chip--limit'},{text:'Muối',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'BCAA (leucine, valine)',cls:'rule-chip rule-chip--focus'},{text:'Kẽm',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ HUYẾT ÁP ══════════════════ */
+    {
+      id:'hyper-7day', disease:'hyper', severity:'mild', days:7,
+      name:'Huyết Áp Cao Độ 1 — DASH 7 Ngày Khởi Động',
+      desc:'Tiền tăng huyết áp và THA độ 1: DASH diet kết hợp giảm natri <1500mg/ngày. Mỗi bữa có bảng natri cụ thể.',
+      img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=280&fit=crop',
+      kcal:1900, protein:100, carb:240, fat:56,
+      rating:4.8, reviews:2400, badge:'popular', badgeLabel:'Phổ biến',
+      meals:21, doctor:'BS. CKI Thuỳ Linh — Tim mạch', views:16000,
+      isNew:false, sortScore:93,
+      tags:[{text:'📊 Huyết áp',cls:'med-tag med-tag--hyper'},{text:'DASH',cls:'med-tag'},{text:'Ít muối',cls:'med-tag med-tag--lowsodium'}],
+      avoid:[{text:'Muối >1.5g/ngày',cls:'rule-chip rule-chip--avoid'},{text:'Caffeine nhiều',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Kali (rau củ)',cls:'rule-chip rule-chip--focus'},{text:'Magie & Canxi',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'hyper-30day', disease:'hyper', severity:'moderate', days:30,
+      name:'THA Độ 2 Kết Hợp Thuốc — Thực Đơn Tối Ưu 30 Ngày',
+      desc:'Hỗ trợ hiệu quả thuốc hạ áp, kiêng thực phẩm tương tác thuốc (bưởi, cam thảo). Kiểm soát cân nặng và kháng insulin.',
+      img:'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=600&h=280&fit=crop',
+      kcal:1750, protein:95, carb:215, fat:54,
+      rating:4.7, reviews:1560, badge:'hot', badgeLabel:'🔥 Hot',
+      meals:90, doctor:'BS. CKI Thuỳ Linh & BS. Tim mạch Hoàng Nam', views:9800,
+      isNew:false, sortScore:86,
+      tags:[{text:'📊 Huyết áp',cls:'med-tag med-tag--hyper'},{text:'Kết hợp thuốc',cls:'med-tag'},{text:'Ít muối',cls:'med-tag med-tag--lowsodium'}],
+      avoid:[{text:'Bưởi (tương tác CCB)',cls:'rule-chip rule-chip--avoid'},{text:'Rượu',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Kali',cls:'rule-chip rule-chip--focus'},{text:'Protein thực vật',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ GOUT ══════════════════ */
+    {
+      id:'gout-acute-7day', disease:'gout', severity:'moderate', days:7,
+      name:'Gout Cấp — Giảm Đau, Hạ Acid Uric 7 Ngày',
+      desc:'Giai đoạn bùng phát: chế độ ăn low-purine nghiêm ngặt, uống 3L nước/ngày, kiêng tuyệt đối hải sản, nội tạng, bia rượu.',
+      img:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&h=280&fit=crop',
+      kcal:1700, protein:68, carb:245, fat:52,
+      rating:4.8, reviews:1820, badge:'popular', badgeLabel:'Phổ biến',
+      meals:21, doctor:'BS. CKI Minh Hoà — Cơ xương khớp', views:12400,
+      isNew:false, sortScore:91,
+      tags:[{text:'🦴 Gout',cls:'med-tag med-tag--gout'},{text:'Gout cấp',cls:'med-tag'},{text:'Low Purine',cls:'med-tag med-tag--lowpurine'}],
+      avoid:[{text:'Hải sản (tôm, cua)',cls:'rule-chip rule-chip--avoid'},{text:'Nội tạng động vật',cls:'rule-chip rule-chip--avoid'},{text:'Bia rượu',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Uống 3L nước',cls:'rule-chip rule-chip--focus'},{text:'Vitamin C',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'gout-chronic-30day', disease:'gout', severity:'mild', days:30,
+      name:'Gout Mạn — Duy Trì Acid Uric Ổn Định 30 Ngày',
+      desc:'Giai đoạn lui bệnh: duy trì acid uric <6mg/dL qua chế độ ăn moderate-purine, cherry, cà phê đen, sữa ít béo.',
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop',
+      kcal:1800, protein:80, carb:240, fat:58,
+      rating:4.7, reviews:1240, badge:'new', badgeLabel:'MỚI',
+      meals:90, doctor:'BS. CKI Minh Hoà — Cơ xương khớp', views:7800,
+      isNew:true, sortScore:80,
+      tags:[{text:'🦴 Gout',cls:'med-tag med-tag--gout'},{text:'Gout mạn',cls:'med-tag'},{text:'Low Purine',cls:'med-tag med-tag--lowpurine'}],
+      avoid:[{text:'Fructose công nghiệp',cls:'rule-chip rule-chip--avoid'},{text:'Thịt đỏ nhiều',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Cherry & Berry',cls:'rule-chip rule-chip--focus'},{text:'Sữa ít béo',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ UNG THƯ ══════════════════ */
+    {
+      id:'cancer-chemo-30day', disease:'cancer', severity:'severe', days:30,
+      name:'Hỗ Trợ Hoá Trị — Dinh Dưỡng Chống Suy Mòn 30 Ngày',
+      desc:'Bệnh nhân đang hoá trị: chống cachexia bằng protein cao, omega-3, điều chỉnh buồn nôn, loét miệng. Bổ sung qua đường miệng tối đa.',
+      img:'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=600&h=280&fit=crop',
+      kcal:2000, protein:120, carb:240, fat:68,
+      rating:4.9, reviews:680, badge:'premium', badgeLabel:'⭐ Chuyên khoa',
+      meals:90, doctor:'BS. CKII Hải Yến — Ung thư · BS. Dinh dưỡng Bảo Châu', views:4800,
+      isNew:false, sortScore:84,
+      tags:[{text:'🎗 Ung thư',cls:'med-tag med-tag--cancer'},{text:'Hóa trị',cls:'med-tag'},{text:'Anti-cachexia',cls:'med-tag'}],
+      avoid:[{text:'Thực phẩm sống (nguy cơ nhiễm khuẩn)',cls:'rule-chip rule-chip--avoid'},{text:'Đường nhiều',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Protein >1.5g/kg',cls:'rule-chip rule-chip--focus'},{text:'EPA/DHA',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'cancer-recovery-60day', disease:'cancer', severity:'moderate', days:60,
+      name:'Phục Hồi Sau Điều Trị Ung Thư — 60 Ngày Tái Tạo',
+      desc:'Sau phẫu thuật/xạ trị/hoá trị: tái tạo cơ thể, phục hồi hệ miễn dịch, chống tái phát bằng thực phẩm chống oxy hoá.',
+      img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=280&fit=crop',
+      kcal:1900, protein:110, carb:230, fat:62,
+      rating:4.8, reviews:540, badge:'new', badgeLabel:'MỚI',
+      meals:180, doctor:'BS. CKII Hải Yến & Team Ung bướu', views:3900,
+      isNew:true, sortScore:78,
+      tags:[{text:'🎗 Ung thư',cls:'med-tag med-tag--cancer'},{text:'Phục hồi',cls:'med-tag'},{text:'Anti-oxidant',cls:'med-tag'}],
+      avoid:[{text:'Thực phẩm chế biến sẵn',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Polyphenol (nghệ, trà xanh)',cls:'rule-chip rule-chip--focus'},{text:'Chất xơ đa dạng',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+
+    /* ══════════════════ TIÊU HOÁ ══════════════════ */
+    {
+      id:'ibs-14day', disease:'digestion', severity:'mild', days:14,
+      name:'Hội Chứng Ruột Kích Thích (IBS) — Low FODMAP 14 Ngày',
+      desc:'Loại trừ nhóm FODMAP cao (hành, tỏi, táo, sữa lactose) trong 2 tuần để xác định trigger. Dễ làm, thực phẩm có sẵn tại VN.',
+      img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&h=280&fit=crop',
+      kcal:1650, protein:85, carb:210, fat:54,
+      rating:4.7, reviews:1560, badge:'popular', badgeLabel:'Phổ biến',
+      meals:42, doctor:'BS. CKI Thanh Vân — Tiêu hoá', views:10800,
+      isNew:false, sortScore:89,
+      tags:[{text:'🫃 Tiêu hoá',cls:'med-tag med-tag--digestion'},{text:'IBS',cls:'med-tag'},{text:'Low FODMAP',cls:'med-tag'}],
+      avoid:[{text:'Hành tỏi (fructan)',cls:'rule-chip rule-chip--avoid'},{text:'Sữa lactose',cls:'rule-chip rule-chip--limit'}],
+      focus:[{text:'Chất xơ hoà tan nhẹ',cls:'rule-chip rule-chip--focus'},{text:'Probiotics',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'crohn-30day', disease:'digestion', severity:'moderate', days:30,
+      name:'Bệnh Crohn & Viêm Đại Tràng — 30 Ngày Giảm Viêm',
+      desc:'Thực đơn chống viêm cho IBD: tránh chất kích thích niêm mạc, ưu tiên thực phẩm dễ tiêu, duy trì dinh dưỡng tránh suy kiệt.',
+      img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=280&fit=crop',
+      kcal:1700, protein:95, carb:215, fat:56,
+      rating:4.7, reviews:720, badge:'new', badgeLabel:'MỚI',
+      meals:90, doctor:'BS. CKI Thanh Vân & BS. Nội soi Hùng Mạnh', views:5200,
+      isNew:true, sortScore:74,
+      tags:[{text:'🫃 Tiêu hoá',cls:'med-tag med-tag--digestion'},{text:'Crohn / Viêm ĐT',cls:'med-tag'}],
+      avoid:[{text:'Chất xơ không hoà tan nhiều',cls:'rule-chip rule-chip--limit'},{text:'Gia vị cay',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Omega-3 chống viêm',cls:'rule-chip rule-chip--focus'},{text:'Vitamin D',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+    {
+      id:'gastric-ulcer-14day', disease:'digestion', severity:'mild', days:14,
+      name:'Loét Dạ Dày — Thực Đơn Làm Lành 14 Ngày',
+      desc:'Bảo vệ niêm mạc dạ dày: tránh kích thích acid, ăn đúng giờ 4-5 bữa nhỏ, ưu tiên protein làm lành tế bào biểu mô.',
+      img:'https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&h=280&fit=crop',
+      kcal:1600, protein:88, carb:205, fat:50,
+      rating:4.8, reviews:2100, badge:'popular', badgeLabel:'Phổ biến',
+      meals:56, doctor:'BS. CKI Thanh Vân — Tiêu hoá', views:13600,
+      isNew:false, sortScore:92,
+      tags:[{text:'🫃 Tiêu hoá',cls:'med-tag med-tag--digestion'},{text:'Loét dạ dày',cls:'med-tag'}],
+      avoid:[{text:'Cà phê, trà đặc',cls:'rule-chip rule-chip--avoid'},{text:'Chua cay',cls:'rule-chip rule-chip--avoid'}],
+      focus:[{text:'Protein làm lành niêm mạc',cls:'rule-chip rule-chip--focus'},{text:'Kẽm & Vitamin C',cls:'rule-chip rule-chip--focus'}],
+      href:'#',
+    },
+  ];
+
+  /* ============================================================
+     DISEASE GROUPS CONFIG
+     ============================================================ */
+  const DIS_GROUPS = [
+    { key:'diabetes',  icon:'🩸', label:'Tiểu Đường (Đái Tháo Đường)',
+      sub:'Kiểm soát đường huyết, HbA1c và phòng biến chứng qua dinh dưỡng',
+      headerCls:'dis-section__header--diabetes', iconCls:'dis-icon--diabetes' },
+    { key:'cardiac',   icon:'❤️', label:'Tim Mạch',
+      sub:'Giảm LDL, ổn định huyết áp, bảo vệ cơ tim sau can thiệp',
+      headerCls:'dis-section__header--cardiac', iconCls:'dis-icon--cardiac' },
+    { key:'hyper',     icon:'📊', label:'Tăng Huyết Áp',
+      sub:'DASH diet và kiểm soát natri để giảm áp lực lên thành mạch',
+      headerCls:'dis-section__header--hyper', iconCls:'dis-icon--hyper' },
+    { key:'kidney',    icon:'💧', label:'Bệnh Thận Mạn (CKD)',
+      sub:'Điều chỉnh protein, kali, phosphate theo từng giai đoạn suy thận',
+      headerCls:'dis-section__header--kidney', iconCls:'dis-icon--kidney' },
+    { key:'gout',      icon:'🦴', label:'Gout (Thống Phong)',
+      sub:'Kiểm soát acid uric qua chế độ ăn low-purine khoa học',
+      headerCls:'dis-section__header--gout', iconCls:'dis-icon--gout' },
+    { key:'liver',     icon:'🫀', label:'Bệnh Gan',
+      sub:'Hỗ trợ chức năng gan, chống xơ gan và gan nhiễm mỡ',
+      headerCls:'dis-section__header--liver', iconCls:'dis-icon--liver' },
+    { key:'cancer',    icon:'🎗', label:'Ung Thư — Hỗ Trợ Điều Trị',
+      sub:'Chống cachexia, hỗ trợ hoá xạ trị và phục hồi sau điều trị',
+      headerCls:'dis-section__header--cancer', iconCls:'dis-icon--cancer' },
+    { key:'digestion', icon:'🫃', label:'Bệnh Đường Tiêu Hoá',
+      sub:'IBS, Crohn, viêm loét đại tràng và loét dạ dày tá tràng',
+      headerCls:'dis-section__header--digestion', iconCls:'dis-icon--digestion' },
+  ];
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  let activeDis = 'all';
+  let activeSev = 'all';
+  let activeDur = 'all';
+  let currentView = 'grid';
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function renderStars(r) {
+    const f = Math.floor(r), h = r % 1 >= .5 ? 1 : 0;
+    return '★'.repeat(f) + (h ? '½' : '') + '☆'.repeat(5 - f - h);
+  }
+  function calcMW(p, c, f) {
+    const t = p + c + f || 1;
+    return { pw: Math.round(p/t*100), cw: Math.round(c/t*100), fw: Math.round(f/t*100) };
+  }
+  function sevLabel(s) {
+    return { mild:'Nhẹ', moderate:'Trung bình', severe:'Nặng' }[s] || s;
+  }
+  function sevCls(s) {
+    return { mild:'sev-badge--mild', moderate:'sev-badge--moderate', severe:'sev-badge--severe' }[s] || '';
+  }
+  function badgeCls(b) {
+    return { popular:'badge--popular', new:'badge--new', hot:'badge--hot', premium:'badge--premium', free:'badge--free' }[b] || '';
+  }
+
+  function renderCard(plan) {
+    const mw    = calcMW(plan.protein, plan.carb, plan.fat);
+    const saved = JSON.parse(localStorage.getItem('savedPlansMed') || '[]').includes(plan.id);
+    const docShort = plan.doctor.split('—')[0].trim();
+    return `
+    <a class="plan-card" href="${plan.href}" data-id="${plan.id}">
+      <div class="plan-card__img">
+        <img src="${plan.img}" alt="${plan.name}"
+             onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=280&fit=crop'"/>
+        <div class="plan-card__overlay"></div>
+        <div class="sev-badge ${sevCls(plan.severity)}">
+          <i class="fa-solid fa-${plan.severity==='mild'?'circle-check':plan.severity==='moderate'?'triangle-exclamation':'circle-exclamation'}"></i>
+          Mức độ: ${sevLabel(plan.severity)}
+        </div>
+        <div class="doc-badge"><i class="fa-solid fa-user-doctor"></i> ${docShort}</div>
+        <div class="plan-card__ribbon">
+          <span class="ribbon-days">${plan.days}</span> NGÀY
+          <span class="ribbon-sep">|</span>
+          <i class="fa-solid fa-bowl-food"></i> ${plan.meals} bữa
+          <span class="ribbon-sep">|</span>
+          <i class="fa-solid fa-fire"></i> ${plan.kcal} kcal/ngày
+        </div>
+        <button class="plan-card__save${saved?' saved':''}" onclick="toggleSave(event,'${plan.id}')" title="Lưu">
+          <i class="${saved?'fas':'far'} fa-bookmark"></i>
+        </button>
+      </div>
+      <div class="plan-card__body">
+        <div class="plan-card__tags">
+          ${plan.tags.map(t=>`<span class="${t.cls}">${t.text}</span>`).join('')}
+        </div>
+        <div class="plan-card__rating">
+          <span class="stars">${renderStars(plan.rating)}</span>
+          <span class="rating-val">${plan.rating}</span>
+          <span class="rating-cnt">(${plan.reviews.toLocaleString('vi')})</span>
+        </div>
+        <div class="plan-card__name">${plan.name}</div>
+        <div class="plan-card__desc">${plan.desc}</div>
+        <div class="nutrient-rules">
+          ${plan.avoid.map(r=>`<span class="${r.cls}"><i class="fa-solid fa-ban"></i> ${r.text}</span>`).join('')}
+          ${plan.focus.map(r=>`<span class="${r.cls}"><i class="fa-solid fa-check"></i> ${r.text}</span>`).join('')}
+        </div>
+        <div class="macro-mini">
+          <div class="macro-mini__row">
+            <span>🔵 P:${plan.protein}g &nbsp;🟠 C:${plan.carb}g &nbsp;🩵 F:${plan.fat}g</span>
+            <span>${plan.kcal} kcal</span>
+          </div>
+          <div class="macro-mini__bars">
+            <div class="mbar mbar--p" style="width:${mw.pw}%"></div>
+            <div class="mbar mbar--c" style="width:${mw.cw}%"></div>
+            <div class="mbar mbar--f" style="width:${mw.fw}%"></div>
+          </div>
+        </div>
+        <div class="plan-card__stats">
+          <div class="pcstat"><i class="fa-solid fa-user-doctor"></i> ${docShort}</div>
+          <div class="pcstat"><i class="fa-regular fa-eye"></i> ${(plan.views/1000).toFixed(1)}K xem</div>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  /* ============================================================
+     FILTER & RENDER
+     ============================================================ */
+  function getFiltered() {
+    const q    = document.getElementById('searchInput').value.toLowerCase().trim();
+    const sort = document.getElementById('sortSelect').value;
+    let result = ALL_PLANS.filter(p => {
+      const mDis = activeDis === 'all' || p.disease === activeDis;
+      const mSev = activeSev === 'all' || p.severity === activeSev;
+      const mDur = activeDur === 'all' || p.days === parseInt(activeDur);
+      const mQ   = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)
+                      || p.disease.includes(q) || p.tags.some(t=>t.text.toLowerCase().includes(q));
+      return mDis && mSev && mDur && mQ;
+    });
+    result.sort((a, b) => {
+      if (sort === 'newest')   return (b.isNew?1:0)-(a.isNew?1:0) || b.sortScore-a.sortScore;
+      if (sort === 'dur_asc')  return a.days - b.days;
+      if (sort === 'dur_desc') return b.days - a.days;
+      if (sort === 'rating')   return b.rating - a.rating;
+      return b.sortScore - a.sortScore;
+    });
+    return result;
+  }
+
+  function renderAll() {
+    const plans    = getFiltered();
+    const container = document.getElementById('plansBySections');
+    const emptyEl   = document.getElementById('emptyState');
+    if (plans.length === 0) {
+      container.innerHTML = '';
+      emptyEl.style.display = 'block';
+      document.getElementById('visibleCount').textContent = '0';
+      document.getElementById('sectionCountLabel').textContent = '(0)';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    const groupByDis = activeDis === 'all' && activeSev === 'all' && activeDur === 'all'
+                       && !document.getElementById('searchInput').value
+                       && !['dur_asc','dur_desc','rating'].includes(document.getElementById('sortSelect').value);
+
+    const lvCls = currentView === 'list' ? ' list-view' : '';
+
+    if (groupByDis) {
+      let html = '';
+      DIS_GROUPS.forEach(g => {
+        const group = plans.filter(p => p.disease === g.key);
+        if (!group.length) return;
+        html += `
+        <div class="dis-section">
+          <div class="dis-section__header ${g.headerCls}">
+            <div class="dis-section__icon-wrap ${g.iconCls}">${g.icon}</div>
+            <div class="dis-section__text">
+              <div class="dis-section__title">Bệnh Lý: <span>${g.label}</span></div>
+              <div class="dis-section__sub">${g.sub}</div>
+            </div>
+            <div class="dis-section__meta">
+              <div class="dis-count">${group.length} thực đơn</div>
+            </div>
+          </div>
+          <div class="plans-grid${lvCls}">
+            ${group.map(p => renderCard(p)).join('')}
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = `<div class="plans-grid${lvCls}">${plans.map(p=>renderCard(p)).join('')}</div>`;
+    }
+
+    document.getElementById('visibleCount').textContent = plans.length;
+    document.getElementById('sectionCountLabel').textContent = `(${plans.length})`;
+
+    const showFeatured = activeDis==='all' && activeSev==='all' && activeDur==='all'
+                         && !document.getElementById('searchInput').value;
+    document.getElementById('featuredBanner').style.display = showFeatured ? '' : 'none';
+  }
+
+  function applyFilters() { renderAll(); }
+
+  /* ============================================================
+     INTERACTIONS
+     ============================================================ */
+  // Disease filter (filter bar)
+  document.getElementById('disFilterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip) return;
+    document.querySelectorAll('#disFilterGroup .fchip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeDis = chip.dataset.dis;
+    // sync hero pills
+    document.querySelectorAll('.dis-pill').forEach(p=>p.classList.toggle('active', p.dataset.dis===activeDis));
+    applyFilters();
+  });
+
+  // Hero disease pills
+  document.getElementById('diseaseNavStrip').addEventListener('click', e => {
+    const pill = e.target.closest('.dis-pill');
+    if (!pill) return;
+    document.querySelectorAll('.dis-pill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    activeDis = pill.dataset.dis;
+    document.querySelectorAll('#disFilterGroup .fchip').forEach(c=>c.classList.toggle('active',c.dataset.dis===activeDis));
+    applyFilters();
+    document.querySelector('.plans-section')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  // Severity filter
+  document.getElementById('sevFilterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip) return;
+    document.querySelectorAll('#sevFilterGroup .fchip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeSev = chip.dataset.sev;
+    applyFilters();
+  });
+
+  // Duration filter
+  document.getElementById('durFilterGroup').addEventListener('click', e => {
+    const chip = e.target.closest('.fchip');
+    if (!chip) return;
+    document.querySelectorAll('#durFilterGroup .fchip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeDur = chip.dataset.dur;
+    applyFilters();
+  });
+
+  function setView(v) {
+    currentView = v;
+    document.getElementById('gridViewBtn').classList.toggle('active', v==='grid');
+    document.getElementById('listViewBtn').classList.toggle('active', v==='list');
+    document.querySelectorAll('.plans-grid').forEach(g=>g.classList.toggle('list-view', v==='list'));
+  }
+
+  function loadMore() {}
+
+  function toggleSave(e, id) {
+    e.preventDefault(); e.stopPropagation();
+    let saved = JSON.parse(localStorage.getItem('savedPlansMed') || '[]');
+    const btn = e.currentTarget, icon = btn.querySelector('i');
+    if (saved.includes(id)) {
+      saved = saved.filter(s=>s!==id);
+      btn.classList.remove('saved'); icon.className = 'far fa-bookmark';
+    } else {
+      saved.push(id);
+      btn.classList.add('saved'); icon.className = 'fas fa-bookmark';
+      btn.animate([{transform:'scale(1)'},{transform:'scale(1.4)'},{transform:'scale(1)'}],{duration:300});
+    }
+    localStorage.setItem('savedPlansMed', JSON.stringify(saved));
+  }
+
+  function toggleAuthUI() {
+    const logged = localStorage.getItem('loggedIn')==='true';
+    const profile = document.getElementById('profileContainer');
+    const authBtns = document.getElementById('authButtons');
+    const display  = document.getElementById('displayUsername');
+    if (profile)  profile.classList.toggle('hidden',!logged);
+    if (authBtns) authBtns.classList.toggle('hidden',logged);
+    if (logged) {
+      const av = localStorage.getItem('avatar');
+      if (av) { const img=document.getElementById('avatarImg'); if(img) img.src=av; }
+      if (display) display.textContent = localStorage.getItem('userId')||'';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    toggleAuthUI();
+    const ll = document.getElementById('logoutLink');
+    if (ll) ll.addEventListener('click', e=>{e.preventDefault();localStorage.removeItem('loggedIn');toggleAuthUI();});
+    renderAll();
+  });
+  </script>
+<script src="search-unified.js" defer></script>
+</body>
+</html>
